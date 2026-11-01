@@ -7,7 +7,7 @@
 
 Jede Farbe einer mehrfarbigen 3MF auf das richtige Tool deines Prusa-Druckers legen – im Browser, ohne neu zu bemalen.
 
-Du hast ein bemaltes Modell für Bambu Studio, OrcaSlicer oder PrusaSlicer gefunden, aber die Farben liegen auf anderen Extrudern als die Filamente in deinem Drucker. Der Farb-Mapper zeigt das Modell in 3D, du legst jede Farbe der Datei auf eines deiner Tools oder MMU-Slots, und er speichert eine 3MF für PrusaSlicer mit entsprechend verschobener Bemalung.
+Du hast ein bemaltes Modell für Bambu Studio, OrcaSlicer oder PrusaSlicer gefunden, aber die Farben liegen auf anderen Extrudern als die Filamente in deinem Drucker. Der Farb-Mapper zeigt das Modell in 3D, du legst jede Farbe der Datei auf eines deiner Tools oder einen deiner MMU-Slots, und er speichert eine 3MF für PrusaSlicer mit entsprechend verschobener Bemalung.
 
 ![Farb-Mapper für Prusa mit dem 8-farbigen 3DBenchy als Beispiel](docs/screenshot-de.png)
 
@@ -29,6 +29,8 @@ Du hast ein bemaltes Modell für Bambu Studio, OrcaSlicer oder PrusaSlicer gefun
 | CORE One, CORE One L, MK4S, MK3.9S, MK3.5S mit MMU3 | 5 Slots |
 | Prusa XL, XL+ | 5 oder 2 Tools |
 
+Getestet an einem echten CORE One INDX. Die anderen Drucker nutzen dasselbe Dateiformat und dieselben Daten aus Prusa Connect, wurden aber noch nicht an echter Hardware ausprobiert – Rückmeldungen sind willkommen.
+
 ## So nutzt du ihn
 
 Es gibt zwei Wege. Beide sind derselbe Farb-Mapper, das Windows-Programm bringt nur zusätzlich die Live-Farben aus Prusa Connect.
@@ -42,7 +44,7 @@ Es gibt zwei Wege. Beide sind derselbe Farb-Mapper, das Windows-Programm bringt 
 
 ### Web-Version (für den Anfang empfohlen)
 
-- **Online:** `https://DomiTech3D.github.io/color-mapper-for-prusa/`
+- **Online:** [domitech3d.github.io/color-mapper-for-prusa](https://domitech3d.github.io/color-mapper-for-prusa/)
 - **Offline:** `color-mapper.html` aus dem [neusten Release](../../releases/latest) herunterladen und in Chrome, Edge, Firefox oder Safari öffnen.
 
 Die Seite startet auf Englisch – oben rechts auf **DE** klicken, der Browser merkt sich die Wahl.
@@ -68,13 +70,9 @@ Die Seite startet auf Englisch – oben rechts auf **DE** klicken, der Browser m
 2. **Mit Prusa Connect verbinden** klicken und auf der Prusa-Seite anmelden.
 3. Das schwarze Fenster offen lassen, solange du den Farb-Mapper nutzt. Schliessen beendet das Programm.
 
-**«Der Computer wurde durch Windows geschützt»:** Das Programm ist nicht signiert, deshalb warnt Windows SmartScreen beim ersten Start. **Weitere Informationen → Trotzdem ausführen** klicken. Ob die Datei wirklich von GitHub aus diesem Quellcode gebaut wurde, lässt sich prüfen:
+**«Der Computer wurde durch Windows geschützt»:** Das Programm ist nicht signiert, deshalb warnt Windows SmartScreen beim ersten Start. **Weitere Informationen → Trotzdem ausführen** klicken.
 
-```
-gh attestation verify ColorMapperForPrusa.exe --repo DomiTech3D/color-mapper-for-prusa
-```
-
-oder den SHA-256 (`Get-FileHash ColorMapperForPrusa.exe` in PowerShell) mit `SHA256SUMS.txt` aus dem Release vergleichen.
+*Optional – Download prüfen:* Die Dateien in den Releases baut GitHub direkt aus diesem Quellcode. Vergleiche den SHA-256 (`Get-FileHash ColorMapperForPrusa.exe` in PowerShell) mit `SHA256SUMS.txt` aus dem Release, oder führe mit dem [GitHub CLI](https://cli.github.com/) `gh attestation verify ColorMapperForPrusa.exe --repo DomiTech3D/color-mapper-for-prusa` aus.
 
 **Was das Windows-Programm tut und speichert**
 
@@ -103,6 +101,10 @@ Nein. Es wird immer eine neue Datei gespeichert (`…_INDX.3mf`, `…_MMU3.3mf`,
 **Warum wird beim Darüberfahren manches grau?**
 Absichtlich: Nur die Flächen der Farbe oder des Tools unter dem Mauszeiger bleiben farbig.
 
+## Rückmeldungen
+
+Das ist ein Hobbyprojekt und mein erstes auf GitHub – Rückmeldungen sind sehr willkommen. Einen Fehler gefunden, eine 3MF, die nicht klappt, oder eine Idee? Bitte [ein Issue eröffnen](../../issues). Bei Problemen mit einer bestimmten Datei hilft eine kurze Beschreibung: welcher Drucker, aus welchem Slicer die Datei stammt und was schiefging.
+
 ## Selbst bauen
 
 Benötigt: Python 3, Go 1.22 oder neuer, Node.js (nur für den Test).
@@ -115,8 +117,6 @@ cd desktop
 go test ./...
 GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o ColorMapperForPrusa.exe .
 ```
-
-**Release veröffentlichen:** auf GitHub ein Release mit neuem Tag wie `v1.2.1` erstellen (Releases → Draft a new release). Der Workflow *Release* baut dann `ColorMapperForPrusa.exe` und `color-mapper.html`, hält die Herkunft des Builds fest und hängt die Dateien ans Release. Der Workflow *Web version* veröffentlicht die Seite nach jeder Änderung auf `main` auf GitHub Pages (einmalig einrichten: Settings → Pages → Source: **GitHub Actions**).
 
 ## Lizenz
 

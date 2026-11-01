@@ -29,6 +29,8 @@ You found a painted model for Bambu Studio, OrcaSlicer or PrusaSlicer, but its c
 | CORE One, CORE One L, MK4S, MK3.9S, MK3.5S with MMU3 | 5 slots |
 | Prusa XL, XL+ | 5 or 2 tools |
 
+Tested on a real CORE One INDX. The other printers use the same file format and the same data from Prusa Connect, but haven't been tried on real hardware yet – feedback is welcome.
+
 ## How to use it
 
 There are two ways. Both are the same Color Mapper; the Windows program only adds the live colors from Prusa Connect.
@@ -42,7 +44,7 @@ There are two ways. Both are the same Color Mapper; the Windows program only add
 
 ### Web version (recommended to start)
 
-- **Online:** `https://DomiTech3D.github.io/color-mapper-for-prusa/`
+- **Online:** [domitech3d.github.io/color-mapper-for-prusa](https://domitech3d.github.io/color-mapper-for-prusa/)
 - **Offline:** download `color-mapper.html` from the [latest release](../../releases/latest) and open it in Chrome, Edge, Firefox or Safari.
 
 1. Choose your printer under **Printer**.
@@ -66,13 +68,9 @@ There are two ways. Both are the same Color Mapper; the Windows program only add
 2. Click **Connect to Prusa Connect** and sign in on the Prusa page that opens.
 3. Keep the black window open while you use the Color Mapper. Closing it stops the program.
 
-**“Windows protected your PC”:** the program is not code-signed, so Windows SmartScreen warns about it on first start. Click **More info → Run anyway**. You can check that the file was built by GitHub from this source code:
+**“Windows protected your PC”:** the program is not code-signed, so Windows SmartScreen warns about it on first start. Click **More info → Run anyway**.
 
-```
-gh attestation verify ColorMapperForPrusa.exe --repo DomiTech3D/color-mapper-for-prusa
-```
-
-or compare its SHA-256 (`Get-FileHash ColorMapperForPrusa.exe` in PowerShell) with `SHA256SUMS.txt` from the release.
+*Optional – check the download:* the files in the releases are built by GitHub directly from this source code. Compare the SHA-256 (`Get-FileHash ColorMapperForPrusa.exe` in PowerShell) with `SHA256SUMS.txt` from the release, or, with the [GitHub CLI](https://cli.github.com/), run `gh attestation verify ColorMapperForPrusa.exe --repo DomiTech3D/color-mapper-for-prusa`.
 
 **What the Windows program does and stores**
 
@@ -101,6 +99,10 @@ No. It always saves a new file (`…_INDX.3mf`, `…_MMU3.3mf`, `…_XL.3mf` or 
 **Why do some areas turn grey while hovering?**
 On purpose: only the areas printed by the color or tool under the mouse pointer stay in color.
 
+## Feedback
+
+This is a hobby project and my first one on GitHub – feedback is very welcome. Found a bug, a 3MF that doesn't work, or have an idea? Please [open an issue](../../issues). For problems with a specific file, a short description of the printer, the slicer it came from and what went wrong helps a lot.
+
 ## Build from source
 
 Requirements: Python 3, Go 1.22 or newer, Node.js (only for the test).
@@ -115,8 +117,6 @@ GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o ColorMapperForPrusa.exe .
 ```
 
 The page source is `app/index.src.html`, the 3MF engine is `app/core.js` (no dependencies). The Windows program (`desktop/`) only uses the Go standard library.
-
-**Publishing a release:** on GitHub, create a release with a new tag such as `v1.2.1` (Releases → Draft a new release). The *Release* workflow then builds `ColorMapperForPrusa.exe` and `color-mapper.html`, records the build provenance and attaches the files to the release. The *Web version* workflow publishes the page on GitHub Pages after each change on `main` (one-time setup: Settings → Pages → Source: **GitHub Actions**).
 
 ## License
 
