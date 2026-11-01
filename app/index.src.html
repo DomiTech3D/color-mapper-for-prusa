@@ -1,0 +1,1465 @@
+<!-- Color Mapper for Prusa – Copyright (C) 2026 DomiTech3D. SPDX-License-Identifier: GPL-3.0-only – additional terms (attribution) in NOTICE.md -->
+<title>Color Mapper for Prusa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: Werkbank – links die Steuerung (Datei → Tools → Zuordnung → Speichern), rechts das Druckbett als 3D-Vorschau. */
+:root {
+  --bg: #E9ECEE;
+  --panel: #F7F8F9;
+  --ink: #14181B;
+  --muted: #5B656C;
+  --line: #CDD3D7;
+  --accent: #A9532A;          /* Kupfer – Induktionsspule */
+  --accent-soft: #F1DFD4;
+  --accent-ink: #FFFFFF;
+  --view: #DCE1E4;
+  --view-ink: #3F4A51;
+  --ok: #2E7D4F;
+  --warn: #9A6A12;
+  --err: #B3261E;
+  --font-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+  --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111416; --panel: #191D20; --ink: #E6E9EB; --muted: #97A0A7; --line: #2B3135;
+    --accent: #E08A55; --accent-soft: #3A2619; --accent-ink: #1A0F08; --view: #0C0F11; --view-ink: #AAB3BA;
+    --ok: #63C18A; --warn: #E2B04F; --err: #F2867E; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111416; --panel: #191D20; --ink: #E6E9EB; --muted: #97A0A7; --line: #2B3135;
+  --accent: #E08A55; --accent-soft: #3A2619; --accent-ink: #1A0F08; --view: #0C0F11; --view-ink: #AAB3BA;
+  --ok: #63C18A; --warn: #E2B04F; --err: #F2867E; color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 14px 20px; box-sizing: border-box;
+}
+*, *::before, *::after { box-sizing: border-box; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.app { max-width: 1440px; margin: 0 auto; display: grid; gap: 14px; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "head head" "side view"; min-height: calc(100% - 4px); }
+[hidden] { display: none !important; }
+header.top { grid-area: head; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; padding: 2px 2px 0; }
+header.top h1 { font-family: var(--font-display); font-weight: 700; font-size: 28px; letter-spacing: .01em; margin: 0; text-wrap: balance; }
+header.top h1 span { color: var(--accent); }
+header.top p { margin: 0; color: var(--muted); font-size: 14px; }
+.langsw { margin-left: auto; align-self: center; }
+.langsw button { font-family: var(--font-mono); font-size: 12px; font-weight: 600; padding: 3px 9px; }
+.foot { margin: 2px 2px 0; font-size: 12px; color: var(--muted); }
+.foot a { color: inherit; text-underline-offset: 3px; }
+
+.side { grid-area: side; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; min-width: 0; }
+.card h2 { font-family: var(--font-display); font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+.card h2 .step { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0; color: var(--accent); }
+
+/* Datei */
+.drop { border: 1.5px dashed var(--line); border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; transition: border-color .15s, background .15s; display: block; }
+.drop:hover, .drop.over { border-color: var(--accent); background: var(--accent-soft); }
+.drop strong { display: block; font-family: var(--font-display); font-size: 18px; font-weight: 600; }
+.drop small { color: var(--muted); }
+.fileinfo { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: start; margin-top: 12px; }
+.fileinfo .name { font-weight: 600; overflow-wrap: anywhere; }
+.badge { display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; border: 1px solid currentColor; white-space: nowrap; }
+.badge.bambu { color: var(--ok); }
+.badge.prusa { color: var(--accent); }
+.badge.demo { color: var(--warn); }
+.meta { grid-column: 1 / -1; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.plate-row { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+.printer-row { display: flex; align-items: center; gap: 8px; margin: -2px 0 12px; font-size: 13px; color: var(--muted); }
+.printer-row select { flex: 1; min-width: 0; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font: inherit; font-size: 14px; }
+.plate-row select { flex: 1; min-width: 0; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); }
+
+/* Tools */
+.tools { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; }
+.tool { position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; }
+.toolpick { position: relative; width: 100%; max-width: 40px; display: block; cursor: pointer; }
+.tool .dot { width: 100%; aspect-ratio: 1; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); box-shadow: inset 0 -3px 0 rgba(0,0,0,.12); display: grid; place-items: center; font-family: var(--font-mono); font-size: 12px; font-weight: 600; }
+.tool input[type=color] { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; border: 0; padding: 0; }
+.tool span.lbl { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.toolpick:focus-within .dot { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tool .resync { font: 600 10px/1.5 var(--font-mono); color: var(--accent); background: var(--panel); border: 1px solid var(--accent); border-radius: 99px; padding: 0 5px; cursor: pointer; white-space: nowrap; }
+.tool.own .dot { box-shadow: inset 0 -3px 0 rgba(0,0,0,.12), 0 0 0 2px var(--panel), 0 0 0 3px var(--warn); }
+@media (max-width: 560px) { .tool .resync .rs-long { display: none; } }
+.live-auto { display: flex; gap: 8px; align-items: center; font-size: 13px; cursor: pointer; }
+.live-auto input { accent-color: var(--accent); width: 16px; height: 16px; }
+.live-own { font-size: 13px; color: var(--warn); }
+.row-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.link-btn { background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Zuordnung */
+.maplist { display: flex; flex-direction: column; gap: 4px; }
+.maprow { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 4px 10px; padding: 8px; margin: 0 -8px; border-radius: 8px; border: 0; min-width: 0; }
+.maprow:hover, .maprow.hl { background: var(--bg); }
+.maprow .src { width: 30px; height: 30px; border-radius: 6px; border: 1px solid rgba(0,0,0,.25); align-self: center; }
+.maprow .what { min-width: 0; align-self: center; }
+.maprow .what b { font-weight: 600; }
+.maprow .what small { display: block; color: var(--muted); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+.maprow .pick { grid-column: 2; display: flex; gap: 4px; flex-wrap: wrap; }
+.pick label { position: relative; cursor: pointer; }
+.pick input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.pick .chip { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); font-family: var(--font-mono); font-size: 11.5px; font-weight: 600; transition: transform .1s; }
+.pick input:checked + .chip { box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--accent); transform: scale(1.06); }
+.pick input:focus-visible + .chip { outline: 2px solid var(--accent); outline-offset: 4px; }
+.arrow { color: var(--muted); font-size: 12px; }
+.dev { display: inline-block; margin-left: 6px; font-size: 11.5px; font-weight: 600; color: var(--warn); border: 1px solid currentColor; border-radius: 99px; padding: 0 7px; vertical-align: 1px; }
+.hint.todo { color: var(--warn); font-weight: 500; }
+.tool .mat { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-top: -3px; min-height: 1.2em; }
+.livebox { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 8px; }
+.live-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-weight: 600; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; padding: 1px 10px; border-radius: 99px; border: 1px solid currentColor; white-space: nowrap; }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.pill.on { color: var(--ok); } .pill.on::before { animation: pulse 2.4s ease-in-out infinite; }
+.pill.off { color: var(--muted); } .pill.wait { color: var(--warn); } .pill.err { color: var(--err); }
+@keyframes pulse { 50% { opacity: .3; } }
+.live-text { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 0; overflow-wrap: anywhere; }
+.live-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.live-actions:empty { display: none; }
+.btn { padding: 7px 14px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); font-weight: 600; font-size: 14px; cursor: pointer; }
+.live-printer { font-size: 13px; color: var(--muted); }
+.livelog summary { cursor: pointer; font-size: 13px; color: var(--muted); }
+.livelog pre { margin: 6px 0; max-height: 220px; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px; font: 11px/1.45 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.live-printer select { margin-left: 6px; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+.tool.live .lbl::after { content: ""; display: inline-block; width: 5px; height: 5px; margin-left: 3px; border-radius: 50%; background: var(--ok); vertical-align: 2px; }
+.status.warn { color: var(--warn); }
+.map-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 8px; }
+.hint { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+
+/* Export */
+.primary { width: 100%; padding: 12px 14px; border-radius: 8px; border: 0; background: var(--accent); color: var(--accent-ink); font-family: var(--font-display); font-weight: 600; font-size: 18px; letter-spacing: .02em; cursor: pointer; }
+.primary:disabled { opacity: .5; cursor: default; }
+.progress { height: 4px; border-radius: 4px; background: var(--line); overflow: hidden; margin-top: 10px; }
+.progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+.status { font-size: 13px; margin-top: 8px; min-height: 1.4em; overflow-wrap: anywhere; }
+.status.ok { color: var(--ok); } .status.err { color: var(--err); }
+details.howto { margin-top: 10px; font-size: 13px; color: var(--muted); }
+details.howto summary { cursor: pointer; color: var(--ink); }
+details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px; }
+
+/* Vorschau */
+.viewer { grid-area: view; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 14px); height: calc(100vh - 100px); max-height: 980px; background: var(--view); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; min-height: 420px; min-width: 0; }
+.viewer canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+.viewer canvas:active { cursor: grabbing; }
+.vbar { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; pointer-events: none; }
+.vbar > * { pointer-events: auto; }
+.seg { display: inline-flex; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 2px; }
+.seg button { border: 0; background: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.vbtn { border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 5px 10px; font-size: 13px; cursor: pointer; }
+.vinfo { position: absolute; left: 12px; bottom: 10px; right: 12px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 11.5px; color: var(--view-ink); pointer-events: none; }
+.overlay { position: absolute; inset: 0; display: grid; place-items: center; background: color-mix(in srgb, var(--view) 70%, transparent); text-align: center; padding: 20px; }
+.overlay .box { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; min-width: min(320px, 100%); }
+.overlay .box b { display: block; font-family: var(--font-display); font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+.hlinfo { position: absolute; left: 12px; top: 58px; max-width: min(360px, calc(100% - 24px)); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; font-size: 13px; line-height: 1.4; pointer-events: none; box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+.hlinfo .sw { display: inline-block; width: 11px; height: 11px; border-radius: 3px; vertical-align: -1px; margin-right: 5px; box-shadow: 0 0 0 1px rgba(127,127,127,.5); }
+.hlinfo small { display: block; color: var(--muted); font-size: 12px; }
+.tool.hl .dot { outline: 2px solid var(--accent); outline-offset: 2px; }
+.demo-note { position: absolute; right: 12px; bottom: 34px; max-width: 280px; background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+
+@media (max-width: 900px) {
+  .app { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "view" "side"; }
+  .viewer { position: relative; top: auto; height: 62vh; min-height: 340px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="app">
+  <header class="top">
+    <h1 data-i18n-html="h1"><span>Color Mapper</span> for Prusa</h1>
+    <p data-i18n="tagline">Bambu/Orca and PrusaSlicer 3MF: put every color on the right tool – for CORE One INDX, MMU3 and Prusa XL.</p>
+    <div class="seg langsw" role="group" aria-label="Language" data-i18n-aria="langAria"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="de" aria-pressed="false">DE</button></div>
+  </header>
+
+  <section class="viewer" aria-label="3D preview" data-i18n-aria="viewerAria">
+    <canvas id="gl"></canvas>
+    <div class="vbar">
+      <div class="seg" role="group" aria-label="Color view" data-i18n-aria="viewSegAria">
+        <button id="vOrig" aria-pressed="true" data-i18n="vOrig">File colors</button>
+        <button id="vResult" aria-pressed="false">With your tools</button>
+      </div>
+      <button class="vbtn" id="vReset" data-i18n="vReset">Reset view</button>
+    </div>
+    <div class="vinfo"><span id="bedLbl">CORE One INDX · bed 248 × 205 mm</span><span id="sizeLbl"></span></div>
+    <div class="hlinfo" id="hlInfo" hidden></div>
+    <div class="demo-note" id="demoNote" hidden data-i18n="demoNote">Sample model: 3DBenchy in 8 colors. Drag your own 3MF file here or choose it on the left.</div>
+    <div class="overlay" id="busy" hidden><div class="box"><b id="busyTitle">Loading file …</b><div class="progress"><i id="busyBar"></i></div><div class="status" id="busyText"></div></div></div>
+  </section>
+
+  <div class="side">
+    <section class="card">
+      <h2><span class="step">01</span> <span data-i18n="step1">File</span></h2>
+      <label class="drop" id="drop" for="file">
+        <strong data-i18n="dropStrong">Drag a 3MF file here</strong>
+        <small data-i18n="dropSmall">or click to choose · Bambu Studio, OrcaSlicer, PrusaSlicer</small>
+      </label>
+      <input type="file" id="file" accept=".3mf,model/3mf" hidden>
+      <div class="fileinfo" id="fileinfo" hidden>
+        <div class="name" id="fname"></div>
+        <span class="badge" id="fkind"></span>
+        <div class="meta" id="fmeta"></div>
+        <div class="plate-row" id="plateRow" hidden>
+          <label for="plate" data-i18n="plate">Plate</label>
+          <select id="plate"></select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">02</span> <span id="toolsHead">Your INDX tools</span></h2>
+      <div class="printer-row"><label for="printerProfile" data-i18n="printer">Printer</label><select id="printerProfile"></select></div>
+      <div class="tools" id="tools"></div>
+      <p class="hint" id="toolHint"></p>
+      <div class="livebox" id="liveBox">
+        <div class="live-head"><span class="pill off" id="livePill">Live off</span><span class="live-text" id="liveText"></span></div>
+        <div class="live-actions">
+          <button class="btn" id="liveConnect" type="button" hidden data-i18n="liveConnect">Connect to Prusa Connect</button>
+          <label class="live-printer" id="livePrinterRow" hidden><span data-i18n="printer">Printer</span> <select id="livePrinter"></select></label>
+          <button class="link-btn" id="liveDisconnect" type="button" hidden data-i18n="liveDisconnect">Disconnect</button>
+        </div>
+        <label class="live-auto" id="liveAutoRow" hidden><input type="checkbox" id="liveAuto"> <span data-i18n="liveAuto">Take tool colors from Prusa Connect automatically</span></label>
+        <div class="live-own" id="liveOwnRow" hidden><span id="liveOwnText"></span> <button class="link-btn" id="liveResyncAll" type="button" data-i18n="liveResyncAll">Take all from Connect again</button></div>
+        <p class="hint" id="liveHint"></p>
+        <details class="livelog" id="liveLogBox" hidden>
+          <summary><span data-i18n="logSummary">Program log</span> <span id="bridgeVer"></span></summary>
+          <pre id="liveLog"></pre>
+          <button class="link-btn" id="liveLogCopy" type="button" data-i18n="logCopy">Copy log</button>
+        </details>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">03</span> <span data-i18n="step3">Mapping</span></h2>
+      <div class="map-actions"><button class="link-btn" id="autoMap" type="button" data-i18n="autoMap">Map automatically by color</button></div>
+      <div class="maplist" id="maplist"></div>
+      <p class="hint" id="mapHint"></p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">04</span> <span data-i18n="step4">Save</span></h2>
+      <button class="primary" id="exportBtn" disabled data-i18n="exportBtn">Save for PrusaSlicer</button>
+      <div class="progress" id="exBarWrap" hidden><i id="exBar"></i></div>
+      <div class="status" id="exStatus" role="status"></div>
+      <details class="howto">
+        <summary data-i18n="howtoSum">How to open the file in PrusaSlicer</summary>
+        <ol>
+          <li id="howtoPrinter"></li>
+          <li data-i18n-html="howto2"></li>
+          <li data-i18n-html="howto3"></li>
+          <li data-i18n="howto4"></li>
+        </ol>
+      </details>
+    </section>
+    <p class="foot"><span data-i18n-html="credit">Color Mapper for Prusa by <a href="https://github.com/DomiTech3D" target="_blank" rel="noopener">DomiTech3D</a></span> · <span data-i18n="foot">Unofficial community project, not affiliated with Prusa Research.</span> <a id="repoLink" href="/*__REPO__*/" target="_blank" rel="noopener" data-i18n="footLink">Source code (GPL-3.0)</a></p>
+  </div>
+</div>
+
+<script>
+/*__CORE__*/
+</script>
+<script>
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  // ---------------------------------------------------------------- Sprache (Englisch Standard, Deutsch umschaltbar)
+  const lw = (w) => w.toLowerCase();
+  const STR = {
+    en: {
+      title: 'Color Mapper for Prusa',
+      h1: '<span>Color Mapper</span> for Prusa',
+      tagline: 'Bambu/Orca and PrusaSlicer 3MF: put every color on the right tool – for CORE One INDX, MMU3 and Prusa XL.',
+      langAria: 'Language',
+      viewerAria: '3D preview', viewSegAria: 'Color view',
+      vOrig: 'File colors', vResultTool: 'With your tools', vResultSlot: 'With your slots', vReset: 'Reset view',
+      demoNote: 'Sample model: 3DBenchy in 8 colors. Drag your own 3MF file here or choose it on the left.',
+      loadingFile0: 'Loading file …',
+      step1: 'File', step3: 'Mapping', step4: 'Save',
+      dropStrong: 'Drag a 3MF file here', dropSmall: 'or click to choose · Bambu Studio, OrcaSlicer, PrusaSlicer',
+      plate: 'Plate', printer: 'Printer',
+      liveConnect: 'Connect to Prusa Connect', liveDisconnect: 'Disconnect',
+      liveAuto: 'Take tool colors from Prusa Connect automatically',
+      liveResyncAll: 'Take all from Connect again',
+      logSummary: 'Program log', logCopy: 'Copy log',
+      autoMap: 'Map automatically by color',
+      exportBtn: 'Save for PrusaSlicer',
+      howtoSum: 'How to open the file in PrusaSlicer',
+      howto1: (s) => 'In PrusaSlicer, select your ' + s + ' as the printer.',
+      howto2: 'Drag the file into the window or use <b>File → Import → Import STL/3MF/STEP/OBJ/AMF</b> (Ctrl+I).',
+      howto3: 'If PrusaSlicer asks whether to open it as a project or import the geometry only, choose <b>Import geometry only</b> so your printer profile stays.',
+      howto4: 'The painting is now on the chosen tools. To check: the “Multimaterial painting” tool (key N).',
+      credit: 'Color Mapper for Prusa by <a href="https://github.com/DomiTech3D" target="_blank" rel="noopener">DomiTech3D</a>',
+      foot: 'Unofficial community project, not affiliated with Prusa Research.',
+      footLink: 'Source code (GPL-3.0)',
+      noWebgl: 'WebGL2 not available – no 3D preview',
+      toolTitle: (tw, name, own, cc) => tw + (name ? ': ' + name : '') + (own ? ' – own color, not synced' : cc ? ' – color from Prusa Connect' : '') + ' – tap to change',
+      colorOf: (tw) => 'Color of ' + tw,
+      resyncAria: (tn) => 'Take ' + tn + ' from Prusa Connect again',
+      resyncTitle: (tn) => 'Sync ' + tn + ' with the color from Prusa Connect again',
+      hintSaved: (p) => 'Your colors for the ' + p.slicerL + ' are saved. Tap a ' + lw(p.word) + ' when you change a filament. The file is not affected.',
+      hintTodo: (p) => 'Not set yet: tap each ' + lw(p.word) + ' and choose the color that is loaded in it. You only do this once per printer, the browser remembers it.',
+      ownSync: (l) => 'Own color on ' + l + ' – not synced.',
+      ownNoSync: (l) => 'Different from Prusa Connect: ' + l + '.',
+      ago: (s) => (s < 60 ? s + ' s' : Math.round(s / 60) + ' min') + ' ago',
+      pillOff: 'Live off',
+      hintNoBridge: 'Live colors from Prusa Connect are available when you start Color Mapper for Prusa as a Windows program (ColorMapperForPrusa.exe) and connect it to Prusa Connect once.',
+      pillSignin: 'Signing in …', signinText: 'Sign in to your Prusa account in the window that opened.',
+      pillNotConn: 'Not connected',
+      hintConnectOnce: 'Connect once: a window with the Prusa sign-in opens. After that the program fetches the tool colors by itself every 30 seconds.',
+      pillError: 'Error', pillLoading: 'Loading …', fetching: 'Fetching data from Prusa Connect …',
+      pillNoBridge: 'Program not reachable', bridgeRunning: 'Is the black “Color Mapper for Prusa” window still open?',
+      noneByHand: 'None – set colors by hand',
+      pillNoPrinter: 'No printer', noMultiPrinter: 'No printer with several tools was found in Prusa Connect.',
+      pillConnected: 'Connected', noSuchPrinter: (s) => 'No ' + s + ' in Prusa Connect.',
+      hintByHand: 'Set the colors above by hand. To take a printer’s colors, choose it from Prusa Connect under “Printer”.',
+      pillLive: 'Live',
+      liveLine: (n, a, err, autoOff) => n + ' · updated ' + a + (err ? ' · last fetch failed' : '') + (autoOff ? ' · auto sync off' : ''),
+      newSpool: (l) => 'New spool on ' + l + ': color taken from Prusa Connect again. ',
+      noColor: (l, p) => 'No color in Prusa Connect: ' + l + '. Assign a material to these ' + lw(p.word) + 's in Connect and the color comes automatically.',
+      newSpoolHint: 'Loaded a new spool? Its color appears here within about 30 seconds.',
+      colorsChanged: ' The colors have changed: “Map automatically by color” applies them to the mapping.',
+      openingSignin: 'A window with the Prusa sign-in is opening …',
+      signinFailed: 'Signing in could not be started.',
+      logEmpty: '(empty so far)', logNA: 'Log not available.', copied: 'Copied', selected: 'Selected – press Ctrl+C',
+      noColorInfo: 'No color information was found in this file.',
+      legend: (title, p) => 'Put ' + title + ' on a ' + lw(p.word),
+      devBadge: 'Color differs',
+      ofSurface: (s) => s + ' of the surface',
+      mapHintHover: (p) => 'Hover over a row or a ' + lw(p.word) + ': only those areas stay in color, everything else turns grey.',
+      unused: (n) => n === 1 ? '1 more filament in the project is not used.' : n + ' more filaments in the project are not used.',
+      devTitle: (tw) => tw + ' holds a different color than the file intends.',
+      modelSize: (dims, fits) => 'Model ' + dims + ' mm' + (fits ? '' : ' · larger than the bed!'),
+      bedLbl: (s, w, d) => s + ' · bed ' + w + ' × ' + d + ' mm',
+      buildingPreview: 'Building preview …', loadingSample: 'Loading sample …', loadingFile: (n) => 'Loading ' + n + ' …',
+      demoName: 'Benchy_8T_sample.3mf',
+      saveFailed: (m) => 'Saving failed: ' + m, readFailed: (m) => 'The file could not be read: ' + m,
+      badgeSample: 'Sample',
+      plateOpt: (id, name, n) => 'Plate ' + id + (name ? ' – ' + name : '') + ' (' + n + (n === 1 ? ' object' : ' objects') + ')',
+      splitting: 'Splitting the painting',
+      objects: (n) => n + (n === 1 ? ' object' : ' objects'), triangles: (s) => s + ' triangles', colors: (n) => n + (n === 1 ? ' color' : ' colors'),
+      simplified: 'preview simplified', centered: 'will be centered on the bed',
+      use3mf: 'Please use a .3mf file.', preparing: 'Preparing …',
+      badTool: (p) => 'A color is on a ' + lw(p.word) + ' that the ' + p.slicerL + ' does not have. Please check the mapping.',
+      sufRemapped: '_remapped', sufPlate: '_Plate',
+      exportTip: (src, n, p) => ' The file was set up for ' + (src || 'a printer with ' + n + ' extruders') + ': choose “Import geometry only” when opening it in PrusaSlicer, then your ' + p.slicerL + ' applies.',
+      confirmSave: 'Please confirm saving …',
+      savedZip: (name, size) => 'Saved: ' + name + ' (' + size + '), packed as a ZIP. Unzip it and drag the .3mf into PrusaSlicer.',
+      doneSaved: (name, size) => 'Done: ' + name + ' (' + size + ').',
+      declined: 'Saving cancelled. You can try again.', saveImpossible: (c) => 'Saving is not possible (' + c + ').',
+      noZipSupport: 'This browser cannot process ZIP files. Please use a current version of Chrome, Edge, Firefox or Safari.',
+      demoFailed: (m) => 'The sample could not be created: ' + m,
+      workerErr: (m) => 'Internal error in the background process: ' + m,
+      wrapZip: 'Packing as ZIP …',
+      hlFromFile: ' from the file · ', hlPrintsWith: 'prints with ', hlUnmapped: 'not mapped',
+      hlTiny: 'Very small area – rotate or zoom in to find it.',
+      hlToolPrints: (s) => ' prints ' + s + ' of the surface', hlToolUnused: ' is not used for this model',
+    },
+    de: {
+      title: 'Farb-Mapper für Prusa',
+      h1: '<span>Farb-Mapper</span> für Prusa',
+      tagline: 'Bambu-/Orca- und PrusaSlicer-3MF: jede Farbe auf das richtige Tool legen – für CORE One INDX, MMU3 und Prusa XL.',
+      langAria: 'Sprache',
+      viewerAria: '3D-Vorschau', viewSegAria: 'Farbansicht',
+      vOrig: 'Datei-Farben', vResultTool: 'Mit deinen Tools', vResultSlot: 'Mit deinen Slots', vReset: 'Ansicht zurücksetzen',
+      demoNote: 'Beispielmodell: 3DBenchy in 8 Farben. Zieh deine eigene 3MF-Datei hierher oder wähle sie links aus.',
+      loadingFile0: 'Lade Datei …',
+      step1: 'Datei', step3: 'Zuordnung', step4: 'Speichern',
+      dropStrong: '3MF-Datei hierher ziehen', dropSmall: 'oder klicken zum Auswählen · Bambu Studio, OrcaSlicer, PrusaSlicer',
+      plate: 'Platte', printer: 'Drucker',
+      liveConnect: 'Mit Prusa Connect verbinden', liveDisconnect: 'Verbindung trennen',
+      liveAuto: 'Tool-Farben automatisch aus Prusa Connect übernehmen',
+      liveResyncAll: 'Alle wieder aus Connect übernehmen',
+      logSummary: 'Protokoll des Programms', logCopy: 'Protokoll kopieren',
+      autoMap: 'Automatisch nach Farbe zuordnen',
+      exportBtn: 'Für PrusaSlicer speichern',
+      howtoSum: 'So öffnest du die Datei in PrusaSlicer',
+      howto1: (s) => 'Im PrusaSlicer deinen ' + s + ' als Drucker wählen.',
+      howto2: 'Datei ins Fenster ziehen oder <b>Datei → Importieren → STL/3MF/STEP/OBJ/AMF</b> (Ctrl+I).',
+      howto3: 'Fragt PrusaSlicer «Als Projekt öffnen oder nur Geometrie importieren?», wähle <b>nur Geometrie</b>, damit dein Drucker-Profil bleibt.',
+      howto4: 'Die Bemalung liegt jetzt auf den gewählten Tools. Kontrolle: Werkzeug «Multi-Material-Bemalung» (Taste N).',
+      credit: 'Farb-Mapper für Prusa von <a href="https://github.com/DomiTech3D" target="_blank" rel="noopener">DomiTech3D</a>',
+      foot: 'Inoffizielles Community-Projekt, nicht mit Prusa Research verbunden.',
+      footLink: 'Quellcode (GPL-3.0)',
+      noWebgl: 'WebGL2 nicht verfügbar – keine 3D-Vorschau',
+      toolTitle: (tw, name, own, cc) => tw + (name ? ': ' + name : '') + (own ? ' – eigene Farbe, nicht synchronisiert' : cc ? ' – Farbe aus Prusa Connect' : '') + ' – zum Ändern tippen',
+      colorOf: (tw) => 'Farbe ' + tw,
+      resyncAria: (tn) => tn + ' wieder aus Prusa Connect übernehmen',
+      resyncTitle: (tn) => tn + ' wieder mit der Farbe aus Prusa Connect synchronisieren',
+      hintSaved: (p) => 'Deine Farben für den ' + p.slicerL + ' sind gespeichert. Tippe auf ' + (p.word === 'Slot' ? 'einen Slot' : 'ein Tool') + ', wenn du ein Filament wechselst. Die Datei bleibt davon unberührt.',
+      hintTodo: (p) => 'Noch nicht eingestellt: Tippe auf ' + (p.word === 'Slot' ? 'jeden Slot' : 'jedes Tool') + ' und wähl die Farbe, die darin geladen ist. Das machst du nur einmal pro Drucker, der Browser merkt es sich.',
+      ownSync: (l) => 'Eigene Farbe bei ' + l + ' – wird nicht synchronisiert.',
+      ownNoSync: (l) => 'Abweichend von Prusa Connect: ' + l + '.',
+      ago: (s) => 'vor ' + (s < 60 ? s + ' s' : Math.round(s / 60) + ' min'),
+      pillOff: 'Live aus',
+      hintNoBridge: 'Live-Farben aus Prusa Connect gibt es, wenn du den Farb-Mapper als Windows-Programm startest (ColorMapperForPrusa.exe) und einmal mit Prusa Connect verbindest.',
+      pillSignin: 'Anmeldung …', signinText: 'Melde dich im geöffneten Fenster bei deinem Prusa-Account an.',
+      pillNotConn: 'Nicht verbunden',
+      hintConnectOnce: 'Einmal verbinden: Ein Fenster mit der Prusa-Anmeldung öffnet sich. Danach holt das Programm die Tool-Farben selbständig, alle 30 Sekunden.',
+      pillError: 'Fehler', pillLoading: 'Lade …', fetching: 'Hole Daten aus Prusa Connect …',
+      pillNoBridge: 'Programm nicht erreichbar', bridgeRunning: 'Ist das schwarze Fenster «Color Mapper for Prusa» noch offen?',
+      noneByHand: 'Keiner – Farben von Hand',
+      pillNoPrinter: 'Kein Drucker', noMultiPrinter: 'In Prusa Connect wurde kein Drucker mit mehreren Tools gefunden.',
+      pillConnected: 'Verbunden', noSuchPrinter: (s) => 'Kein ' + s + ' in Prusa Connect.',
+      hintByHand: 'Stell die Farben oben von Hand ein. Wähl bei «Drucker» einen Drucker aus Prusa Connect, um dessen Farben zu übernehmen.',
+      pillLive: 'Live',
+      liveLine: (n, a, err, autoOff) => n + ' · aktualisiert ' + a + (err ? ' · letzter Abruf fehlgeschlagen' : '') + (autoOff ? ' · Automatik aus' : ''),
+      newSpool: (l) => 'Neue Spule auf ' + l + ': Farbe wieder aus Prusa Connect übernommen. ',
+      noColor: (l, p) => 'Ohne Farbe in Prusa Connect: ' + l + '. Weise diesen ' + p.word + 's in Connect ein Material zu, dann kommt die Farbe automatisch.',
+      newSpoolHint: 'Neue Spule geladen? Die Farbe erscheint hier nach spätestens etwa 30 Sekunden.',
+      colorsChanged: ' Die Farben haben sich geändert: «Automatisch nach Farbe zuordnen» übernimmt sie in die Zuordnung.',
+      openingSignin: 'Ein Fenster mit der Prusa-Anmeldung öffnet sich …',
+      signinFailed: 'Anmeldung konnte nicht gestartet werden.',
+      logEmpty: '(noch leer)', logNA: 'Protokoll nicht verfügbar.', copied: 'Kopiert', selected: 'Markiert – Ctrl+C drücken',
+      noColorInfo: 'In dieser Datei wurde keine Farbinformation gefunden.',
+      legend: (title, p) => title + ' auf ' + p.word + ' legen',
+      devBadge: 'Farbe weicht ab',
+      ofSurface: (s) => s + ' der Oberfläche',
+      mapHintHover: (p) => 'Fahr mit der Maus über eine Zeile oder ' + (p.word === 'Slot' ? 'einen Slot' : 'ein Tool') + ': Nur diese Flächen bleiben farbig, alles andere wird grau.',
+      unused: (n) => n === 1 ? '1 weiteres Filament im Projekt wird nicht verwendet.' : n + ' weitere Filamente im Projekt werden nicht verwendet.',
+      devTitle: (tw) => 'In ' + tw + ' steckt eine andere Farbe als in der Datei vorgesehen.',
+      modelSize: (dims, fits) => 'Modell ' + dims + ' mm' + (fits ? '' : ' · grösser als das Bett!'),
+      bedLbl: (s, w, d) => s + ' · Bett ' + w + ' × ' + d + ' mm',
+      buildingPreview: 'Erstelle Vorschau …', loadingSample: 'Lade Beispiel …', loadingFile: (n) => 'Lade ' + n + ' …',
+      demoName: 'Benchy_8T_Beispiel.3mf',
+      saveFailed: (m) => 'Speichern fehlgeschlagen: ' + m, readFailed: (m) => 'Die Datei konnte nicht gelesen werden: ' + m,
+      badgeSample: 'Beispiel',
+      plateOpt: (id, name, n) => 'Platte ' + id + (name ? ' – ' + name : '') + ' (' + n + (n === 1 ? ' Objekt' : ' Objekte') + ')',
+      splitting: 'Bemalung wird zerlegt',
+      objects: (n) => n + (n === 1 ? ' Objekt' : ' Objekte'), triangles: (s) => s + ' Dreiecke', colors: (n) => n + (n === 1 ? ' Farbe' : ' Farben'),
+      simplified: 'Vorschau vereinfacht', centered: 'wird auf dem Druckbett zentriert',
+      use3mf: 'Bitte eine .3mf-Datei verwenden.', preparing: 'Bereite vor …',
+      badTool: (p) => 'Eine Farbe liegt auf einem ' + p.word + ', den es beim ' + p.slicerL + ' nicht gibt. Bitte die Zuordnung prüfen.',
+      sufRemapped: '_umgemappt', sufPlate: '_Platte',
+      exportTip: (src, n, p) => ' Die Datei war für ' + (src || 'einen Drucker mit ' + n + ' Extrudern') + ' eingerichtet: Beim Öffnen in PrusaSlicer «nur Geometrie» wählen, dann gilt dein ' + p.slicerL + '.',
+      confirmSave: 'Bitte das Speichern bestätigen …',
+      savedZip: (name, size) => 'Gespeichert: ' + name + ' (' + size + '), verpackt als ZIP. Entpacken und die .3mf in PrusaSlicer ziehen.',
+      doneSaved: (name, size) => 'Fertig: ' + name + ' (' + size + ').',
+      declined: 'Speichern abgebrochen. Du kannst es nochmals versuchen.', saveImpossible: (c) => 'Speichern nicht möglich (' + c + ').',
+      noZipSupport: 'Dieser Browser kann keine ZIP-Dateien verarbeiten. Bitte eine aktuelle Version von Chrome, Edge, Firefox oder Safari verwenden.',
+      demoFailed: (m) => 'Beispiel konnte nicht erzeugt werden: ' + m,
+      workerErr: (m) => 'Interner Fehler im Hintergrundprozess: ' + m,
+      wrapZip: 'Verpacke als ZIP …',
+      hlFromFile: ' aus der Datei · ', hlPrintsWith: 'druckt mit ', hlUnmapped: 'nicht zugeordnet',
+      hlTiny: 'Sehr kleine Fläche – zum Finden die Ansicht drehen oder heranzoomen.',
+      hlToolPrints: (s) => ' druckt ' + s + ' der Oberfläche', hlToolUnused: ' wird für dieses Modell nicht verwendet',
+    },
+  };
+  let lang = (() => { try { const v = localStorage.getItem('cm-lang'); return v === '"de"' || v === 'de' ? 'de' : 'en'; } catch (e) { return 'en'; } })();
+  function t(key, ...a) {
+    const v = STR[lang][key] !== undefined ? STR[lang][key] : STR.en[key];
+    return typeof v === 'function' ? v(...a) : v;
+  }
+  const LOC = () => (lang === 'de' ? 'de-CH' : 'en-US');
+  const fmtInt = { format: (n) => n.toLocaleString(LOC()) };
+  const fmtMB = (n) => (n / 1048576).toLocaleString(LOC(), { maximumFractionDigits: 1 }) + ' MB';
+  // Feste Texte im HTML: data-i18n (Text), data-i18n-html (mit <b>/<span>), data-i18n-aria, data-i18n-title
+  function applyStatic() {
+    document.documentElement.lang = lang;
+    document.title = t('title');
+    document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-html]').forEach((el) => { el.innerHTML = t(el.dataset.i18nHtml); });
+    document.querySelectorAll('[data-i18n-aria]').forEach((el) => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+    document.querySelectorAll('[data-i18n-title]').forEach((el) => { el.title = t(el.dataset.i18nTitle); });
+    document.querySelectorAll('.langsw button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+  }
+
+  // ---------------------------------------------------------------- Speicher (nur Komfort)
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* egal */ } },
+  };
+
+  // ---------------------------------------------------------------- Farben
+  function hexToRgb(h) { const n = parseInt(h.slice(1), 16); return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255]; }
+  function inkFor(h) { const [r, g, b] = hexToRgb(h); const L = 0.2126 * r + 0.7152 * g + 0.0722 * b; return L > 0.55 ? '#14181B' : '#FFFFFF'; }
+  const TOOL_DEFAULT = ['#F2F2F2', '#1E1E1E', '#D9382E', '#2F6FD6', '#F2C230', '#3A9E54', '#8A4FC8', '#F07F2E'];
+  // Drucker: Anzahl Tools/Slots, Druckbett und Bezeichnungen. Jede Gruppe (store) hat ihre eigene Bestückung.
+  const PROFILES = [
+    { id: 'indx', label: { en: 'CORE One INDX · 8 tools', de: 'CORE One INDX · 8 Tools' }, slicer: { en: 'CORE One INDX', de: 'CORE One INDX' }, n: 8, word: 'Tool', short: 'T', head: { en: 'Your INDX tools', de: 'Deine INDX-Tools' }, bed: { w: 248, d: 205 }, tag: 'INDX', store: 'indx' },
+    { id: 'indx4', label: { en: 'CORE One INDX · 4 tools', de: 'CORE One INDX · 4 Tools' }, slicer: { en: 'CORE One INDX (4 tools)', de: 'CORE One INDX (4 Tools)' }, n: 4, word: 'Tool', short: 'T', head: { en: 'Your INDX tools', de: 'Deine INDX-Tools' }, bed: { w: 248, d: 205 }, tag: 'INDX', store: 'indx4' },
+    { id: 'c1l-indx', label: { en: 'CORE One L INDX · 8 tools', de: 'CORE One L INDX · 8 Tools' }, slicer: { en: 'CORE One L INDX', de: 'CORE One L INDX' }, n: 8, word: 'Tool', short: 'T', head: { en: 'Your INDX tools', de: 'Deine INDX-Tools' }, bed: { w: 298, d: 275 }, tag: 'INDX', store: 'c1l-indx' },
+    { id: 'c1l-indx4', label: { en: 'CORE One L INDX · 4 tools', de: 'CORE One L INDX · 4 Tools' }, slicer: { en: 'CORE One L INDX (4 tools)', de: 'CORE One L INDX (4 Tools)' }, n: 4, word: 'Tool', short: 'T', head: { en: 'Your INDX tools', de: 'Deine INDX-Tools' }, bed: { w: 298, d: 275 }, tag: 'INDX', store: 'c1l-indx4' },
+    { id: 'c1-mmu3', label: { en: 'CORE One + MMU3 · 5 slots', de: 'CORE One + MMU3 · 5 Slots' }, slicer: { en: 'CORE One with MMU3', de: 'CORE One mit MMU3' }, n: 5, word: 'Slot', short: 'S', head: { en: 'Your MMU3 slots', de: 'Deine MMU3-Slots' }, bed: { w: 250, d: 220 }, tag: 'MMU3', store: 'mmu3' },
+    { id: 'c1l-mmu3', label: { en: 'CORE One L + MMU3 · 5 slots', de: 'CORE One L + MMU3 · 5 Slots' }, slicer: { en: 'CORE One L with MMU3', de: 'CORE One L mit MMU3' }, n: 5, word: 'Slot', short: 'S', head: { en: 'Your MMU3 slots', de: 'Deine MMU3-Slots' }, bed: { w: 300, d: 300 }, tag: 'MMU3', store: 'mmu3' },
+    { id: 'mk4-mmu3', label: { en: 'MK4S / MK3.9S / MK3.5S + MMU3 · 5 slots', de: 'MK4S / MK3.9S / MK3.5S + MMU3 · 5 Slots' }, slicer: { en: 'MK4S, MK3.9S or MK3.5S with MMU3', de: 'MK4S, MK3.9S oder MK3.5S mit MMU3' }, n: 5, word: 'Slot', short: 'S', head: { en: 'Your MMU3 slots', de: 'Deine MMU3-Slots' }, bed: { w: 250, d: 210 }, tag: 'MMU3', store: 'mmu3' },
+    { id: 'xl5', label: { en: 'Prusa XL · 5 tools', de: 'Prusa XL · 5 Tools' }, slicer: { en: 'Prusa XL (5 tools)', de: 'Prusa XL (5 Tools)' }, n: 5, word: 'Tool', short: 'T', head: { en: 'Your XL tools', de: 'Deine XL-Tools' }, bed: { w: 360, d: 360 }, tag: 'XL', store: 'xl5' },
+    { id: 'xl2', label: { en: 'Prusa XL · 2 tools', de: 'Prusa XL · 2 Tools' }, slicer: { en: 'Prusa XL (2 tools)', de: 'Prusa XL (2 Tools)' }, n: 2, word: 'Tool', short: 'T', head: { en: 'Your XL tools', de: 'Deine XL-Tools' }, bed: { w: 360, d: 360 }, tag: 'XL', store: 'xl2' },
+  ];
+  // Texte der Profile in der gewählten Sprache
+  for (const p of PROFILES) for (const k of ['label', 'slicer', 'head']) Object.defineProperty(p, k + 'L', { get() { return p[k][lang] || p[k].en; } });
+  let prof = PROFILES.find((p) => p.id === store.get('mapper-profile', 'indx')) || PROFILES[0];
+  const TN = (t) => prof.short + t;          // «T3» bzw. «S3»
+  const TW = (t) => prof.word + ' ' + t;     // «Tool 3» bzw. «Slot 3»
+  let K = {}, toolColors, toolsCustomized, toolMat, toolOverride;
+  function loadLoadout() {
+    K = prof.store === 'indx'
+      ? { tools: 'indx-tools-v2', info: 'indx-toolinfo-v1', ov: 'indx-tool-override-v1' }
+      : { tools: 'mapper-tools-' + prof.store, info: 'mapper-toolinfo-' + prof.store, ov: 'mapper-override-' + prof.store };
+    const st = store.get(K.tools, null);
+    toolColors = Array.isArray(st) && st.length === 8 ? st : TOOL_DEFAULT.slice();
+    toolsCustomized = Array.isArray(st);
+    const si = store.get(K.info, null);
+    toolMat = Array.isArray(si) && si.length === 8 ? si : new Array(8).fill(null); // {m, name} aus Connect
+    // Eigene Farbe trotz Connect-Farbe: {cc: Connect-Farbe zum Zeitpunkt der Änderung}
+    const so = store.get(K.ov, null);
+    toolOverride = Array.isArray(so) && so.length === 8 ? so : new Array(8).fill(null);
+  }
+  loadLoadout();
+
+  // ---------------------------------------------------------------- Zustand
+  const state = {
+    summary: null, plate: 0, filaments: [], used: [], map: [], view: 'orig', hl: -1, demo: false, busy: false, preview: null,
+  };
+
+  // ---------------------------------------------------------------- Backend (Worker mit Rückfall auf Hauptthread)
+  const backend = (() => {
+    const listeners = new Set();
+    let worker = null;
+    try {
+      const src = 'const coreFactory = ' + coreFactory.toString() + ';\n(' + workerMain.toString() + ')(coreFactory);';
+      worker = new Worker(URL.createObjectURL(new Blob([src], { type: 'text/javascript' })));
+      worker.onmessage = (e) => listeners.forEach((fn) => fn(e.data));
+      worker.onerror = (e) => { listeners.forEach((fn) => fn({ type: 'error', message: t('workerErr', e.message || '') })); };
+    } catch (e) { worker = null; }
+    let local = null;
+    function post(msg, transfer) {
+      msg.lang = lang;
+      if (worker) { worker.postMessage(msg, transfer || []); return; }
+      if (!local) local = workerMain(coreFactory, (m) => listeners.forEach((fn) => fn(m)));
+      setTimeout(() => local({ data: msg }), 0);
+    }
+    return { post, on: (fn) => listeners.add(fn), usesWorker: () => !!worker };
+  })();
+
+  function workerMain(factory, emit) {
+    const core = factory();
+    const send = emit || ((m, t) => self.postMessage(m, t || []));
+    let proj = null;
+    const handler = async (e) => {
+      const m = e.data;
+      const progress = (text, frac) => send({ type: 'progress', cmd: m.cmd, text, frac });
+      if (m.lang) core.setLang(m.lang);
+      try {
+        if (m.cmd === 'load') {
+          proj = null;
+          proj = await core.loadProject(new Uint8Array(m.buf), m.name, progress);
+          send({ type: 'loaded', summary: core.summary(proj), demo: !!m.demo });
+        } else if (m.cmd === 'preview') {
+          if (m.bed) core.setBed(m.bed);
+          const pv = core.buildPreview(proj, m.plate);
+          send({ type: 'preview', plate: m.plate, positions: pv.positions, fil: pv.fil, triangles: pv.triangles, used: pv.used, size: pv.size, capped: pv.capped, bed: pv.bed }, [pv.positions.buffer, pv.fil.buffer]);
+        } else if (m.cmd === 'export') {
+          if (m.bed) core.setBed(m.bed);
+          const r = await core.exportProject(proj, m.plate, m.map, progress);
+          let blob = r.blob;
+          if (m.wrapName) { progress(m.wrapText || 'ZIP …', 0.97); blob = await core.wrapInZip(m.wrapName, blob); }
+          send({ type: 'exported', blob, size: blob.size, inner: r.blob.size });
+        }
+      } catch (err) {
+        send({ type: 'error', cmd: m.cmd, message: (err && err.message) || String(err) });
+      }
+    };
+    if (!emit) self.onmessage = handler;
+    return handler;
+  }
+
+  // ---------------------------------------------------------------- WebGL-Vorschau
+  const viewer = (() => {
+    const canvas = $('gl');
+    const gl = canvas.getContext('webgl2', { antialias: true, alpha: false });
+    if (!gl) {
+      $('sizeLbl').textContent = t('noWebgl');
+      return { setMesh() {}, setPalette() {}, setHighlight() {}, reset() {}, setBed() {}, draw() {} };
+    }
+    const vs = `#version 300 es
+      in vec3 aPos; in float aFil;
+      uniform mat4 uMVP; uniform mat4 uMV; uniform vec3 uPal[64]; uniform float uHlMask[64]; uniform float uHlOn;
+      out vec3 vCol; out vec3 vView; out float vDim;
+      void main() {
+        int i = int(aFil + 0.5); if (i > 63) i = 63;
+        vCol = uPal[i];
+        vDim = (uHlOn < 0.5 || uHlMask[i] > 0.5) ? 0.0 : 1.0;
+        vec4 v = uMV * vec4(aPos, 1.0); vView = v.xyz;
+        gl_Position = uMVP * vec4(aPos, 1.0);
+      }`;
+    const fs = `#version 300 es
+      precision highp float;
+      in vec3 vCol; in vec3 vView; in float vDim; out vec4 o;
+      uniform vec3 uGrey; uniform float uHlOnF;
+      void main() {
+        vec3 n = normalize(cross(dFdx(vView), dFdy(vView)));
+        vec3 L1 = normalize(vec3(0.35, 0.6, 0.72));
+        vec3 L2 = normalize(vec3(-0.7, -0.25, 0.45));
+        float d = 0.34 + 0.58 * max(dot(n, L1), 0.0) + 0.18 * max(dot(n, L2), 0.0);
+        vec3 c = vCol * d + vec3(0.045) * d;
+        if (vDim > 0.5) c = uGrey * (0.9 + 0.12 * d);           // alles andere: flaches Grau
+        else if (uHlOnF > 0.5) c = c * 1.08 + vec3(0.03);       // Hervorgehobenes leicht anheben
+        o = vec4(c, 1.0);
+      }`;
+    const lvs = `#version 300 es
+      in vec3 aPos; uniform mat4 uMVP; void main(){ gl_Position = uMVP * vec4(aPos, 1.0); }`;
+    const lfs = `#version 300 es
+      precision mediump float; uniform vec4 uCol; out vec4 o; void main(){ o = uCol; }`;
+    function prog(a, b) {
+      const p = gl.createProgram();
+      for (const [type, src] of [[gl.VERTEX_SHADER, a], [gl.FRAGMENT_SHADER, b]]) {
+        const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+        gl.attachShader(p, s);
+      }
+      gl.linkProgram(p);
+      if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+      return p;
+    }
+    const P = prog(vs, fs), L = prog(lvs, lfs);
+    const loc = {
+      aPos: gl.getAttribLocation(P, 'aPos'), aFil: gl.getAttribLocation(P, 'aFil'),
+      uMVP: gl.getUniformLocation(P, 'uMVP'), uMV: gl.getUniformLocation(P, 'uMV'), uPal: gl.getUniformLocation(P, 'uPal'),
+      uHlMask: gl.getUniformLocation(P, 'uHlMask'), uHlOn: gl.getUniformLocation(P, 'uHlOn'), uHlOnF: gl.getUniformLocation(P, 'uHlOnF'), uGrey: gl.getUniformLocation(P, 'uGrey'),
+      laPos: gl.getAttribLocation(L, 'aPos'), luMVP: gl.getUniformLocation(L, 'uMVP'), luCol: gl.getUniformLocation(L, 'uCol'),
+    };
+    const meshVAO = gl.createVertexArray(), posBuf = gl.createBuffer(), filBuf = gl.createBuffer();
+    const bedVAO = gl.createVertexArray(), bedBuf = gl.createBuffer();
+    let count = 0, bedMinor = 0, bedMajor = 0;
+    const pal = new Float32Array(64 * 3);
+    const hlMask = new Float32Array(64); let hlOn = 0;
+    const cam = { az: -2.2, el: 0.5, dist: 400, tx: 124, ty: 102.5, tz: 20, fit: null };
+    let dirty = true;
+
+    function buildBed(w, d) {
+      const lines = [];
+      const minor = [], major = [];
+      for (let x = 0; x <= w + 0.001; x += 10) (x % 50 === 0 ? major : minor).push(x, 0, 0, x, d, 0);
+      for (let y = 0; y <= d + 0.001; y += 10) (y % 50 === 0 ? major : minor).push(0, y, 0, w, y, 0);
+      const outline = [0, 0, 0, w, 0, 0, w, 0, 0, w, d, 0, w, d, 0, 0, d, 0, 0, d, 0, 0, 0, 0];
+      const all = new Float32Array([...minor, ...major, ...outline]);
+      bedMinor = minor.length / 3; bedMajor = (major.length + outline.length) / 3;
+      gl.bindVertexArray(bedVAO);
+      gl.bindBuffer(gl.ARRAY_BUFFER, bedBuf); gl.bufferData(gl.ARRAY_BUFFER, all, gl.STATIC_DRAW);
+      gl.enableVertexAttribArray(loc.laPos); gl.vertexAttribPointer(loc.laPos, 3, gl.FLOAT, false, 0, 0);
+      gl.bindVertexArray(null);
+    }
+    let bedSize = [248, 205];
+    buildBed(248, 205);
+
+    function setMesh(positions, fil, n) {
+      gl.bindVertexArray(meshVAO);
+      gl.bindBuffer(gl.ARRAY_BUFFER, posBuf); gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+      gl.enableVertexAttribArray(loc.aPos); gl.vertexAttribPointer(loc.aPos, 3, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ARRAY_BUFFER, filBuf); gl.bufferData(gl.ARRAY_BUFFER, fil, gl.STATIC_DRAW);
+      gl.enableVertexAttribArray(loc.aFil); gl.vertexAttribPointer(loc.aFil, 1, gl.UNSIGNED_BYTE, false, 0, 0);
+      gl.bindVertexArray(null);
+      count = n * 3;
+      let mn = [Infinity, Infinity, Infinity], mx = [-Infinity, -Infinity, -Infinity];
+      for (let i = 0; i < positions.length; i += 3) for (let k = 0; k < 3; k++) { const v = positions[i + k]; if (v < mn[k]) mn[k] = v; if (v > mx[k]) mx[k] = v; }
+      if (!isFinite(mn[0])) { mn = [0, 0, 0]; mx = [bedSize[0], bedSize[1], 0]; }
+      cam.fit = { c: [(mn[0] + mx[0]) / 2, (mn[1] + mx[1]) / 2, (mn[2] + mx[2]) / 2], r: Math.max(40, Math.hypot(mx[0] - mn[0], mx[1] - mn[1], mx[2] - mn[2]) / 2) };
+      reset();
+    }
+    function reset() {
+      const f = cam.fit || { c: [bedSize[0] / 2, bedSize[1] / 2, 20], r: Math.max(140, bedSize[0] * 0.56) };
+      cam.tx = f.c[0]; cam.ty = f.c[1]; cam.tz = f.c[2];
+      cam.dist = f.r / Math.sin(17.5 * Math.PI / 180) * 1.3;
+      cam.az = -1.95; cam.el = 0.42;
+      dirty = true; tick();
+    }
+    function setPalette(cols) { // cols: Array(64) of hex
+      for (let i = 0; i < 64; i++) { const c = hexToRgb(cols[i] || '#888888'); pal[i * 3] = c[0]; pal[i * 3 + 1] = c[1]; pal[i * 3 + 2] = c[2]; }
+      dirty = true; tick();
+    }
+    // list: Array von Filament-Indizes oder null (keine Hervorhebung)
+    function setHighlight(list) {
+      hlMask.fill(0);
+      hlOn = Array.isArray(list) ? 1 : 0;
+      if (hlOn) for (const i of list) if (i >= 0 && i < 64) hlMask[i] = 1;
+      dirty = true; tick();
+    }
+
+    // Mathe
+    function persp(fovy, asp, n, f) { const t = 1 / Math.tan(fovy / 2), nf = 1 / (n - f); return new Float32Array([t / asp, 0, 0, 0, 0, t, 0, 0, 0, 0, (f + n) * nf, -1, 0, 0, 2 * f * n * nf, 0]); }
+    function lookAt(e, c, u) {
+      let zx = e[0] - c[0], zy = e[1] - c[1], zz = e[2] - c[2]; let l = Math.hypot(zx, zy, zz); zx /= l; zy /= l; zz /= l;
+      let xx = u[1] * zz - u[2] * zy, xy = u[2] * zx - u[0] * zz, xz = u[0] * zy - u[1] * zx; l = Math.hypot(xx, xy, xz); xx /= l; xy /= l; xz /= l;
+      const yx = zy * xz - zz * xy, yy = zz * xx - zx * xz, yz = zx * xy - zy * xx;
+      return new Float32Array([xx, yx, zx, 0, xy, yy, zy, 0, xz, yz, zz, 0, -(xx * e[0] + xy * e[1] + xz * e[2]), -(yx * e[0] + yy * e[1] + yz * e[2]), -(zx * e[0] + zy * e[1] + zz * e[2]), 1]);
+    }
+    function mul(a, b) { const o = new Float32Array(16); for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) { let s = 0; for (let k = 0; k < 4; k++) s += a[k * 4 + r] * b[c * 4 + k]; o[c * 4 + r] = s; } return o; }
+
+    function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+    function draw() {
+      dirty = false;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.max(1, Math.round(canvas.clientWidth * dpr)), h = Math.max(1, Math.round(canvas.clientHeight * dpr));
+      if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+      gl.viewport(0, 0, w, h);
+      const bg = hexToRgb(normalizeHex(cssVar('--view')) || '#DCE1E4');
+      gl.clearColor(bg[0], bg[1], bg[2], 1);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.enable(gl.DEPTH_TEST);
+      const eye = [cam.tx + cam.dist * Math.cos(cam.el) * Math.cos(cam.az), cam.ty + cam.dist * Math.cos(cam.el) * Math.sin(cam.az), cam.tz + cam.dist * Math.sin(cam.el)];
+      const V = lookAt(eye, [cam.tx, cam.ty, cam.tz], [0, 0, 1]);
+      const Pm = persp(35 * Math.PI / 180, w / h, Math.max(1, cam.dist / 200), cam.dist * 10 + 2000);
+      const MVP = mul(Pm, V);
+      const dark = luminance(bg) < 0.3;
+      // Bett
+      gl.useProgram(L);
+      gl.uniformMatrix4fv(loc.luMVP, false, MVP);
+      gl.bindVertexArray(bedVAO);
+      gl.uniform4fv(loc.luCol, dark ? [1, 1, 1, 0.07] : [0, 0, 0, 0.08]);
+      gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.drawArrays(gl.LINES, 0, bedMinor);
+      gl.uniform4fv(loc.luCol, dark ? [1, 1, 1, 0.22] : [0, 0, 0, 0.25]);
+      gl.drawArrays(gl.LINES, bedMinor, bedMajor);
+      gl.disable(gl.BLEND);
+      // Modell
+      if (count) {
+        gl.useProgram(P);
+        gl.uniformMatrix4fv(loc.uMVP, false, MVP);
+        gl.uniformMatrix4fv(loc.uMV, false, V);
+        gl.uniform3fv(loc.uPal, pal);
+        gl.uniform1fv(loc.uHlMask, hlMask); gl.uniform1f(loc.uHlOn, hlOn); gl.uniform1f(loc.uHlOnF, hlOn);
+        gl.uniform3fv(loc.uGrey, dark ? [0.22, 0.24, 0.26] : [0.82, 0.83, 0.85]);
+        gl.bindVertexArray(meshVAO);
+        gl.drawArrays(gl.TRIANGLES, 0, count);
+      }
+      gl.bindVertexArray(null);
+    }
+    function luminance(c) { return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+    function normalizeHex(v) { const m = v.match(/#([0-9a-f]{6})/i); return m ? '#' + m[1] : null; }
+    let raf = 0;
+    function tick() { if (!raf) raf = requestAnimationFrame(() => { raf = 0; if (dirty) draw(); }); }
+    new ResizeObserver(() => { dirty = true; tick(); }).observe(canvas);
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { dirty = true; tick(); });
+    new MutationObserver(() => { dirty = true; tick(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    // Steuerung: ziehen = drehen, rechts/Shift = verschieben, Rad/Pinch = Zoom
+    const pts = new Map(); let lastPinch = 0;
+    canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+    canvas.addEventListener('pointerdown', (e) => { canvas.setPointerCapture(e.pointerId); pts.set(e.pointerId, { x: e.clientX, y: e.clientY, b: e.button, s: e.shiftKey }); lastPinch = 0; });
+    canvas.addEventListener('pointerup', (e) => { pts.delete(e.pointerId); lastPinch = 0; });
+    canvas.addEventListener('pointercancel', (e) => { pts.delete(e.pointerId); lastPinch = 0; });
+    canvas.addEventListener('pointermove', (e) => {
+      const p = pts.get(e.pointerId); if (!p) return;
+      const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
+      if (pts.size === 2) {
+        const [a, b] = [...pts.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (lastPinch) cam.dist = Math.min(5000, Math.max(20, cam.dist * lastPinch / d));
+        lastPinch = d;
+      } else if (p.b === 2 || p.s || e.shiftKey) {
+        const k = cam.dist * 0.0016;
+        const sx = -Math.sin(cam.az), sy = Math.cos(cam.az);
+        cam.tx -= (dx * sx) * k; cam.ty -= (dx * sy) * k;
+        const ux = -Math.sin(cam.el) * Math.cos(cam.az), uy = -Math.sin(cam.el) * Math.sin(cam.az), uz = Math.cos(cam.el);
+        cam.tx += dy * ux * k; cam.ty += dy * uy * k; cam.tz += dy * uz * k;
+      } else {
+        cam.az -= dx * 0.008; cam.el = Math.min(1.5, Math.max(-1.2, cam.el + dy * 0.008));
+      }
+      dirty = true; tick();
+    });
+    canvas.addEventListener('wheel', (e) => { e.preventDefault(); cam.dist = Math.min(5000, Math.max(20, cam.dist * Math.exp(e.deltaY * 0.0012))); dirty = true; tick(); }, { passive: false });
+    canvas.addEventListener('dblclick', reset);
+    function setBed(w, d) { buildBed(w, d); bedSize = [w, d]; dirty = true; tick(); }
+    return { setMesh, setPalette, setHighlight, reset, setBed, draw: () => { dirty = true; tick(); } };
+  })();
+
+  // ---------------------------------------------------------------- UI: Tools
+  function renderTools() {
+    const box = $('tools');
+    box.innerHTML = '';
+    toolColors.forEach((c, i) => {
+      if (i >= prof.n) return;
+      const info = toolMat[i];
+      const cc = connectColor(i);
+      const own = !!cc && c !== cc;  // weicht von Prusa Connect ab (eigene Farbe oder Automatik aus)
+      const cell = document.createElement('div');
+      cell.className = 'tool' + (own ? ' own' : info && info.live && info.m && cc ? ' live' : '');
+      const lab = document.createElement('label');
+      lab.className = 'toolpick';
+      lab.title = t('toolTitle', TW(i + 1), info && info.name, own, !!cc);
+      const dot = document.createElement('span');
+      dot.className = 'dot'; dot.style.background = c; dot.style.color = inkFor(c); dot.textContent = i + 1;
+      const inp = document.createElement('input');
+      inp.type = 'color'; inp.value = c.toLowerCase(); inp.id = 'toolcol' + (i + 1);
+      inp.setAttribute('aria-label', t('colorOf', TW(i + 1)));
+      inp.addEventListener('input', () => {
+        toolColors[i] = inp.value.toUpperCase(); toolsCustomized = true; store.set(K.tools, toolColors); updateToolHint();
+        dot.style.background = toolColors[i]; dot.style.color = inkFor(toolColors[i]);
+        refreshChips(); applyPalette();
+      });
+      inp.addEventListener('change', () => {
+        const ccNow = connectColor(i);
+        if (ccNow && toolColors[i] !== ccNow) { toolOverride[i] = { cc: ccNow }; store.set(K.ov, toolOverride); }
+        else if (toolOverride[i]) { toolOverride[i] = null; store.set(K.ov, toolOverride); }
+        renderTools(); updateOwnRow();
+      });
+      lab.append(dot, inp);
+      const lbl = document.createElement('span'); lbl.className = 'lbl'; lbl.textContent = TN(i + 1);
+      cell.append(lab, lbl);
+      if (own) {
+        const rb = document.createElement('button');
+        rb.type = 'button'; rb.className = 'resync'; rb.innerHTML = '↺<span class="rs-long"> Connect</span>';
+        rb.setAttribute('aria-label', t('resyncAria', TN(i + 1)));
+        rb.title = t('resyncTitle', TN(i + 1));
+        rb.addEventListener('click', () => resyncTools([i]));
+        cell.append(rb);
+      } else {
+        const mat = document.createElement('span'); mat.className = 'mat'; mat.textContent = info && info.m ? info.m : '';
+        cell.append(mat);
+      }
+      cell.dataset.hl = 'tool:' + (i + 1);
+      box.appendChild(cell);
+    });
+    refreshHover();
+  }
+  function updateToolHint() {
+    const h = $('toolHint');
+    h.className = toolsCustomized ? 'hint' : 'hint todo';
+    h.textContent = t(toolsCustomized ? 'hintSaved' : 'hintTodo', prof);
+  }
+
+  // ---------------------------------------------------------------- Live aus Prusa Connect (wenn als Windows-Programm gestartet)
+  const live = { bridge: false, data: null, printerId: store.get('indx-live-printer', null), autoSync: store.get('indx-live-autosync', true) !== false, timer: 0 };
+  // Welches Profil passt zu einem Drucker aus Prusa Connect? (Druckertyp: 1.x = MK-Serie, 3.x = XL, 7.x = CORE One)
+  // Druckertypen in Prusa Connect: 1.x MK-Serie, 3.x XL/XL+, 7.x CORE One (7.10 = INDX), 8.x CORE One L.
+  // p.mmu: Die Tools sind MMU-Slots (vom Programm aus den Daten von Prusa Connect bestimmt).
+  function profileForPrinter(p) {
+    const n = p.tools.length, t = String(p.type || '');
+    const mmu = p.mmu === true || (p.mmu === undefined && n === 5 && !/^3\./.test(t)); // ältere Programmversion ohne «mmu»
+    const big = /^8\./.test(t);
+    if (/^3\./.test(t)) return n >= 3 ? 'xl5' : 'xl2';
+    if (mmu) return big ? 'c1l-mmu3' : /^1\./.test(t) ? 'mk4-mmu3' : 'c1-mmu3';
+    if (/^[78]\./.test(t) || n >= 4) return big ? (n > 4 ? 'c1l-indx' : 'c1l-indx4') : (n > 4 ? 'indx' : 'indx4');
+    return n === 2 ? 'xl2' : 'indx';
+  }
+  function livePrinters() { return live.data && live.data.printers ? live.data.printers.filter((x) => x.tools && x.tools.length >= 2) : []; }
+  // live.printerId: gewählter Drucker; '' = bewusst keiner (Profil ohne passenden Drucker in Connect)
+  function livePrinter() {
+    const printers = livePrinters();
+    if (live.printerId) { const p = printers.find((x) => x.id === live.printerId); if (p) return p; }
+    if (live.printerId === '') return null;
+    return printers.find((x) => profileForPrinter(x) === prof.id) || printers.find((x) => x.tools.length === prof.n) || printers[0] || null;
+  }
+  function connectColor(i) {
+    if (!live.bridge) return null;
+    const p = livePrinter();
+    const x = p && p.tools.find((t) => t.t === i + 1);
+    return x && x.c ? x.c : null;
+  }
+  function updateOwnRow() {
+    const own = toolColors.map((c, i) => { const cc = i < prof.n && connectColor(i); return cc && c !== cc ? TN(i + 1) : null; }).filter(Boolean);
+    $('liveOwnRow').hidden = !live.bridge || !live.data || !own.length;
+    $('liveOwnText').textContent = t(live.autoSync ? 'ownSync' : 'ownNoSync', own.join(', '));
+  }
+  function resyncTools(list) {
+    for (const i of list) { toolOverride[i] = null; const cc = connectColor(i); if (cc) toolColors[i] = cc; }
+    store.set(K.ov, toolOverride); store.set(K.tools, toolColors);
+    renderTools(); updateOwnRow();
+    if (state.used.length && !state.mapTouched) { autoMap(); renderMapping(); }
+    refreshChips(); applyPalette();
+  }
+  function setPill(kind, text) { const p = $('livePill'); p.className = 'pill ' + kind; p.textContent = text; }
+  function ago(ts) {
+    const s = Math.max(0, Math.round((Date.now() - new Date(ts).getTime()) / 1000));
+    return t('ago', s);
+  }
+  async function api(path, opts) {
+    const o = Object.assign({ cache: 'no-store' }, opts || {});
+    o.headers = Object.assign({ 'X-Lang': lang }, o.headers || {});
+    const r = await fetch(path, o);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }
+  async function detectBridge() {
+    if (!/^https?:$/.test(location.protocol) || !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) return false;
+    try { return (await api('/api/ping')).app === 'indx-bridge'; } catch (e) { return false; }
+  }
+  function renderLiveOff() {
+    setPill('off', t('pillOff'));
+    $('liveText').textContent = '';
+    $('liveHint').textContent = t('hintNoBridge');
+  }
+  function schedule(ms) { clearTimeout(live.timer); live.timer = setTimeout(pollLive, ms); }
+  async function pollLive() {
+    if (!live.bridge) return;
+    if (document.hidden) { schedule(5000); return; }
+    try {
+      const st = await api('/api/status');
+      if (st.login === 'waiting') {
+        live.shownErr = false;
+        setPill('wait', t('pillSignin'));
+        $('liveText').textContent = t('signinText');
+        $('liveConnect').hidden = true;
+        schedule(1500);
+        return;
+      }
+      if (!st.connected) {
+        setPill(st.login === 'error' ? 'err' : 'off', t('pillNotConn'));
+        if (st.login === 'error' && !live.shownErr) { live.shownErr = true; $('liveLogBox').open = true; loadLog(); }
+        $('liveText').textContent = st.loginError || '';
+        $('liveConnect').hidden = false; $('liveDisconnect').hidden = true; $('livePrinterRow').hidden = true;
+        $('liveHint').textContent = t('hintConnectOnce');
+        schedule(10000);
+        return;
+      }
+      $('liveConnect').hidden = true; $('liveDisconnect').hidden = false;
+      const d = await api('/api/tools');
+      live.data = d;
+      if (!d.printers) {
+        setPill(d.error ? 'err' : 'wait', t(d.error ? 'pillError' : 'pillLoading'));
+        $('liveText').textContent = d.error || t('fetching');
+        schedule(d.error ? 20000 : 2000);
+        return;
+      }
+      applyLive(d);
+      schedule(15000);
+    } catch (e) {
+      setPill('err', t('pillNoBridge'));
+      $('liveText').textContent = t('bridgeRunning');
+      schedule(5000);
+    }
+  }
+  function applyLive(d) {
+    const printers = livePrinters();
+    const sel = $('livePrinter');
+    let p = livePrinter();
+    // Gewählter Drucker bestimmt das Profil (INDX, MMU3, XL)
+    if (p) { const pid = profileForPrinter(p); if (pid !== prof.id) { setProfile(pid, true); p = livePrinter(); } }
+    const sig = printers.map((x) => x.id).join(',') + (p ? '' : '|none');
+    if (sel.dataset.sig !== sig) {
+      sel.innerHTML = '';
+      if (!p) { const o = document.createElement('option'); o.value = ''; o.textContent = t('noneByHand'); sel.appendChild(o); }
+      for (const x of printers) { const o = document.createElement('option'); o.value = x.id; o.textContent = x.name; sel.appendChild(o); }
+      sel.dataset.sig = sig;
+    }
+    $('livePrinterRow').hidden = printers.length < 2 && !!p;
+    if (!printers.length) { setPill('err', t('pillNoPrinter')); $('liveText').textContent = t('noMultiPrinter'); $('liveAutoRow').hidden = true; return; }
+    if (!p) {
+      sel.value = '';
+      setPill('on', t('pillConnected'));
+      $('liveText').textContent = t('noSuchPrinter', prof.slicerL);
+      $('liveHint').textContent = t('hintByHand');
+      $('liveAutoRow').hidden = true; $('liveOwnRow').hidden = true;
+      if (!live.rendered) { live.rendered = true; renderTools(); }
+      return;
+    }
+    sel.value = p.id;
+    setPill('on', t('pillLive'));
+    $('liveText').textContent = t('liveLine', p.name, ago(d.updatedAt), !!d.error, !live.autoSync);
+    $('liveAutoRow').hidden = false;
+    $('liveAuto').checked = live.autoSync;
+    let changed = false;
+    const noColor = [], newSpool = [];
+    for (const x of p.tools) {
+      const i = x.t - 1;
+      if (i < 0 || i >= prof.n) continue;
+      const info = x.m ? { m: x.m, name: [x.b, x.n || x.m].filter(Boolean).join(' '), live: true, nfc: !!x.nfc } : { live: true };
+      if (JSON.stringify(info) !== JSON.stringify(toolMat[i])) { toolMat[i] = info; changed = true; }
+      if (x.c) {
+        // Eigene Farbe gilt, bis in Connect eine andere Spule auf dem Tool liegt
+        if (toolOverride[i] && toolOverride[i].cc !== x.c) { toolOverride[i] = null; newSpool.push(TN(x.t)); changed = true; }
+        if (live.autoSync && !toolOverride[i] && toolColors[i] !== x.c) { toolColors[i] = x.c; changed = true; }
+      } else {
+        if (toolOverride[i]) { toolOverride[i] = null; changed = true; }
+        if (x.m) noColor.push(TN(x.t) + ' (' + x.m + ')');
+      }
+    }
+    updateOwnRow();
+    $('liveHint').textContent = (newSpool.length ? t('newSpool', newSpool.join(', ')) : '') + (noColor.length ? t('noColor', noColor.join(', '), prof) : t('newSpoolHint'));
+    if (!changed) { if (!live.rendered) { live.rendered = true; renderTools(); } return; }
+    live.rendered = true;
+    toolsCustomized = true;
+    store.set(K.tools, toolColors); store.set(K.info, toolMat); store.set(K.ov, toolOverride);
+    renderTools(); updateToolHint(); updateOwnRow();
+    if (state.used.length && !state.mapTouched) { autoMap(); renderMapping(); }
+    else if (state.used.length) $('liveHint').textContent += t('colorsChanged');
+    refreshChips(); applyPalette();
+  }
+  $('livePrinter').addEventListener('change', () => {
+    const before = prof.id, id = $('livePrinter').value;
+    live.printerId = id; store.set('indx-live-printer', live.printerId);
+    const p = livePrinters().find((x) => x.id === id);
+    if (p && profileForPrinter(p) === before) { toolOverride = new Array(8).fill(null); store.set(K.ov, toolOverride); }  // anderer Drucker gleicher Art
+    if (live.data) applyLive(live.data);
+  });
+  $('liveAuto').addEventListener('change', () => {
+    live.autoSync = $('liveAuto').checked; store.set('indx-live-autosync', live.autoSync);
+    if (live.data) applyLive(live.data);
+    renderTools(); updateOwnRow();
+  });
+  $('liveResyncAll').addEventListener('click', () => resyncTools([...Array(prof.n).keys()]));
+  $('liveConnect').addEventListener('click', async () => {
+    try {
+      await api('/api/login', { method: 'POST', headers: { 'X-INDX': '1' } });
+      setPill('wait', t('pillSignin'));
+      $('liveText').textContent = t('openingSignin');
+      schedule(1200);
+    } catch (e) { setPill('err', t('pillError')); $('liveText').textContent = t('signinFailed'); }
+  });
+  $('liveDisconnect').addEventListener('click', async () => {
+    try { await api('/api/logout', { method: 'POST', headers: { 'X-INDX': '1' } }); } catch (e) { /* egal */ }
+    toolMat = toolMat.map((x) => (x && x.live ? null : x));
+    store.set(K.info, toolMat);
+    toolOverride = new Array(8).fill(null); store.set(K.ov, toolOverride);
+    live.data = null; $('liveAutoRow').hidden = true; $('liveOwnRow').hidden = true;
+    renderTools();
+    schedule(100);
+  });
+  setInterval(() => { if (live.bridge && live.data && live.data.updatedAt && $('livePill').classList.contains('on')) { const p = livePrinter(); if (p) $('liveText').textContent = t('liveLine', p.name, ago(live.data.updatedAt), !!live.data.error, !live.autoSync); } }, 5000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && live.bridge) schedule(50); });
+  async function loadLog() {
+    try {
+      const j = await api('/api/log');
+      $('bridgeVer').textContent = '· v' + j.version;
+      $('liveLog').textContent = (j.lines || []).join('\n') || t('logEmpty');
+      const pre = $('liveLog'); pre.scrollTop = pre.scrollHeight;
+    } catch (e) { $('liveLog').textContent = t('logNA'); }
+  }
+  $('liveLogBox').addEventListener('toggle', () => { if ($('liveLogBox').open) loadLog(); });
+  $('liveLogCopy').addEventListener('click', async () => {
+    await loadLog();
+    const txt = $('liveLog').textContent;
+    try { await navigator.clipboard.writeText(txt); $('liveLogCopy').textContent = t('copied'); }
+    catch (e) { const r = document.createRange(); r.selectNodeContents($('liveLog')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); $('liveLogCopy').textContent = t('selected'); }
+    setTimeout(() => { $('liveLogCopy').textContent = t('logCopy'); }, 2500);
+  });
+  setInterval(() => { if (live.bridge && $('liveLogBox').open) loadLog(); }, 3000);
+  detectBridge().then((on) => {
+    live.bridge = on;
+    if (on) { $('liveLogBox').hidden = false; loadLog(); pollLive(); } else renderLiveOff();
+  });
+
+  // Farbabstand (CIE Lab, ΔE76)
+  function toLab(hex) {
+    const lin = hexToRgb(hex).map((c) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)));
+    const X = (lin[0] * 0.4124 + lin[1] * 0.3576 + lin[2] * 0.1805) / 0.95047;
+    const Y = lin[0] * 0.2126 + lin[1] * 0.7152 + lin[2] * 0.0722;
+    const Z = (lin[0] * 0.0193 + lin[1] * 0.1192 + lin[2] * 0.9505) / 1.08883;
+    const f = (t) => (t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116);
+    return [116 * f(Y) - 16, 500 * (f(X) - f(Y)), 200 * (f(Y) - f(Z))];
+  }
+  function deltaE(a, b) { const A = toLab(a), B = toLab(b); return Math.hypot(A[0] - B[0], A[1] - B[1], A[2] - B[2]); }
+  function nearestTool(hex, prefer) {
+    let best = 1, bd = Infinity;
+    for (let t = 1; t <= prof.n; t++) { const d = deltaE(hex, toolColors[t - 1]); if (d < bd) { bd = d; best = t; } }
+    if (prefer >= 1 && prefer <= prof.n && deltaE(hex, toolColors[prefer - 1]) <= bd + 2) return prefer;
+    return best;
+  }
+  function autoMap() {
+    for (const u of state.used) state.map[u.idx] = nearestTool(filColor(u.idx), u.idx);
+  }
+  $('autoMap').addEventListener('click', () => {
+    if (!state.used.length) return;
+    autoMap();
+    state.mapTouched = false;
+    document.querySelectorAll('.pick input').forEach((r) => { r.checked = state.map[+r.name.slice(4)] === +r.value; });
+    refreshChips(); applyPalette();
+  });
+
+  // ---------------------------------------------------------------- UI: Zuordnung
+  function filColor(idx) { const f = state.filaments.find((x) => x.idx === idx); return f ? f.color : '#999999'; }
+  function filLabel(idx) {
+    const f = state.filaments.find((x) => x.idx === idx);
+    const kind = state.summary && state.summary.kind === 'prusa' ? 'Tool ' : 'Filament ';
+    return { title: kind + idx, sub: f ? [f.name, f.type && !(f.name || '').includes(f.type) ? f.type : ''].filter(Boolean).join(' · ') : '' };
+  }
+  function shareText(s) { return s < 0.001 ? '< 0.1 %' : (s * 100).toLocaleString(LOC(), { maximumFractionDigits: 1 }) + ' %'; }
+
+  function renderMapping() {
+    const list = $('maplist');
+    list.innerHTML = '';
+    if (!state.used.length) { $('mapHint').textContent = state.summary ? t('noColorInfo') : ''; return; }
+    for (const u of state.used) {
+      const row = document.createElement('fieldset');
+      row.className = 'maprow';
+      const lab = filLabel(u.idx);
+      const sw = document.createElement('div'); sw.className = 'src'; sw.style.background = filColor(u.idx);
+      const what = document.createElement('div'); what.className = 'what';
+      const legend = document.createElement('legend'); legend.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)';
+      legend.textContent = t('legend', lab.title, prof);
+      what.innerHTML = '<b></b> <span class="arrow">→ ' + prof.word + '</span><span class="dev" hidden></span><small></small>';
+      what.querySelector('.dev').textContent = t('devBadge');
+      what.querySelector('.dev').dataset.src = u.idx;
+      what.querySelector('b').textContent = lab.title;
+      what.querySelector('small').textContent = [lab.sub, t('ofSurface', shareText(u.share))].filter(Boolean).join(' · ');
+      const pick = document.createElement('div'); pick.className = 'pick';
+      for (let t = 1; t <= prof.n; t++) {
+        const l = document.createElement('label');
+        l.title = TW(t);
+        const r = document.createElement('input');
+        r.type = 'radio'; r.name = 'map-' + u.idx; r.value = t; r.id = 'map-' + u.idx + '-' + t;
+        r.checked = state.map[u.idx] === t;
+        r.setAttribute('aria-label', TW(t));
+        r.addEventListener('change', () => { state.map[u.idx] = t; state.mapTouched = true; refreshChips(); applyHover(); });
+        const chip = document.createElement('span'); chip.className = 'chip'; chip.dataset.tool = t; chip.textContent = t;
+        l.append(r, chip); pick.appendChild(l);
+      }
+      row.append(legend, sw, what, pick);
+      row.dataset.hl = 'src:' + u.idx;
+      list.appendChild(row);
+    }
+    refreshChips();
+    const unused = state.filaments.filter((f) => !state.used.some((u) => u.idx === f.idx)).length;
+    const parts = [t('mapHintHover', prof)];
+    if (unused) parts.push(t('unused', unused));
+    $('mapHint').textContent = parts.join(' ');
+    refreshHover();
+  }
+  function refreshChips() {
+    document.querySelectorAll('.pick .chip').forEach((c) => { const t = +c.dataset.tool; c.style.background = toolColors[t - 1]; c.style.color = inkFor(toolColors[t - 1]); });
+    // Hinweis, wenn das gewählte Tool eine deutlich andere Farbe geladen hat
+    document.querySelectorAll('.dev').forEach((d) => {
+      const src = +d.dataset.src, tl = state.map[src];
+      d.hidden = !(tl && deltaE(filColor(src), toolColors[tl - 1]) > 30);
+      d.title = t('devTitle', TW(tl));
+    });
+  }
+  function applyPalette() {
+    const cols = new Array(64).fill('#888888');
+    for (const f of state.filaments) if (f.idx < 64) cols[f.idx] = f.color;
+    const ht = hover.key.startsWith('tool:') ? +hover.key.slice(5) : 0;
+    for (let s = 1; s < 64; s++) {
+      const t = state.map[s];
+      // In der Tool-Ansicht – und beim Zeigen auf ein Tool – in der Farbe des Tools
+      if (t && (state.view === 'result' || t === ht)) cols[s] = toolColors[t - 1];
+    }
+    viewer.setPalette(cols);
+  }
+
+  // ---------------------------------------------------------------- Drucker wählen
+  function updateSizeLbl() {
+    const sz = state.size;
+    if (!sz) { $('sizeLbl').textContent = ''; return; }
+    const fits = sz[0] <= prof.bed.w && sz[1] <= prof.bed.d;
+    $('sizeLbl').textContent = t('modelSize', sz.map((v) => Math.round(v)).join(' × '), fits);
+  }
+  function applyProfileTexts() {
+    $('toolsHead').textContent = prof.headL;
+    $('bedLbl').textContent = t('bedLbl', prof.slicerL, prof.bed.w, prof.bed.d);
+    $('howtoPrinter').textContent = t('howto1', prof.slicerL);
+    $('vResult').textContent = t(prof.word === 'Slot' ? 'vResultSlot' : 'vResultTool');
+    document.querySelectorAll('#printerProfile option').forEach((o) => { const p = PROFILES.find((x) => x.id === o.value); if (p) o.textContent = p.labelL; });
+    $('printerProfile').value = prof.id;
+    viewer.setBed(prof.bed.w, prof.bed.d);
+    updateSizeLbl();
+  }
+  (() => {
+    const sel = $('printerProfile');
+    for (const p of PROFILES) { const o = document.createElement('option'); o.value = p.id; o.textContent = p.labelL; sel.appendChild(o); }
+    sel.addEventListener('change', () => setProfile(sel.value, false));
+  })();
+  // fromLive: vom gewählten Connect-Drucker ausgelöst
+  function setProfile(id, fromLive) {
+    const p = PROFILES.find((x) => x.id === id);
+    if (!p || p === prof) { $('printerProfile').value = prof.id; return; }
+    const oldBed = prof.bed;
+    prof = p;
+    store.set('mapper-profile', p.id);
+    loadLoadout();
+    if (!fromLive && live.data) {
+      // passenden Drucker aus Connect nehmen – oder bewusst keinen
+      const m = livePrinters().find((x) => profileForPrinter(x) === p.id);
+      live.printerId = m ? m.id : '';
+      store.set('indx-live-printer', live.printerId);
+    }
+    live.rendered = false;
+    applyProfileTexts();
+    renderTools(); updateToolHint(); updateOwnRow();
+    if (!fromLive && live.data) applyLive(live.data);
+    if (state.summary && state.used.length) {
+      // Zuordnungen auf Tools, die es nicht mehr gibt, neu wählen; unberührte ganz neu nach Farbe
+      if (!state.mapTouched) autoMap();
+      else for (const u of state.used) if (state.map[u.idx] > prof.n) state.map[u.idx] = nearestTool(filColor(u.idx), u.idx);
+      if (state.summary.kind === 'bambu' && (oldBed.w !== p.bed.w || oldBed.d !== p.bed.d)) {
+        state.keepMap = true;
+        setBusy(true, t('buildingPreview'));
+        backend.post({ cmd: 'preview', plate: state.plate, bed: prof.bed });
+      } else { renderMapping(); applyPalette(); }
+    }
+  }
+
+  // ---------------------------------------------------------------- Hervorheben
+  // Eine Stelle entscheidet, was hervorgehoben ist: das Element mit data-hl unter dem Zeiger
+  // (oder mit dem Tastaturfokus). Nach jedem Neuaufbau der Listen wird neu bestimmt.
+  const hover = { key: '', x: -1, y: -1, touch: false };
+  function hlKeyAt(el) { const t = el && el.closest ? el.closest('[data-hl]') : null; return t ? t.dataset.hl : ''; }
+  function setHover(key) { if (key === hover.key) return; hover.key = key; applyHover(); }
+  function refreshHover() {
+    if (hover.touch) { if (hover.key && !document.querySelector('[data-hl="' + hover.key + '"]')) setHover(''); else applyHover(); return; }
+    const f = document.activeElement && hlKeyAt(document.activeElement) && document.activeElement.matches(':focus-visible') ? hlKeyAt(document.activeElement) : '';
+    const k = hover.x >= 0 ? hlKeyAt(document.elementFromPoint(hover.x, hover.y)) : '';
+    hover.key = k || f;
+    applyHover();
+  }
+  function applyHover() {
+    document.querySelectorAll('.maprow.hl, .tool.hl').forEach((e) => e.classList.remove('hl'));
+    const box = $('hlInfo');
+    const key = state.used.length ? hover.key : '';
+    if (!key) { viewer.setHighlight(null); applyPalette(); box.hidden = true; return; }
+    const el = document.querySelector('[data-hl="' + key + '"]');
+    if (el) el.classList.add('hl');
+    const sw = (c) => '<span class="sw" style="background:' + c + '"></span>';
+    const esc = (t) => String(t).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+    if (key.startsWith('src:')) {
+      const idx = +key.slice(4), u = state.used.find((x) => x.idx === idx), tm = state.map[idx];
+      viewer.setHighlight([idx]);
+      const lab = filLabel(idx);
+      box.innerHTML = sw(filColor(idx)) + '<b>' + esc(lab.title) + '</b>' + esc(t('hlFromFile')) + esc(u ? shareText(u.share) : '') +
+        '<small>' + (tm ? esc(t('hlPrintsWith')) + sw(toolColors[tm - 1]) + TN(tm) : esc(t('hlUnmapped'))) + (lab.sub ? ' · ' + esc(lab.sub) : '') + '</small>' +
+        (u && u.share < 0.005 ? '<small>' + esc(t('hlTiny')) + '</small>' : '');
+    } else {
+      const tn = +key.slice(5);
+      const src = state.used.filter((x) => state.map[x.idx] === tn);
+      viewer.setHighlight(src.map((x) => x.idx));
+      const share = src.reduce((a, x) => a + x.share, 0);
+      box.innerHTML = sw(toolColors[tn - 1]) + '<b>' + TN(tn) + '</b>' + esc(src.length ? t('hlToolPrints', shareText(share)) : t('hlToolUnused')) +
+        (src.length ? '<small>' + src.map((x) => sw(filColor(x.idx)) + esc(filLabel(x.idx).title)).join(', ') + '</small>' : '');
+    }
+    box.hidden = false;
+    applyPalette();
+  }
+  document.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'touch') return;
+    hover.touch = false; hover.x = e.clientX; hover.y = e.clientY;
+    setHover(hlKeyAt(e.target));
+  }, { passive: true });
+  document.addEventListener('pointerdown', (e) => {
+    // Auf Touch-Geräten: Antippen einer Zeile oder eines Tools hebt hervor, bis woanders getippt wird
+    if (e.pointerType !== 'touch') return;
+    if (e.target.closest && e.target.closest('#gl')) return;
+    hover.touch = true; hover.x = -1;
+    setHover(hlKeyAt(e.target));
+  }, { passive: true });
+  document.addEventListener('mouseout', (e) => { if (!e.relatedTarget) { hover.x = -1; setHover(''); } });
+  window.addEventListener('blur', () => { hover.x = -1; if (!hover.touch) setHover(''); });
+  window.addEventListener('scroll', () => { if (hover.x >= 0) setHover(hlKeyAt(document.elementFromPoint(hover.x, hover.y))); }, { passive: true, capture: true });
+  document.addEventListener('focusin', (e) => { const k = hlKeyAt(e.target); if (k && e.target.matches(':focus-visible')) setHover(k); });
+  document.addEventListener('focusout', (e) => { if (!e.relatedTarget || !hlKeyAt(e.relatedTarget)) setTimeout(refreshHover, 0); });
+  $('vResult').addEventListener('click', () => { state.view = 'result'; $('vResult').setAttribute('aria-pressed', 'true'); $('vOrig').setAttribute('aria-pressed', 'false'); applyPalette(); });
+  $('vOrig').addEventListener('click', () => { state.view = 'orig'; $('vOrig').setAttribute('aria-pressed', 'true'); $('vResult').setAttribute('aria-pressed', 'false'); applyPalette(); });
+  $('vReset').addEventListener('click', () => viewer.reset());
+
+  // ---------------------------------------------------------------- Laden
+  function setBusy(on, title) {
+    state.busy = on;
+    $('busy').hidden = !on;
+    if (title) $('busyTitle').textContent = title;
+    if (on) { $('busyBar').style.width = '0%'; $('busyText').textContent = ''; }
+    $('exportBtn').disabled = on || !state.summary;
+  }
+  // Während gerade etwas lädt oder gespeichert wird: Datei merken und danach laden (z. B. direkt nach dem Öffnen,
+  // solange das Beispiel noch lädt)
+  function loadQueued() { const f = state.queued; state.queued = null; if (f) setTimeout(() => loadFile(f), 0); }
+  async function loadFile(file, demo) {
+    if (state.busy) { if (!demo) state.queued = file; return; }
+    setBusy(true, demo ? t('loadingSample') : t('loadingFile', file.name));
+    setStatus('', '');
+    state.metaReady = false;
+    const buf = file instanceof Uint8Array ? file.buffer : await file.arrayBuffer();
+    state.pendingName = demo ? t('demoName') : file.name;
+    backend.post({ cmd: 'load', buf, name: state.pendingName, demo: !!demo }, [buf]);
+  }
+  backend.on((m) => {
+    if (m.type === 'progress') {
+      if (m.cmd === 'export') { $('exBar').style.width = Math.round(m.frac * 100) + '%'; setStatus('', m.text); }
+      else { $('busyBar').style.width = Math.round(m.frac * 100) + '%'; $('busyText').textContent = m.text; }
+    } else if (m.type === 'loaded') {
+      onLoaded(m.summary, m.demo);
+    } else if (m.type === 'preview') {
+      onPreview(m);
+    } else if (m.type === 'exported') {
+      onExported(m);
+    } else if (m.type === 'error') {
+      if (m.cmd === 'export') { $('exBarWrap').hidden = true; setStatus('err', () => t('saveFailed', m.message)); $('exportBtn').disabled = false; state.busy = false; loadQueued(); }
+      else { setBusy(false); $('busy').hidden = true; setStatus('err', () => t('readFailed', m.message)); loadQueued(); }
+    }
+  });
+
+  function onLoaded(sum, demo) {
+    state.summary = sum; state.demo = demo; state.plate = 0;
+    state.filaments = sum.filaments.slice();
+    $('demoNote').hidden = !demo;
+    $('fileinfo').hidden = false;
+    $('fname').textContent = sum.fileName;
+    renderFileInfo();
+    $('plateRow').hidden = sum.plates.length < 2;
+    $('busyTitle').textContent = t('buildingPreview');
+    $('busyText').textContent = t('splitting');
+    backend.post({ cmd: 'preview', plate: 0, bed: prof.bed });
+  }
+  // Dateiart und Platten (auch beim Umschalten der Sprache)
+  function renderFileInfo() {
+    const sum = state.summary;
+    if (!sum) return;
+    const kb = $('fkind');
+    kb.className = 'badge ' + (state.demo ? 'demo' : sum.kind);
+    kb.textContent = state.demo ? t('badgeSample') : sum.kind === 'bambu' ? (/orca/i.test(sum.app) ? 'OrcaSlicer' : 'Bambu Studio') : (sum.isPrusa3 ? 'PrusaSlicer 3' : 'PrusaSlicer');
+    const plateSel = $('plate');
+    plateSel.innerHTML = '';
+    sum.plates.forEach((p) => {
+      const o = document.createElement('option');
+      o.value = p.index;
+      o.textContent = t('plateOpt', p.id, p.name, p.objects);
+      plateSel.appendChild(o);
+    });
+    plateSel.value = String(state.plate);
+  }
+  function renderMeta() {
+    const sm = state.summary;
+    if (!sm || !state.metaReady) return;
+    const meta = [t('objects', sm.objects), t('triangles', fmtInt.format(sm.triangles)), t('colors', state.used.length)];
+    if (state.capped) meta.push(t('simplified'));
+    if (sm.kind === 'bambu') meta.push(t('centered'));
+    $('fmeta').textContent = meta.join(' · ') + (sm.warnings.length ? ' · ' + sm.warnings.join(' ') : '');
+  }
+  $('plate').addEventListener('change', () => {
+    state.plate = +$('plate').value;
+    state.keepMap = true;
+    setBusy(true, t('buildingPreview'));
+    backend.post({ cmd: 'preview', plate: state.plate, bed: prof.bed });
+  });
+
+  function onPreview(m) {
+    // fehlende Filamente (Zustände ohne Eintrag) ergänzen
+    for (const u of m.used) if (!state.filaments.some((f) => f.idx === u.idx)) state.filaments.push({ idx: u.idx, color: state.summary.kind === 'prusa' ? toolColors[(u.idx - 1) % 8] : TOOL_DEFAULT[(u.idx - 1) % 8], name: '', type: '' });
+    state.filaments.sort((a, b) => a.idx - b.idx);
+    state.used = m.used;
+    const prev = state.map;
+    state.map = [];
+    for (let s = 1; s < 256; s++) state.map[s] = ((s - 1) % prof.n) + 1;
+    if (state.keepMap && prev.length) { for (let s = 1; s < 256; s++) if (prev[s] && prev[s] <= prof.n) state.map[s] = prev[s]; }
+    else { autoMap(); state.mapTouched = false; }
+    state.keepMap = false;
+    viewer.setMesh(m.positions, m.fil, m.triangles);
+    renderMapping();
+    applyPalette();
+    state.size = m.size || [0, 0, 0];
+    updateSizeLbl();
+    state.capped = !!m.capped; state.metaReady = true;
+    renderMeta();
+    setBusy(false);
+    loadQueued();
+  }
+
+  // Datei wählen / ziehen
+  $('file').addEventListener('change', () => { const f = $('file').files[0]; if (f) loadFile(f); $('file').value = ''; });
+  const drop = $('drop');
+  drop.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('file').click(); } });
+  drop.tabIndex = 0;
+  ['dragenter', 'dragover'].forEach((t) => document.addEventListener(t, (e) => { if (e.dataTransfer && [...e.dataTransfer.types].includes('Files')) { e.preventDefault(); drop.classList.add('over'); } }));
+  ['dragleave', 'drop'].forEach((t) => document.addEventListener(t, (e) => { if (t === 'dragleave' && e.relatedTarget) return; drop.classList.remove('over'); }));
+  document.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (!f) return;
+    if (!/\.3mf$/i.test(f.name)) { setStatus('err', () => t('use3mf')); return; }
+    loadFile(f);
+  });
+
+  // ---------------------------------------------------------------- Speichern
+  const downloadsP = (window.claude && typeof window.claude.use === 'function') ? window.claude.use('downloads').catch(() => null) : Promise.resolve(null);
+  let pendingSave = null;
+  $('exportBtn').addEventListener('click', async () => {
+    if (!state.summary || state.busy) return;
+    state.busy = true;
+    $('exportBtn').disabled = true;
+    $('exBarWrap').hidden = false; $('exBar').style.width = '2%';
+    setStatus('', t('preparing'));
+    const base = state.summary.fileName.replace(/\.3mf$/i, '');
+    if (state.used.some((u) => !(state.map[u.idx] >= 1 && state.map[u.idx] <= prof.n))) {
+      setStatus('err', () => t('badTool', prof));
+      $('exBarWrap').hidden = true; $('exportBtn').disabled = false; state.busy = false;
+      loadQueued();
+      return;
+    }
+    const suffix = state.summary.kind === 'bambu' ? '_' + prof.tag + (state.summary.plates.length > 1 ? t('sufPlate') + state.summary.plates[state.plate].id : '') : t('sufRemapped');
+    const name = base + suffix + '.3mf';
+    const dl = await downloadsP;
+    pendingSave = { name, dl };
+    backend.post({ cmd: 'export', plate: state.plate, map: state.map.slice(0, 256), bed: prof.bed, wrapName: dl ? name : null, wrapText: t('wrapZip') });
+  });
+  // PrusaSlicer-Projekt eines anderen Druckers: Hinweis auf «nur Geometrie»
+  function exportTip() {
+    const sm = state.summary;
+    if (!sm || sm.kind !== 'prusa' || !sm.srcTools || sm.srcTools === prof.n) return '';
+    return t('exportTip', sm.srcPrinter, sm.srcTools, prof);
+  }
+  async function onExported(m) {
+    const { name, dl } = pendingSave || {};
+    $('exBar').style.width = '100%';
+    const size = fmtMB(m.inner);
+    try {
+      if (dl) {
+        setStatus('', t('confirmSave'));
+        await dl.save({ filename: name.replace(/\.3mf$/i, '.zip'), data: m.blob });
+        setStatus('ok', () => t('savedZip', name, size) + exportTip());
+      } else {
+        const url = URL.createObjectURL(m.blob);
+        const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+        setStatus('ok', () => t('doneSaved', name, size) + exportTip());
+      }
+    } catch (err) {
+      const code = err && err.code;
+      setStatus('err', () => (code === 'declined' ? t('declined') : t('saveImpossible', code || err.message || err)));
+    }
+    setTimeout(() => { $('exBarWrap').hidden = true; }, 800);
+    state.busy = false;
+    $('exportBtn').disabled = false;
+    loadQueued();
+  }
+
+  // ---------------------------------------------------------------- Beispielmodell (Bambu-Format, im Speicher erzeugt)
+  // Beispielmodell: 3DBenchy in 8 Farben (PrusaSlicer-Projekt für den CORE One INDX)
+  const DEMO_B64 = /*__DEMO__*/'';
+  async function makeDemo() {
+    const bin = atob(DEMO_B64);
+    const u8 = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+    return u8;
+  }
+
+  // ---------------------------------------------------------------- Status unter «Speichern» (bleibt beim Sprachwechsel lesbar)
+  var statusFn = null;
+  function setStatus(cls, text) {
+    statusFn = typeof text === 'function' ? text : null;
+    $('exStatus').className = 'status' + (cls ? ' ' + cls : '');
+    $('exStatus').textContent = statusFn ? statusFn() : text;
+  }
+
+  // ---------------------------------------------------------------- Sprache umschalten
+  function setLang(l) {
+    if (l === lang || !STR[l]) return;
+    lang = l;
+    try { localStorage.setItem('cm-lang', JSON.stringify(l)); } catch (e) { /* egal */ }
+    applyStatic();
+    applyProfileTexts();
+    renderTools(); updateToolHint(); updateOwnRow();
+    if (state.summary && state.demo) { state.summary.fileName = t('demoName'); $('fname').textContent = state.summary.fileName; }
+    if (state.summary) { renderFileInfo(); renderMeta(); renderMapping(); }
+    if (statusFn) $('exStatus').textContent = statusFn();
+    applyHover();
+    if (live.bridge) { $('livePrinter').dataset.sig = ''; if ($('liveLogBox').open) loadLog(); schedule(30); } else renderLiveOff();
+  }
+  document.querySelectorAll('.langsw button').forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  if (!/^https?:/.test($('repoLink').getAttribute('href'))) $('repoLink').remove();
+
+  applyStatic();
+  applyProfileTexts();
+  renderTools();
+  updateToolHint();
+  applyPalette();
+  if (!('CompressionStream' in window) || !('DecompressionStream' in window)) {
+    setStatus('err', () => t('noZipSupport'));
+  } else {
+    makeDemo().then((u8) => loadFile(u8, true)).catch((e) => { setStatus('err', () => t('demoFailed', e.message)); });
+  }
+})();
+</script>
