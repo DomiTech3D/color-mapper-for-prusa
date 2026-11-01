@@ -1,0 +1,55 @@
+# Publish a release on GitHub (Releases → Draft a new release, new tag like v1.2.1) and this builds the
+# Windows program and the standalone page, records the build provenance and attaches the files to the release.
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write      # create the release
+  id-token: write      # sign the build provenance
+  attestations: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: stable
+          cache: false
+      - name: Core round trip (sample model)
+        run: node app/test/roundtrip.js demo/benchy_8t.3mf
+      - name: Build page
+        env:
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+        run: python3 app/build.py
+      - name: Build the Windows program
+        working-directory: desktop
+        env:
+          GOOS: windows
+          GOARCH: amd64
+          CGO_ENABLED: '0'
+        run: go build -trimpath -ldflags "-s -w -X main.version=${GITHUB_REF_NAME#v}" -o ../dist/ColorMapperForPrusa.exe .
+      - name: Checksums
+        working-directory: dist
+        run: sha256sum ColorMapperForPrusa.exe color-mapper.html | tee SHA256SUMS.txt
+      - name: Build provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: |
+            dist/ColorMapperForPrusa.exe
+            dist/color-mapper.html
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          FILES="dist/ColorMapperForPrusa.exe dist/color-mapper.html dist/SHA256SUMS.txt"
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            # release was created on the website: just attach the files
+            gh release upload "$GITHUB_REF_NAME" $FILES --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" $FILES --title "Color Mapper for Prusa $GITHUB_REF_NAME" --generate-notes
+          fi
