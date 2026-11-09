@@ -9,7 +9,10 @@ Jede Farbe einer mehrfarbigen 3MF auf das richtige Tool deines Prusa-Druckers le
 
 Du hast ein bemaltes Modell für Bambu Studio, OrcaSlicer oder PrusaSlicer gefunden, aber die Farben liegen auf anderen Extrudern als die Filamente in deinem Drucker. Der Farb-Mapper zeigt das Modell in 3D, du legst jede Farbe der Datei auf eines deiner Tools oder einen deiner MMU-Slots, und er speichert eine 3MF für PrusaSlicer mit entsprechend verschobener Bemalung.
 
-![Farb-Mapper für Prusa mit dem 8-farbigen 3DBenchy als Beispiel](docs/screenshot-de.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-de-dark.png">
+  <img alt="Farb-Mapper für Prusa mit dem 8-farbigen 3DBenchy als Beispiel, jede Farbe auf ihrem Tool" src="docs/screenshot-de.png">
+</picture>
 
 ## Funktionen
 
