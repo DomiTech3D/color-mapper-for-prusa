@@ -11,7 +11,7 @@ You found a painted model for Bambu Studio, OrcaSlicer or PrusaSlicer, but its c
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png">
-  <img alt="Color Mapper for Prusa with the 8-color 3DBenchy sample, every color on its own tool" src="docs/screenshot.png">
+  <img alt="Color Mapper for Prusa with the 8-color 3DBenchy sample – hovering tool T5 shows only the areas it prints" src="docs/screenshot.png">
 </picture>
 
 ## Features

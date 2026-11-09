@@ -11,7 +11,7 @@ Du hast ein bemaltes Modell für Bambu Studio, OrcaSlicer oder PrusaSlicer gefun
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-de-dark.png">
-  <img alt="Farb-Mapper für Prusa mit dem 8-farbigen 3DBenchy als Beispiel, jede Farbe auf ihrem Tool" src="docs/screenshot-de.png">
+  <img alt="Farb-Mapper für Prusa mit dem 8-farbigen 3DBenchy als Beispiel – mit der Maus auf T5 bleiben nur dessen Flächen farbig" src="docs/screenshot-de.png">
 </picture>
 
 ## Funktionen
