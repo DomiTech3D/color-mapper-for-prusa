@@ -27,7 +27,7 @@ import (
 	"time"
 )
 
-var version = "1.2.1" // beim Release-Build per -ldflags "-X main.version=…" gesetzt
+var version = "1.3.0" // beim Release-Build per -ldflags "-X main.version=…" gesetzt
 
 //go:embed web/color-mapper.html
 var pageHTML []byte
@@ -91,12 +91,21 @@ type ToolInfo struct {
 	N   string `json:"n,omitempty"`
 	B   string `json:"b,omitempty"`
 	NFC bool   `json:"nfc,omitempty"`
+	// nur aus Spooly
+	No     int      `json:"no,omitempty"`   // Spulennummer
+	G      *float64 `json:"g,omitempty"`    // Restgewicht in Gramm
+	Fill   string   `json:"fill,omitempty"` // "low" oder "crit"
+	Loc    string   `json:"loc,omitempty"`
+	Spid   string   `json:"spid,omitempty"`   // Spulen-ID in Spooly
+	Slot   bool     `json:"slot,omitempty"`   // Spooly kennt diesen Slot (Spule kann zugeordnet werden)
+	Listed bool     `json:"listed,omitempty"` // Spooly führt den Slot in GET /slots (auch ohne slot_id)
 }
 
 type PrinterInfo struct {
 	ID    string     `json:"id"`
 	Name  string     `json:"name"`
 	Type  string     `json:"type"`
+	Model string     `json:"model,omitempty"` // Druckermodell im PrusaSlicer-Format (aus Spooly), z. B. COREONE_INDX8T
 	State string     `json:"state,omitempty"`
 	MMU   bool       `json:"mmu"` // Tools sind die Slots einer MMU
 	Tools []ToolInfo `json:"tools"`
@@ -402,6 +411,7 @@ func statusPayload() map[string]any {
 		"login":      live.loginState,
 		"loginError": live.loginErr,
 		"error":      live.lastErr,
+		"spooly":     spooly.connected(),
 	}
 	if live.snap != nil {
 		st["updatedAt"] = live.snap.UpdatedAt
@@ -507,6 +517,7 @@ func startServer(ln net.Listener) {
 		log.Println("Disconnected from Prusa Connect.")
 		writeJSON(w, map[string]any{"ok": true})
 	}))
+	registerSpooly(mux)
 	srv := &http.Server{Handler: mux, ReadHeaderTimeout: 10 * time.Second}
 	log.Fatal(srv.Serve(ln))
 }
@@ -576,6 +587,7 @@ func main() {
 	}
 
 	tokens.load()
+	spooly.load()
 	if tokens.hasLogin() {
 		fmt.Println(C("stored"))
 		go refresh(0)
@@ -583,6 +595,7 @@ func main() {
 		fmt.Println(C("notYet"))
 	}
 	go poller()
+	go spoolyPoller()
 	fmt.Println(C("url", uiURL))
 	fmt.Println(C("keepOpen"))
 	fmt.Println()

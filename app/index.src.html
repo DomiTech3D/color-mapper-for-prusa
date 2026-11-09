@@ -94,6 +94,57 @@ header.top p { margin: 0; color: var(--muted); font-size: 14px; }
 .live-auto { display: flex; gap: 8px; align-items: center; font-size: 13px; cursor: pointer; }
 .live-auto input { accent-color: var(--accent); width: 16px; height: 16px; }
 .live-own { font-size: 13px; color: var(--warn); }
+.livesrc { align-self: flex-start; }
+.livesrc button { font-size: 12px; padding: 3px 10px; }
+.spooly-key { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.spooly-key input { flex: 1 1 200px; min-width: 0; padding: 7px 9px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font-family: var(--font-mono); font-size: 13px; }
+.spooly-key .hint { flex-basis: 100%; margin: 0; }
+.tool.fill-low .mat { color: var(--warn); }
+.tool.fill-crit .mat { color: var(--err); font-weight: 600; }
+.what .sugg { display: block; font-size: 12px; color: var(--accent); margin-top: 2px; }
+.what .sugg .link-btn { font-size: 12px; margin-left: 4px; }
+.tool .mat > span { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; }
+.tool .mat .sep { display: none; }
+.tool { align-self: stretch; }
+.tool .spbtn { margin-top: auto; display: inline-grid; place-items: center; width: 26px; height: 20px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 99px; padding: 0; cursor: pointer; }
+.tool .spbtn svg { width: 13px; height: 13px; }
+.tool .spbtn:hover { color: var(--accent); border-color: var(--accent); }
+.planlist { display: grid; gap: 6px; margin-top: 10px; }
+.planlist > p { margin: 0; font-size: 12.5px; color: var(--muted); }
+.planrow { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 6px 8px; border: 1px dashed var(--accent); border-radius: 8px; }
+.planrow > i { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); }
+.planrow b { display: block; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.planrow small { display: block; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.planrow .link-btn { font-size: 12.5px; }
+.wrbtn { font-weight: 600; font-size: 12.5px; line-height: 1.5; color: var(--accent-ink); background: var(--accent); border: 1px solid var(--accent); border-radius: 99px; padding: 2px 10px; cursor: pointer; white-space: nowrap; }
+.wrbtn.ask { background: var(--warn); border-color: var(--warn); color: #1A1200; }
+.wrbtn:disabled { opacity: .6; cursor: progress; }
+.tool.planned .dot { box-shadow: inset 0 -3px 0 rgba(0,0,0,.12), 0 0 0 2px var(--panel), 0 0 0 3px var(--accent); border-style: dashed; }
+.tool.planned .mat { color: var(--accent); }
+.sp-msg { margin: 8px 0 0; font-size: 13px; color: var(--ok); }
+.sp-msg.err { color: var(--err); }
+dialog.spdlg { width: min(520px, calc(100vw - 32px)); max-height: min(640px, calc(100vh - 32px)); padding: 0; border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); color: var(--ink); box-shadow: 0 10px 40px rgba(0,0,0,.3); }
+dialog.spdlg[open] { display: flex; flex-direction: column; }
+dialog.spdlg::backdrop { background: rgba(0,0,0,.45); }
+.spdlg header { padding: 14px 16px 8px; display: grid; gap: 8px; }
+.spdlg header b { font-family: var(--font-display); font-size: 17px; font-weight: 600; }
+.spdlg header small { color: var(--muted); font-size: 12.5px; }
+.spdlg input[type=search] { width: 100%; padding: 7px 9px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font: inherit; font-size: 14px; }
+.splist { overflow: auto; padding: 0 8px 8px; display: grid; gap: 2px; align-content: start; min-height: 120px; }
+.sprow { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: center; text-align: left; width: 100%; padding: 7px 8px; border: 1px solid transparent; border-radius: 8px; background: none; color: inherit; font: inherit; cursor: pointer; }
+.sprow:hover, .sprow:focus-visible { background: var(--accent-soft); border-color: var(--accent); }
+.sprow.cur { border-color: var(--line); }
+.sprow i { width: 26px; height: 26px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); }
+.sprow b { display: block; font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sprow small { display: block; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sprow small .fit { color: var(--ok); }
+.sprow small .low { color: var(--warn); } .sprow small .crit { color: var(--err); }
+.spempty { color: var(--muted); font-size: 13px; padding: 12px 8px; }
+.spdlg footer { display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-wrap: wrap; padding: 10px 16px 14px; border-top: 1px solid var(--line); }
+.spdlg footer .vbtn { margin-left: auto; }
+.spdlg .danger { color: var(--err); }
+.what .sugg i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; box-shadow: 0 0 0 1px var(--line); }
+#mapMat { color: var(--warn); }
 .row-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
 .link-btn { background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
 
@@ -112,9 +163,15 @@ header.top p { margin: 0; color: var(--muted); font-size: 14px; }
 .pick input:checked + .chip { box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--accent); transform: scale(1.06); }
 .pick input:focus-visible + .chip { outline: 2px solid var(--accent); outline-offset: 4px; }
 .arrow { color: var(--muted); font-size: 12px; }
+.what .tgt { display: block; font-size: 12.5px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+.what .tgt i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; box-shadow: 0 0 0 1px var(--line); }
+.what .tgt i.none { box-shadow: none; border: 1.5px dashed var(--muted); width: 8px; height: 8px; }
+.what .tgt.warn { color: var(--warn); } .what .tgt.plan { color: var(--accent); }
+.tool.empty .dot { background: transparent !important; color: var(--muted) !important; border: 2px dashed var(--muted); box-shadow: none; }
+.pick .chip.empty { background: transparent !important; color: var(--muted) !important; border: 1.5px dashed var(--muted); }
 .dev { display: inline-block; margin-left: 6px; font-size: 11.5px; font-weight: 600; color: var(--warn); border: 1px solid currentColor; border-radius: 99px; padding: 0 7px; vertical-align: 1px; }
 .hint.todo { color: var(--warn); font-weight: 500; }
-.tool .mat { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-top: -3px; min-height: 1.2em; }
+.tool .mat { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-top: -3px; min-height: 1.2em; max-width: 100%; line-height: 1.35; }
 .livebox { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 8px; }
 .live-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-weight: 600; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; padding: 1px 10px; border-radius: 99px; border: 1px solid currentColor; white-space: nowrap; }
@@ -122,6 +179,24 @@ header.top p { margin: 0; color: var(--muted); font-size: 14px; }
 .pill.on { color: var(--ok); } .pill.on::before { animation: pulse 2.4s ease-in-out infinite; }
 .pill.off { color: var(--muted); } .pill.wait { color: var(--warn); } .pill.err { color: var(--err); }
 @keyframes pulse { 50% { opacity: .3; } }
+.livedet { border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.livedet > summary { cursor: pointer; padding: 7px 10px; font-size: 13px; font-weight: 600; list-style-position: inside; }
+.livedet > summary span { font-weight: 400; color: var(--muted); }
+.detmeta { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 3px 12px; margin: 0; padding: 2px 10px 8px; font-size: 12.5px; }
+.detmeta dt { color: var(--muted); }
+.detmeta dd { margin: 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.detlist { list-style: none; margin: 0; padding: 0 6px 6px; display: grid; gap: 1px; border-top: 1px solid var(--line); padding-top: 6px; }
+.detlist li { display: grid; grid-template-columns: 16px 30px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 4px 4px; border-radius: 6px; font-size: 12.5px; }
+.detlist li:hover { background: var(--accent-soft); }
+.detlist i { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,.3); }
+.detlist i.none { background: none; border: 1.5px dashed var(--muted); }
+.detlist .tn { font-family: var(--font-mono); font-weight: 600; font-size: 12px; }
+.detlist b { display: block; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.detlist small { display: block; color: var(--muted); font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+.detlist .empty b { font-weight: 400; color: var(--muted); }
+.dtag { font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.dtag.low { color: var(--warn); border-color: var(--warn); } .dtag.crit { color: var(--err); border-color: var(--err); }
+.dtag.plan { color: var(--accent); border-color: var(--accent); } .dtag.own { color: var(--ink); }
 .live-text { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 0; overflow-wrap: anywhere; }
 .live-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .live-actions:empty { display: none; }
@@ -173,6 +248,12 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
+<dialog class="spdlg" id="spoolDlg" aria-labelledby="spoolDlgTitle">
+  <header><b id="spoolDlgTitle"></b><small id="spoolDlgSub"></small><input type="search" id="spoolSearch" autocomplete="off" spellcheck="false"></header>
+  <div class="splist" id="spoolList"></div>
+  <footer><button class="link-btn danger" id="spoolClear" type="button" hidden></button><button class="vbtn" id="spoolClose" type="button" data-i18n="pickClose">Close</button></footer>
+</dialog>
+
 <div class="app">
   <header class="top">
     <h1 data-i18n-html="h1"><span>Color Mapper</span> for Prusa</h1>
@@ -218,17 +299,27 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       <h2><span class="step">02</span> <span id="toolsHead">Your INDX tools</span></h2>
       <div class="printer-row"><label for="printerProfile" data-i18n="printer">Printer</label><select id="printerProfile"></select></div>
       <div class="tools" id="tools"></div>
+      <div class="planlist" id="planList" hidden></div>
+      <p class="sp-msg" id="spoolyMsg" role="status" hidden></p>
       <p class="hint" id="toolHint"></p>
       <div class="livebox" id="liveBox">
+        <div class="seg livesrc" id="liveSrcRow" role="group" aria-label="Source of the tool colors" data-i18n-aria="srcAria" hidden><button type="button" data-src="connect" aria-pressed="true">Prusa Connect</button><button type="button" data-src="spooly" aria-pressed="false">Spooly</button></div>
         <div class="live-head"><span class="pill off" id="livePill">Live off</span><span class="live-text" id="liveText"></span></div>
         <div class="live-actions">
           <button class="btn" id="liveConnect" type="button" hidden data-i18n="liveConnect">Connect to Prusa Connect</button>
           <label class="live-printer" id="livePrinterRow" hidden><span data-i18n="printer">Printer</span> <select id="livePrinter"></select></label>
           <button class="link-btn" id="liveDisconnect" type="button" hidden data-i18n="liveDisconnect">Disconnect</button>
         </div>
+        <div class="spooly-key" id="spoolyKeyRow" hidden>
+          <input type="password" id="spoolyKey" autocomplete="off" spellcheck="false" placeholder="spk_…" aria-label="Spooly API key" data-i18n-aria="spoolyKeyAria">
+          <button class="btn" id="spoolyConnect" type="button" data-i18n="spoolyConnect">Connect to Spooly</button>
+          <p class="hint" data-i18n-html="spoolyKeyHelp"></p>
+        </div>
+        <label class="live-auto" id="spoolyWriteRow" hidden><input type="checkbox" id="spoolyWrite"> <span data-i18n="spoolyWrite">Allow entering spools in Spooly</span></label>
         <label class="live-auto" id="liveAutoRow" hidden><input type="checkbox" id="liveAuto"> <span data-i18n="liveAuto">Take tool colors from Prusa Connect automatically</span></label>
         <div class="live-own" id="liveOwnRow" hidden><span id="liveOwnText"></span> <button class="link-btn" id="liveResyncAll" type="button" data-i18n="liveResyncAll">Take all from Connect again</button></div>
         <p class="hint" id="liveHint"></p>
+        <details class="livedet" id="liveDetails" hidden open><summary></summary><dl class="detmeta" id="detMeta"></dl><ul class="detlist" id="detList"></ul></details>
         <details class="livelog" id="liveLogBox" hidden>
           <summary><span data-i18n="logSummary">Program log</span> <span id="bridgeVer"></span></summary>
           <pre id="liveLog"></pre>
@@ -242,6 +333,7 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       <div class="map-actions"><button class="link-btn" id="autoMap" type="button" data-i18n="autoMap">Map automatically by color</button></div>
       <div class="maplist" id="maplist"></div>
       <p class="hint" id="mapHint"></p>
+      <p class="hint" id="mapMat" hidden></p>
     </section>
 
     <section class="card">
@@ -286,8 +378,8 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       dropStrong: 'Drag a 3MF file here', dropSmall: 'or click to choose · Bambu Studio, OrcaSlicer, PrusaSlicer',
       plate: 'Plate', printer: 'Printer',
       liveConnect: 'Connect to Prusa Connect', liveDisconnect: 'Disconnect',
-      liveAuto: 'Take tool colors from Prusa Connect automatically',
-      liveResyncAll: 'Take all from Connect again',
+      liveAuto: () => 'Take tool colors from ' + S() + ' automatically',
+      liveResyncAll: () => 'Take all from ' + S() + ' again',
       logSummary: 'Program log', logCopy: 'Copy log',
       autoMap: 'Map automatically by color',
       exportBtn: 'Save for PrusaSlicer',
@@ -300,31 +392,83 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       foot: 'Unofficial community project, not affiliated with Prusa Research.',
       footLink: 'Source code (GPL-3.0)',
       noWebgl: 'WebGL2 not available – no 3D preview',
-      toolTitle: (tw, name, own, cc) => tw + (name ? ': ' + name : '') + (own ? ' – own color, not synced' : cc ? ' – color from Prusa Connect' : '') + ' – tap to change',
+      toolTitle: (tw, name, own, cc) => tw + (name ? ': ' + name : '') + (own ? ' – own color, not synced' : cc ? ' – color from ' + S() : '') + ' – tap to change',
       colorOf: (tw) => 'Color of ' + tw,
-      resyncAria: (tn) => 'Take ' + tn + ' from Prusa Connect again',
-      resyncTitle: (tn) => 'Sync ' + tn + ' with the color from Prusa Connect again',
+      resyncAria: (tn) => 'Take ' + tn + ' from ' + S() + ' again',
+      resyncTitle: (tn) => 'Sync ' + tn + ' with the color from ' + S() + ' again',
       hintSaved: (p) => 'Your colors for the ' + p.slicerL + ' are saved. Tap a ' + lw(p.word) + ' when you change a filament. The file is not affected.',
       hintTodo: (p) => 'Not set yet: tap each ' + lw(p.word) + ' and choose the color that is loaded in it. You only do this once per printer, the browser remembers it.',
       ownSync: (l) => 'Own color on ' + l + ' – not synced.',
-      ownNoSync: (l) => 'Different from Prusa Connect: ' + l + '.',
+      ownNoSync: (l) => 'Different from ' + S() + ': ' + l + '.',
       ago: (s) => (s < 60 ? s + ' s' : Math.round(s / 60) + ' min') + ' ago',
       pillOff: 'Live off',
       hintNoBridge: 'Live colors from Prusa Connect are available when you start Color Mapper for Prusa as a Windows program (ColorMapperForPrusa.exe) and connect it to Prusa Connect once.',
       pillSignin: 'Signing in …', signinText: 'Sign in to your Prusa account in the window that opened.',
       pillNotConn: 'Not connected',
       hintConnectOnce: 'Connect once: a window with the Prusa sign-in opens. After that the program fetches the tool colors by itself every 30 seconds.',
-      pillError: 'Error', pillLoading: 'Loading …', fetching: 'Fetching data from Prusa Connect …',
+      pillError: 'Error', pillLoading: 'Loading …', fetching: () => 'Fetching data from ' + S() + ' …',
       pillNoBridge: 'Program not reachable', bridgeRunning: 'Is the black “Color Mapper for Prusa” window still open?',
       noneByHand: 'None – set colors by hand',
-      pillNoPrinter: 'No printer', noMultiPrinter: 'No printer with several tools was found in Prusa Connect.',
-      pillConnected: 'Connected', noSuchPrinter: (s) => 'No ' + s + ' in Prusa Connect.',
-      hintByHand: 'Set the colors above by hand. To take a printer’s colors, choose it from Prusa Connect under “Printer”.',
+      pillNoPrinter: 'No printer', noMultiPrinter: () => 'No Prusa printer with several tools was found in ' + S() + '.',
+      pillConnected: 'Connected', noSuchPrinter: (s) => 'No ' + s + ' in ' + S() + '.',
+      hintByHand: () => 'Set the colors above by hand. To take a printer’s colors, choose it from ' + S() + ' under “Printer”.',
       pillLive: 'Live',
       liveLine: (n, a, err, autoOff) => n + ' · updated ' + a + (err ? ' · last fetch failed' : '') + (autoOff ? ' · auto sync off' : ''),
-      newSpool: (l) => 'New spool on ' + l + ': color taken from Prusa Connect again. ',
-      noColor: (l, p) => 'No color in Prusa Connect: ' + l + '. Assign a material to these ' + lw(p.word) + 's in Connect and the color comes automatically.',
-      newSpoolHint: 'Loaded a new spool? Its color appears here within about 30 seconds.',
+      newSpool: (l) => 'New spool on ' + l + ': color taken from ' + S() + ' again. ',
+      noColor: (l, p) => 'No color in ' + S() + ': ' + l + '. Assign a spool to these ' + lw(p.word) + 's in ' + S() + ' and the color comes automatically.',
+      newSpoolHint: () => live.source === 'spooly' ? 'Loaded a new spool? Its color appears here about a minute after Spooly knows about it.' : 'Loaded a new spool? Its color appears here within about 30 seconds.',
+      srcAria: 'Source of the tool colors',
+      spoolyConnect: 'Connect to Spooly', spoolyKeyAria: 'Spooly API key', spoolyChecking: 'Checking key …',
+      spoolyKeyHelp: 'Create an <b>API key</b> in Spooly (needs Spooly Pro and API access) and paste it here. Reading is enough; only the optional entering of spools in Spooly needs write access. The key is stored encrypted on this PC only and is never shown again.',
+      spoolyHint: 'With Spooly, the tool colors come from the spools in your Spooly slots – and for colors that are not loaded, the Color Mapper suggests a matching spool from your stock.',
+      lowSpools: (l) => ' Little filament left: ' + l + '.',
+      leftTitle: (g) => ' – only ' + g + ' g left',
+      suggStock: (name, g, loc) => 'In stock: ' + name + (g != null ? ' · ' + g + ' g' : '') + (loc ? ' · ' + loc : ''),
+      suggLoaded: (name, tn) => 'Better match: ' + name + ', loaded in ' + tn,
+      mixedMat: (l) => 'This print uses several materials: ' + l + '. Check temperatures and compatibility in PrusaSlicer.',
+      spoolBtnAria: (tn) => 'Choose a spool from Spooly for ' + tn,
+      pickTitle: (tn, p) => 'Spool for ' + tn + ' · ' + p,
+      pickSubFile: 'Spools that match the colors of your file are at the top. The choice is only a plan – Spooly stays unchanged until you enter it there.',
+      pickSubNoFile: 'The choice is only a plan – Spooly stays unchanged until you enter it there.',
+      pickSearch: 'Search number, name, material, storage',
+      pickHere: 'loaded here',
+      pickIn: (w) => 'in ' + w,
+      pickPlannedFor: (tn) => 'planned for ' + tn,
+      pickFits: (f) => 'matches ' + f + ' of the file',
+      pickNone: 'No spool with a color found.',
+      pickClose: 'Close',
+      pickClear: (tn) => 'Empty ' + tn + ' in Spooly',
+      pickClearSure: (tn) => 'Really empty ' + tn + ' in Spooly? Click again',
+      plannedTitle: (tn, name) => tn + ': planned spool ' + name + ' – not loaded yet. Spooly is unchanged.',
+      planUndoTitle: (tn) => 'Discard the plan for ' + tn + ' and use the spool from Spooly again',
+      writeBtn: 'Enter in Spooly',
+      writeAsk: 'Assign anyway',
+      unplan: 'Discard',
+      planHead: (w) => w ? 'Planned spools – load them, then enter them in Spooly:' : 'Planned spools – load them; the colors update as soon as Spooly knows about them:',
+      pickTip: ' Tip: the spool button under each tool picks a spool from your stock.',
+      writeTitle: (tn, name) => 'Enter ' + name + ' in Spooly as loaded in ' + tn,
+      spoolyWrite: 'Allow entering spools in Spooly',
+      detSummary: (src, n, k) => 'Details', detSummarySub: (src, p, k, n) => src + ' · ' + p + ' · ' + k + ' of ' + n + ' loaded',
+      detSource: 'Source', detPrinter: 'Printer', detModel: 'Model', detState: 'State', detProfile: 'Profile here', detUpdated: 'Updated', detKey: 'Spooly key',
+      detEmpty: 'empty', detNoColor: 'no color', detOwn: 'own color', detPlanned: (n) => 'planned: ' + n,
+      detLow: 'low', detCrit: 'almost empty', detUnused: 'not used by this profile',
+      states: { IDLE: 'idle', READY: 'ready', PRINTING: 'printing', PAUSED: 'paused', FINISHED: 'finished', STOPPED: 'stopped', ERROR: 'error', ATTENTION: 'needs attention', BUSY: 'busy', OFFLINE: 'offline', UNKNOWN: 'unknown' },
+      planDone: (l) => 'Planned spool now loaded in Spooly: ' + l + '.',
+      writeNoSlot: (tn, listed) => listed ? 'Spooly lists ' + tn + ' but without a slot ID, so the API cannot assign it. In Spooly, the slot autopilot must be active for this printer.'
+        : 'Spooly does not list ' + tn + ' in its slot list (GET /slots) yet, so the API cannot assign it. Spooly seems to create a slot only after a spool was assigned to it once in Spooly: assign any spool to ' + tn + ' in Spooly once, then it works from here too.',
+      emptyTitle: (tw, src) => tw + ': nothing loaded according to ' + src + '. It is not used for automatic mapping. Tap to set a color anyway.',
+      devEmpty: 'nothing loaded',
+      tgtEmpty: (tn) => tn + ': empty – nothing loaded',
+      tgtPlanned: (tn, d) => tn + ' (planned): ' + d,
+      tgtOwn: (tn, hex, isLive) => tn + ': ' + (isLive ? 'own color ' : 'color ') + hex,
+      autoPlanned: (l) => 'Best spools from your stock planned: ' + l + '. Load them, or click «Discard».',
+      autoPlannedItem: (tn, sp, f, was) => tn + ' ' + sp + ' for ' + f + (was ? ' (instead of ' + was + ')' : ''),
+      autoNoRoom: (l) => 'No free tool for ' + l + ' – the closest loaded spool is used.',
+      autoAllLoaded: 'Your loaded spools already match best – nothing to plan.',
+      wasOwn: 'own color',
+      suggPlannedIn: (name, tn) => 'Better match: ' + name + ', planned for ' + tn,
+      suggPlan: (tn) => 'Plan for ' + tn,
+      suggUse: (tn) => 'Use ' + tn,
       colorsChanged: ' The colors have changed: “Map automatically by color” applies them to the mapping.',
       openingSignin: 'A window with the Prusa sign-in is opening …',
       signinFailed: 'Signing in could not be started.',
@@ -375,8 +519,8 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       dropStrong: '3MF-Datei hierher ziehen', dropSmall: 'oder klicken zum Auswählen · Bambu Studio, OrcaSlicer, PrusaSlicer',
       plate: 'Platte', printer: 'Drucker',
       liveConnect: 'Mit Prusa Connect verbinden', liveDisconnect: 'Verbindung trennen',
-      liveAuto: 'Tool-Farben automatisch aus Prusa Connect übernehmen',
-      liveResyncAll: 'Alle wieder aus Connect übernehmen',
+      liveAuto: () => 'Tool-Farben automatisch aus ' + S() + ' übernehmen',
+      liveResyncAll: () => 'Alle wieder aus ' + S() + ' übernehmen',
       logSummary: 'Protokoll des Programms', logCopy: 'Protokoll kopieren',
       autoMap: 'Automatisch nach Farbe zuordnen',
       exportBtn: 'Für PrusaSlicer speichern',
@@ -389,31 +533,83 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       foot: 'Inoffizielles Community-Projekt, nicht mit Prusa Research verbunden.',
       footLink: 'Quellcode (GPL-3.0)',
       noWebgl: 'WebGL2 nicht verfügbar – keine 3D-Vorschau',
-      toolTitle: (tw, name, own, cc) => tw + (name ? ': ' + name : '') + (own ? ' – eigene Farbe, nicht synchronisiert' : cc ? ' – Farbe aus Prusa Connect' : '') + ' – zum Ändern tippen',
+      toolTitle: (tw, name, own, cc) => tw + (name ? ': ' + name : '') + (own ? ' – eigene Farbe, nicht synchronisiert' : cc ? ' – Farbe aus ' + S() : '') + ' – zum Ändern tippen',
       colorOf: (tw) => 'Farbe ' + tw,
-      resyncAria: (tn) => tn + ' wieder aus Prusa Connect übernehmen',
-      resyncTitle: (tn) => tn + ' wieder mit der Farbe aus Prusa Connect synchronisieren',
+      resyncAria: (tn) => tn + ' wieder aus ' + S() + ' übernehmen',
+      resyncTitle: (tn) => tn + ' wieder mit der Farbe aus ' + S() + ' synchronisieren',
       hintSaved: (p) => 'Deine Farben für den ' + p.slicerL + ' sind gespeichert. Tippe auf ' + (p.word === 'Slot' ? 'einen Slot' : 'ein Tool') + ', wenn du ein Filament wechselst. Die Datei bleibt davon unberührt.',
       hintTodo: (p) => 'Noch nicht eingestellt: Tippe auf ' + (p.word === 'Slot' ? 'jeden Slot' : 'jedes Tool') + ' und wähl die Farbe, die darin geladen ist. Das machst du nur einmal pro Drucker, der Browser merkt es sich.',
       ownSync: (l) => 'Eigene Farbe bei ' + l + ' – wird nicht synchronisiert.',
-      ownNoSync: (l) => 'Abweichend von Prusa Connect: ' + l + '.',
+      ownNoSync: (l) => 'Abweichend von ' + S() + ': ' + l + '.',
       ago: (s) => 'vor ' + (s < 60 ? s + ' s' : Math.round(s / 60) + ' min'),
       pillOff: 'Live aus',
       hintNoBridge: 'Live-Farben aus Prusa Connect gibt es, wenn du den Farb-Mapper als Windows-Programm startest (ColorMapperForPrusa.exe) und einmal mit Prusa Connect verbindest.',
       pillSignin: 'Anmeldung …', signinText: 'Melde dich im geöffneten Fenster bei deinem Prusa-Account an.',
       pillNotConn: 'Nicht verbunden',
       hintConnectOnce: 'Einmal verbinden: Ein Fenster mit der Prusa-Anmeldung öffnet sich. Danach holt das Programm die Tool-Farben selbständig, alle 30 Sekunden.',
-      pillError: 'Fehler', pillLoading: 'Lade …', fetching: 'Hole Daten aus Prusa Connect …',
+      pillError: 'Fehler', pillLoading: 'Lade …', fetching: () => 'Hole Daten aus ' + S() + ' …',
       pillNoBridge: 'Programm nicht erreichbar', bridgeRunning: 'Ist das schwarze Fenster «Color Mapper for Prusa» noch offen?',
       noneByHand: 'Keiner – Farben von Hand',
-      pillNoPrinter: 'Kein Drucker', noMultiPrinter: 'In Prusa Connect wurde kein Drucker mit mehreren Tools gefunden.',
-      pillConnected: 'Verbunden', noSuchPrinter: (s) => 'Kein ' + s + ' in Prusa Connect.',
-      hintByHand: 'Stell die Farben oben von Hand ein. Wähl bei «Drucker» einen Drucker aus Prusa Connect, um dessen Farben zu übernehmen.',
+      pillNoPrinter: 'Kein Drucker', noMultiPrinter: () => 'In ' + S() + ' wurde kein Prusa-Drucker mit mehreren Tools gefunden.',
+      pillConnected: 'Verbunden', noSuchPrinter: (s) => 'Kein ' + s + ' in ' + S() + '.',
+      hintByHand: () => 'Stell die Farben oben von Hand ein. Wähl bei «Drucker» einen Drucker aus ' + S() + ', um dessen Farben zu übernehmen.',
       pillLive: 'Live',
       liveLine: (n, a, err, autoOff) => n + ' · aktualisiert ' + a + (err ? ' · letzter Abruf fehlgeschlagen' : '') + (autoOff ? ' · Automatik aus' : ''),
-      newSpool: (l) => 'Neue Spule auf ' + l + ': Farbe wieder aus Prusa Connect übernommen. ',
-      noColor: (l, p) => 'Ohne Farbe in Prusa Connect: ' + l + '. Weise diesen ' + p.word + 's in Connect ein Material zu, dann kommt die Farbe automatisch.',
-      newSpoolHint: 'Neue Spule geladen? Die Farbe erscheint hier nach spätestens etwa 30 Sekunden.',
+      newSpool: (l) => 'Neue Spule auf ' + l + ': Farbe wieder aus ' + S() + ' übernommen. ',
+      noColor: (l, p) => 'Ohne Farbe in ' + S() + ': ' + l + '. Weise diesen ' + p.word + 's in ' + S() + ' eine Spule zu, dann kommt die Farbe automatisch.',
+      newSpoolHint: () => live.source === 'spooly' ? 'Neue Spule geladen? Die Farbe erscheint hier etwa eine Minute, nachdem Spooly davon weiss.' : 'Neue Spule geladen? Die Farbe erscheint hier nach spätestens etwa 30 Sekunden.',
+      srcAria: 'Quelle der Tool-Farben',
+      spoolyConnect: 'Mit Spooly verbinden', spoolyKeyAria: 'Spooly-API-Schlüssel', spoolyChecking: 'Prüfe Schlüssel …',
+      spoolyKeyHelp: 'Erstelle in Spooly einen <b>API-Schlüssel</b> (braucht Spooly Pro und API-Zugang) und füge ihn hier ein. Lesen genügt; nur das optionale Eintragen von Spulen in Spooly braucht Schreibrecht. Der Schlüssel wird nur auf diesem PC verschlüsselt gespeichert und nicht mehr angezeigt.',
+      spoolyHint: 'Mit Spooly kommen die Tool-Farben von den Spulen in deinen Spooly-Slots – und für Farben, die nicht geladen sind, schlägt der Farb-Mapper eine passende Spule aus deinem Lager vor.',
+      lowSpools: (l) => ' Wenig Filament: ' + l + '.',
+      leftTitle: (g) => ' – nur noch ' + g + ' g',
+      suggStock: (name, g, loc) => 'Im Lager: ' + name + (g != null ? ' · ' + g + ' g' : '') + (loc ? ' · ' + loc : ''),
+      suggLoaded: (name, tn) => 'Passt besser: ' + name + ', geladen in ' + tn,
+      mixedMat: (l) => 'Dieser Druck nutzt mehrere Materialien: ' + l + '. Temperaturen und Verträglichkeit in PrusaSlicer prüfen.',
+      spoolBtnAria: (tn) => 'Spule aus Spooly für ' + tn + ' wählen',
+      pickTitle: (tn, p) => 'Spule für ' + tn + ' · ' + p,
+      pickSubFile: 'Spulen, die zu den Farben deiner Datei passen, stehen oben. Die Wahl ist nur geplant – Spooly bleibt unverändert, bis du sie dort einträgst.',
+      pickSubNoFile: 'Die Wahl ist nur geplant – Spooly bleibt unverändert, bis du sie dort einträgst.',
+      pickSearch: 'Nummer, Name, Material, Lagerort suchen',
+      pickHere: 'hier geladen',
+      pickIn: (w) => 'in ' + w,
+      pickPlannedFor: (tn) => 'geplant für ' + tn,
+      pickFits: (f) => 'passt zu ' + f + ' der Datei',
+      pickNone: 'Keine Spule mit Farbe gefunden.',
+      pickClose: 'Schliessen',
+      pickClear: (tn) => tn + ' in Spooly leeren',
+      pickClearSure: (tn) => tn + ' wirklich in Spooly leeren? Nochmals klicken',
+      plannedTitle: (tn, name) => tn + ': geplante Spule ' + name + ' – noch nicht geladen. Spooly ist unverändert.',
+      planUndoTitle: (tn) => 'Plan für ' + tn + ' verwerfen und wieder die Spule aus Spooly nehmen',
+      writeBtn: 'In Spooly eintragen',
+      writeAsk: 'Trotzdem eintragen',
+      unplan: 'Verwerfen',
+      planHead: (w) => w ? 'Geplante Spulen – einlegen und dann in Spooly eintragen:' : 'Geplante Spulen – einlegen; die Farben erscheinen, sobald Spooly davon weiss:',
+      pickTip: ' Tipp: Mit dem Spulen-Knopf unter jedem Tool wählst du eine Spule aus deinem Lager.',
+      writeTitle: (tn, name) => name + ' in Spooly als geladen in ' + tn + ' eintragen',
+      spoolyWrite: 'Spulen in Spooly eintragen erlauben',
+      detSummary: (src, n, k) => 'Details', detSummarySub: (src, p, k, n) => src + ' · ' + p + ' · ' + k + ' von ' + n + ' belegt',
+      detSource: 'Quelle', detPrinter: 'Drucker', detModel: 'Modell', detState: 'Zustand', detProfile: 'Profil hier', detUpdated: 'Aktualisiert', detKey: 'Spooly-Schlüssel',
+      detEmpty: 'leer', detNoColor: 'ohne Farbe', detOwn: 'eigene Farbe', detPlanned: (n) => 'geplant: ' + n,
+      detLow: 'knapp', detCrit: 'fast leer', detUnused: 'in diesem Profil nicht genutzt',
+      states: { IDLE: 'bereit', READY: 'bereit', PRINTING: 'druckt', PAUSED: 'pausiert', FINISHED: 'fertig', STOPPED: 'gestoppt', ERROR: 'Fehler', ATTENTION: 'braucht Aufmerksamkeit', BUSY: 'beschäftigt', OFFLINE: 'offline', UNKNOWN: 'unbekannt' },
+      planDone: (l) => 'Geplante Spule ist jetzt in Spooly geladen: ' + l + '.',
+      writeNoSlot: (tn, listed) => listed ? 'Spooly führt ' + tn + ' ohne Slot-ID, deshalb kann die Schnittstelle dort nichts zuordnen. In Spooly muss der Slot-Autopilot für diesen Drucker aktiv sein.'
+        : 'Spooly liefert ' + tn + ' noch nicht in seiner Slot-Liste (GET /slots), deshalb kann die Schnittstelle dort nichts zuordnen. Spooly legt einen Slot offenbar erst an, wenn ihm einmal in Spooly eine Spule zugewiesen wurde: weise ' + tn + ' in Spooly einmal irgendeine Spule zu, danach geht es auch von hier.',
+      emptyTitle: (tw, src) => tw + ': laut ' + src + ' nichts geladen. Wird beim automatischen Zuordnen nicht verwendet. Tippen, um trotzdem eine Farbe zu setzen.',
+      devEmpty: 'nichts geladen',
+      tgtEmpty: (tn) => tn + ': leer – nichts geladen',
+      tgtPlanned: (tn, d) => tn + ' (geplant): ' + d,
+      tgtOwn: (tn, hex, isLive) => tn + ': ' + (isLive ? 'eigene Farbe ' : 'Farbe ') + hex,
+      autoPlanned: (l) => 'Beste Spulen aus deinem Lager eingeplant: ' + l + '. Einlegen oder «Verwerfen» klicken.',
+      autoPlannedItem: (tn, sp, f, was) => tn + ' ' + sp + ' für ' + f + (was ? ' (statt ' + was + ')' : ''),
+      autoNoRoom: (l) => 'Kein freies Tool für ' + l + ' – es wird die ähnlichste geladene Spule verwendet.',
+      autoAllLoaded: 'Deine geladenen Spulen passen schon am besten – nichts einzuplanen.',
+      wasOwn: 'eigener Farbe',
+      suggPlannedIn: (name, tn) => 'Passt besser: ' + name + ', geplant für ' + tn,
+      suggPlan: (tn) => 'Für ' + tn + ' einplanen',
+      suggUse: (tn) => tn + ' verwenden',
       colorsChanged: ' Die Farben haben sich geändert: «Automatisch nach Farbe zuordnen» übernimmt sie in die Zuordnung.',
       openingSignin: 'Ein Fenster mit der Prusa-Anmeldung öffnet sich …',
       signinFailed: 'Anmeldung konnte nicht gestartet werden.',
@@ -774,16 +970,21 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
   function renderTools() {
     const box = $('tools');
     box.innerHTML = '';
+    const pick = spoolyActive();
+    const lp = pick ? livePrinter() : null;
     toolColors.forEach((c, i) => {
       if (i >= prof.n) return;
-      const info = toolMat[i];
+      const plan = plannedSpool(i);
+      const info = toolInfo(i);
       const cc = connectColor(i);
-      const own = !!cc && c !== cc;  // weicht von Prusa Connect ab (eigene Farbe oder Automatik aus)
+      const empty = toolEmpty(i);
+      // weicht von Connect/Spooly ab (eigene Farbe oder Automatik aus); bei leerem Slot: von Hand gesetzte Farbe
+      const own = !plan && (cc ? c !== cc : !!(toolOverride[i] && live.autoSync && liveTool(i)));
       const cell = document.createElement('div');
-      cell.className = 'tool' + (own ? ' own' : info && info.live && info.m && cc ? ' live' : '');
+      cell.className = 'tool' + (plan ? ' planned' : own ? ' own' : empty ? ' empty' : info && info.live && info.m && cc ? ' live' : '') + (info && (info.live || plan) && info.fill ? ' fill-' + info.fill : '');
       const lab = document.createElement('label');
       lab.className = 'toolpick';
-      lab.title = t('toolTitle', TW(i + 1), info && info.name, own, !!cc);
+      lab.title = plan ? t('plannedTitle', TW(i + 1), spoolName(plan)) : empty ? t('emptyTitle', TW(i + 1), S()) : t('toolTitle', TW(i + 1), info && info.name, own, !!cc) + (info && info.fill && info.g != null ? t('leftTitle', Math.round(info.g)) : '');
       const dot = document.createElement('span');
       dot.className = 'dot'; dot.style.background = c; dot.style.color = inkFor(c); dot.textContent = i + 1;
       const inp = document.createElement('input');
@@ -797,27 +998,57 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       inp.addEventListener('change', () => {
         const ccNow = connectColor(i);
         if (ccNow && toolColors[i] !== ccNow) { toolOverride[i] = { cc: ccNow }; store.set(K.ov, toolOverride); }
+        // leerer Slot: Farbe von Hand setzen geht trotzdem (gilt, bis dort eine Spule auftaucht)
+        else if (!ccNow && live.autoSync && liveTool(i) && !plannedSpool(i)) { toolOverride[i] = { cc: null }; store.set(K.ov, toolOverride); }
         else if (toolOverride[i]) { toolOverride[i] = null; store.set(K.ov, toolOverride); }
         renderTools(); updateOwnRow();
       });
       lab.append(dot, inp);
       const lbl = document.createElement('span'); lbl.className = 'lbl'; lbl.textContent = TN(i + 1);
       cell.append(lab, lbl);
+      if (plan) {
+        const mat = document.createElement('span'); mat.className = 'mat';
+        matLines(mat, plan.no ? '#' + plan.no : '', plan.m);
+        mat.title = spoolName(plan);
+        cell.append(mat);
+      }
       if (own) {
         const rb = document.createElement('button');
-        rb.type = 'button'; rb.className = 'resync'; rb.innerHTML = '↺<span class="rs-long"> Connect</span>';
+        rb.type = 'button'; rb.className = 'resync'; rb.innerHTML = '↺<span class="rs-long"> ' + (live.source === 'spooly' ? 'Spooly' : 'Connect') + '</span>';
         rb.setAttribute('aria-label', t('resyncAria', TN(i + 1)));
         rb.title = t('resyncTitle', TN(i + 1));
         rb.addEventListener('click', () => resyncTools([i]));
         cell.append(rb);
-      } else {
-        const mat = document.createElement('span'); mat.className = 'mat'; mat.textContent = info && info.m ? info.m : '';
+      } else if (empty) {
+        const mat = document.createElement('span'); mat.className = 'mat';
+        matLines(mat, t('detEmpty'), '');
         cell.append(mat);
+      } else if (!plan) {
+        const mat = document.createElement('span'); mat.className = 'mat';
+        if (info && info.m) { matLines(mat, info.m, info.live && info.g != null ? Math.round(info.g) + ' g' : ''); mat.title = info.name || info.m; }
+        cell.append(mat);
+      }
+      if (pick && lp) {
+        const sb = document.createElement('button');
+        sb.type = 'button'; sb.className = 'spbtn'; sb.id = 'spool' + (i + 1);
+        sb.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="1.1" fill="currentColor"/></svg>';
+        sb.setAttribute('aria-label', t('spoolBtnAria', TN(i + 1)));
+        sb.title = t('spoolBtnAria', TN(i + 1));
+        sb.addEventListener('click', () => openPicker(i));
+        cell.append(sb);
       }
       cell.dataset.hl = 'tool:' + (i + 1);
       box.appendChild(cell);
     });
+    renderPlans(lp);
+    renderLiveDetails();
     refreshHover();
+  }
+  // Material und Restmenge untereinander (Text bleibt «PLA · 35 g» für Vorleser und Kopieren)
+  function matLines(el, a, b) {
+    const x = document.createElement('span'); x.textContent = a || b;
+    el.append(x);
+    if (a && b) { const y = document.createElement('span'); const sep = document.createElement('span'); sep.className = 'sep'; sep.textContent = ' · '; y.append(sep, b); el.append(y); }
   }
   function updateToolHint() {
     const h = $('toolHint');
@@ -826,12 +1057,23 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
   }
 
   // ---------------------------------------------------------------- Live aus Prusa Connect (wenn als Windows-Programm gestartet)
-  const live = { bridge: false, data: null, printerId: store.get('indx-live-printer', null), autoSync: store.get('indx-live-autosync', true) !== false, timer: 0 };
+  const live = { bridge: false, data: null, printerId: store.get('indx-live-printer', null), autoSync: store.get('indx-live-autosync', true) !== false, timer: 0,
+    source: store.get('cm-live-source', 'connect') === 'spooly' ? 'spooly' : 'connect', spoolyErr: '',
+    spoolyWrite: store.get('cm-spooly-write', false) === true, confirm: null, writing: -1, hintBase: '' };
+  function S() { return live.source === 'spooly' ? 'Spooly' : 'Prusa Connect'; }
   // Welches Profil passt zu einem Drucker aus Prusa Connect? (Druckertyp: 1.x = MK-Serie, 3.x = XL, 7.x = CORE One)
   // Druckertypen in Prusa Connect: 1.x MK-Serie, 3.x XL/XL+, 7.x CORE One (7.10 = INDX), 8.x CORE One L.
   // p.mmu: Die Tools sind MMU-Slots (vom Programm aus den Daten von Prusa Connect bestimmt).
   function profileForPrinter(p) {
     const n = p.tools.length, t = String(p.type || '');
+    // Spooly liefert das Druckermodell im PrusaSlicer-Format (z. B. COREONE_INDX8T)
+    const m = String(p.model || '').toUpperCase();
+    if (m) {
+      const L = /^COREONEL/.test(m);
+      if (/INDX/.test(m)) { const k = (m.match(/(\d+)T\b/) || [])[1]; const four = k ? +k <= 4 : n <= 4; return L ? (four ? 'c1l-indx4' : 'c1l-indx') : (four ? 'indx4' : 'indx'); }
+      if (/MMU/.test(m)) return L ? 'c1l-mmu3' : /^COREONE/.test(m) ? 'c1-mmu3' : 'mk4-mmu3';
+      if (/^XL/.test(m)) return /XL2/.test(m) || n === 2 ? 'xl2' : 'xl5';
+    }
     const mmu = p.mmu === true || (p.mmu === undefined && n === 5 && !/^3\./.test(t)); // ältere Programmversion ohne «mmu»
     const big = /^8\./.test(t);
     if (/^3\./.test(t)) return n >= 3 ? 'xl5' : 'xl2';
@@ -859,9 +1101,14 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     $('liveOwnText').textContent = t(live.autoSync ? 'ownSync' : 'ownNoSync', own.join(', '));
   }
   function resyncTools(list) {
-    for (const i of list) { toolOverride[i] = null; const cc = connectColor(i); if (cc) toolColors[i] = cc; }
+    for (const i of list) {
+      const ov = toolOverride[i]; toolOverride[i] = null;
+      const cc = connectColor(i);
+      if (cc) toolColors[i] = cc; else if (ov && ov.prev) toolColors[i] = ov.prev;
+      if (live.confirm && live.confirm.i === i) live.confirm = null;
+    }
     store.set(K.ov, toolOverride); store.set(K.tools, toolColors);
-    renderTools(); updateOwnRow();
+    renderTools(); updateOwnRow(); showLiveHint();
     if (state.used.length && !state.mapTouched) { autoMap(); renderMapping(); }
     refreshChips(); applyPalette();
   }
@@ -887,9 +1134,75 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     $('liveHint').textContent = t('hintNoBridge');
   }
   function schedule(ms) { clearTimeout(live.timer); live.timer = setTimeout(pollLive, ms); }
+  function updateSrcButtons() {
+    document.querySelectorAll('#liveSrcRow button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.src === live.source)));
+  }
+  function setSource(src) {
+    if (src === live.source) return;
+    live.source = src; store.set('cm-live-source', src);
+    // Farben der bisherigen Quelle nicht mehr als «live» führen
+    toolMat = toolMat.map((x) => (x && x.live ? null : x)); store.set(K.info, toolMat);
+    toolOverride = new Array(8).fill(null); store.set(K.ov, toolOverride);
+    live.data = null; live.rendered = false; live.spoolyErr = '';
+    $('livePrinter').dataset.sig = '';
+    ['liveConnect', 'liveDisconnect', 'livePrinterRow', 'liveAutoRow', 'liveOwnRow', 'spoolyKeyRow', 'spoolyWriteRow', 'spoolyMsg', 'liveDetails'].forEach((id) => { $(id).hidden = true; });
+    live.confirm = null; live.hintBase = '';
+    setPill('wait', t('pillLoading')); $('liveText').textContent = ''; $('liveHint').textContent = '';
+    updateSrcButtons(); applyStatic(); renderTools(); updateOwnRow(); refreshChips();
+    schedule(20);
+  }
+  document.querySelectorAll('#liveSrcRow button').forEach((b) => b.addEventListener('click', () => setSource(b.dataset.src)));
+  async function pollSpooly() {
+    try {
+      $('liveConnect').hidden = true;
+      const d = await api('/api/spooly');
+      if (!d.connected) {
+        live.data = null;
+        setPill(live.spoolyErr ? 'err' : 'off', t('pillNotConn'));
+        $('liveText').textContent = live.spoolyErr;
+        $('spoolyKeyRow').hidden = false;
+        ['liveDisconnect', 'livePrinterRow', 'liveAutoRow', 'liveOwnRow', 'spoolyWriteRow'].forEach((id) => { $(id).hidden = true; });
+        $('liveHint').textContent = t('spoolyHint');
+        if (live.rendered) { live.rendered = false; renderTools(); }
+        schedule(15000);
+        return;
+      }
+      $('spoolyKeyRow').hidden = true; $('liveDisconnect').hidden = false;
+      live.data = d;
+      $('spoolyWriteRow').hidden = !d.printers; $('spoolyWrite').checked = live.spoolyWrite;
+      if (!d.printers) {
+        setPill(d.error ? 'err' : 'wait', t(d.error ? 'pillError' : 'pillLoading'));
+        $('liveText').textContent = d.error || t('fetching');
+        schedule(d.error ? 30000 : 2000);
+        return;
+      }
+      applyLive(d);
+      schedule(30000);
+    } catch (e) {
+      setPill('err', t('pillNoBridge'));
+      $('liveText').textContent = t('bridgeRunning');
+      schedule(5000);
+    }
+  }
+  async function connectSpooly() {
+    const key = $('spoolyKey').value.trim();
+    if (!key) { $('spoolyKey').focus(); return; }
+    $('spoolyConnect').disabled = true;
+    setPill('wait', t('spoolyChecking')); $('liveText').textContent = '';
+    try {
+      const r = await api('/api/spooly/connect', { method: 'POST', headers: { 'X-INDX': '1', 'Content-Type': 'application/json' }, body: JSON.stringify({ key }) });
+      if (r.ok) { $('spoolyKey').value = ''; live.spoolyErr = ''; schedule(50); }
+      else { live.spoolyErr = r.error || t('pillError'); setPill('err', t('pillError')); $('liveText').textContent = live.spoolyErr; }
+    } catch (e) { setPill('err', t('pillNoBridge')); $('liveText').textContent = t('bridgeRunning'); }
+    $('spoolyConnect').disabled = false;
+  }
+  $('spoolyConnect').addEventListener('click', connectSpooly);
+  $('spoolyKey').addEventListener('keydown', (e) => { if (e.key === 'Enter') connectSpooly(); });
   async function pollLive() {
     if (!live.bridge) return;
     if (document.hidden) { schedule(5000); return; }
+    if (live.source === 'spooly') return pollSpooly();
+    $('spoolyKeyRow').hidden = true; $('spoolyWriteRow').hidden = true;
     try {
       const st = await api('/api/status');
       if (st.login === 'waiting') {
@@ -940,7 +1253,7 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       sel.dataset.sig = sig;
     }
     $('livePrinterRow').hidden = printers.length < 2 && !!p;
-    if (!printers.length) { setPill('err', t('pillNoPrinter')); $('liveText').textContent = t('noMultiPrinter'); $('liveAutoRow').hidden = true; return; }
+    if (!printers.length) { setPill('err', t('pillNoPrinter')); $('liveText').textContent = t('noMultiPrinter'); $('liveAutoRow').hidden = true; renderLiveDetails(); return; }
     if (!p) {
       sel.value = '';
       setPill('on', t('pillConnected'));
@@ -948,6 +1261,7 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       $('liveHint').textContent = t('hintByHand');
       $('liveAutoRow').hidden = true; $('liveOwnRow').hidden = true;
       if (!live.rendered) { live.rendered = true; renderTools(); }
+      renderLiveDetails();
       return;
     }
     sel.value = p.id;
@@ -956,30 +1270,43 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     $('liveAutoRow').hidden = false;
     $('liveAuto').checked = live.autoSync;
     let changed = false;
-    const noColor = [], newSpool = [];
+    const noColor = [], newSpool = [], low = [], done = [];
     for (const x of p.tools) {
       const i = x.t - 1;
       if (i < 0 || i >= prof.n) continue;
       const info = x.m ? { m: x.m, name: [x.b, x.n || x.m].filter(Boolean).join(' '), live: true, nfc: !!x.nfc } : { live: true };
+      if (x.m && x.g != null) info.g = x.g;
+      if (x.m && x.fill) info.fill = x.fill;
+      if (x.fill) low.push(TN(x.t) + (x.g != null ? ' (' + Math.round(x.g) + ' g)' : ''));
       if (JSON.stringify(info) !== JSON.stringify(toolMat[i])) { toolMat[i] = info; changed = true; }
+      const ov = toolOverride[i];
       if (x.c) {
-        // Eigene Farbe gilt, bis in Connect eine andere Spule auf dem Tool liegt
-        if (toolOverride[i] && toolOverride[i].cc !== x.c) { toolOverride[i] = null; newSpool.push(TN(x.t)); changed = true; }
+        // Geplante Spule ist jetzt wirklich auf dem Tool: Plan erledigt
+        if (ov && ov.sp && x.spid && x.spid === ov.sp.id) { toolOverride[i] = null; done.push(TN(x.t)); changed = true; }
+        // Eigene Farbe (oder Plan) gilt, bis in Connect/Spooly eine andere Spule auf dem Tool liegt
+        else if (ov && ov.cc !== x.c) { toolOverride[i] = null; newSpool.push(TN(x.t)); changed = true; }
         if (live.autoSync && !toolOverride[i] && toolColors[i] !== x.c) { toolColors[i] = x.c; changed = true; }
       } else {
-        if (toolOverride[i]) { toolOverride[i] = null; changed = true; }
+        // Spule entfernt: eigene Farbe weg; ein Plan für einen leeren Slot bleibt
+        if (ov && ov.cc) { toolOverride[i] = null; changed = true; }
         if (x.m) noColor.push(TN(x.t) + ' (' + x.m + ')');
       }
+      if (live.confirm && live.confirm.i === i && !(toolOverride[i] && toolOverride[i].sp)) live.confirm = null;
     }
     updateOwnRow();
-    $('liveHint').textContent = (newSpool.length ? t('newSpool', newSpool.join(', ')) : '') + (noColor.length ? t('noColor', noColor.join(', '), prof) : t('newSpoolHint'));
-    if (!changed) { if (!live.rendered) { live.rendered = true; renderTools(); } return; }
+    if (done.length) showSpMsg(t('planDone', done.join(', ')));
+    live.hintBase = (newSpool.length ? t('newSpool', newSpool.join(', ')) : '') + (noColor.length ? t('noColor', noColor.join(', '), prof) : t('newSpoolHint')) + (low.length ? t('lowSpools', low.join(', ')) : '');
+    showLiveHint();
+    // Spulen-Knöpfe erscheinen/verschwinden mit den Daten aus Spooly
+    const psig = spoolyActive() ? p.id + '|' + p.tools.map((x) => (x.slot ? 1 : 0) + (x.spid || '')).join(',') + '|' + live.data.spools.length : '';
+    if (psig !== live.pickSig) { live.pickSig = psig; if (!changed) renderTools(); if ($('spoolDlg').open) renderPicker(); }
+    if (!changed) { if (!live.rendered) { live.rendered = true; renderTools(); } refreshChips(); return; }
     live.rendered = true;
     toolsCustomized = true;
     store.set(K.tools, toolColors); store.set(K.info, toolMat); store.set(K.ov, toolOverride);
     renderTools(); updateToolHint(); updateOwnRow();
     if (state.used.length && !state.mapTouched) { autoMap(); renderMapping(); }
-    else if (state.used.length) $('liveHint').textContent += t('colorsChanged');
+    else if (state.used.length) { live.hintBase += t('colorsChanged'); showLiveHint(); }
     refreshChips(); applyPalette();
   }
   $('livePrinter').addEventListener('change', () => {
@@ -988,6 +1315,10 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     const p = livePrinters().find((x) => x.id === id);
     if (p && profileForPrinter(p) === before) { toolOverride = new Array(8).fill(null); store.set(K.ov, toolOverride); }  // anderer Drucker gleicher Art
     if (live.data) applyLive(live.data);
+  });
+  $('spoolyWrite').addEventListener('change', () => {
+    live.spoolyWrite = $('spoolyWrite').checked; store.set('cm-spooly-write', live.spoolyWrite);
+    live.confirm = null; renderTools(); showLiveHint(); if ($('spoolDlg').open) renderPicker();
   });
   $('liveAuto').addEventListener('change', () => {
     live.autoSync = $('liveAuto').checked; store.set('indx-live-autosync', live.autoSync);
@@ -1004,11 +1335,12 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     } catch (e) { setPill('err', t('pillError')); $('liveText').textContent = t('signinFailed'); }
   });
   $('liveDisconnect').addEventListener('click', async () => {
-    try { await api('/api/logout', { method: 'POST', headers: { 'X-INDX': '1' } }); } catch (e) { /* egal */ }
+    try { await api(live.source === 'spooly' ? '/api/spooly/disconnect' : '/api/logout', { method: 'POST', headers: { 'X-INDX': '1' } }); } catch (e) { /* egal */ }
     toolMat = toolMat.map((x) => (x && x.live ? null : x));
     store.set(K.info, toolMat);
     toolOverride = new Array(8).fill(null); store.set(K.ov, toolOverride);
-    live.data = null; $('liveAutoRow').hidden = true; $('liveOwnRow').hidden = true;
+    live.data = null; $('liveAutoRow').hidden = true; $('liveOwnRow').hidden = true; $('spoolyWriteRow').hidden = true;
+    live.pickSig = ''; live.confirm = null; if ($('spoolDlg').open) $('spoolDlg').close();
     renderTools();
     schedule(100);
   });
@@ -1033,10 +1365,290 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
   setInterval(() => { if (live.bridge && $('liveLogBox').open) loadLog(); }, 3000);
   detectBridge().then((on) => {
     live.bridge = on;
-    if (on) { $('liveLogBox').hidden = false; loadLog(); pollLive(); } else renderLiveOff();
+    if (on) { $('liveLogBox').hidden = false; $('liveSrcRow').hidden = false; updateSrcButtons(); loadLog(); pollLive(); } else renderLiveOff();
   });
 
-  // Farbabstand (CIE Lab, ΔE76)
+  // ---------------------------------------------------------------- Spulen aus Spooly planen und (optional) in Spooly eintragen
+  // Ein Plan ist eine eigene Farbe mit Spule: toolOverride[i] = { cc: Spooly-Farbe beim Planen, sp: Spule, prev: Farbe davor }.
+  // Er gilt, bis Spooly genau diese Spule auf dem Tool meldet (erledigt) oder eine andere Spule eingelegt wird.
+  function spoolyActive() { return live.bridge && live.source === 'spooly' && !!(live.data && live.data.spools && live.data.printers); }
+  function plannedSpool(i) { const o = toolOverride[i]; return o && o.sp ? o.sp : null; }
+  function spoolName(sp) { return (sp.no ? '#' + sp.no + ' ' : '') + [sp.brand, sp.title].filter(Boolean).join(' '); }
+  function toolInfo(i) {
+    const sp = plannedSpool(i);
+    if (sp) return { m: sp.m, name: spoolName(sp), g: sp.hasG ? sp.g : undefined, fill: sp.fill || undefined, planned: true };
+    return toolMat[i];
+  }
+  function showLiveHint() {
+    if (!live.bridge || !live.data) return;
+    $('liveHint').textContent = (live.hintBase || '') + (spoolyActive() && livePrinter() ? t('pickTip') : '');
+    renderLiveDetails();
+  }
+  // Details zur gewählten Quelle: Drucker, Stand und was in jedem Tool liegt
+  function renderLiveDetails() {
+    const box = $('liveDetails');
+    const p = live.bridge && live.data ? livePrinter() : null;
+    if (!p) { box.hidden = true; return; }
+    const d = live.data;
+    box.hidden = false;
+    const tools = (p.tools || []).filter((x) => x.t >= 1).sort((a, b) => a.t - b.t);
+    const max = Math.max(prof.n, tools.length ? tools[tools.length - 1].t : 0);
+    const loaded = tools.filter((x) => x.t <= prof.n && (x.m || x.c)).length;
+    const sum = box.querySelector('summary');
+    sum.textContent = t('detSummary') + ' ';
+    const ss = document.createElement('span'); ss.textContent = t('detSummarySub', S(), p.name, loaded, prof.n); sum.append(ss);
+    const meta = $('detMeta'); meta.innerHTML = '';
+    const row = (k, v) => { if (!v) return; const dt = document.createElement('dt'); dt.textContent = k; const dd = document.createElement('dd'); dd.textContent = v; meta.append(dt, dd); };
+    row(t('detSource'), S());
+    row(t('detPrinter'), p.name);
+    row(t('detModel'), [p.model, /^[\d.]+$/.test(p.type || '') ? '' : p.type].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i).join(' · '));
+    const st = p.state ? String(p.state).toUpperCase() : '';
+    if (st && live.source !== 'spooly') row(t('detState'), (t('states')[st] || p.state));
+    row(t('detProfile'), prof.labelL);
+    row(t('detUpdated'), d.updatedAt ? new Date(d.updatedAt).toLocaleString(LOC(), { hour: '2-digit', minute: '2-digit', second: '2-digit', day: '2-digit', month: '2-digit' }) + ' (' + ago(d.updatedAt) + ')' : '');
+    if (live.source === 'spooly') row(t('detKey'), d.keyName || '');
+    const list = $('detList'); list.innerHTML = '';
+    for (let tn = 1; tn <= max; tn++) {
+      const x = tools.find((y) => y.t === tn) || { t: tn };
+      const i = tn - 1, inProf = tn <= prof.n;
+      const li = document.createElement('li');
+      if (inProf) li.dataset.hl = 'tool:' + tn;
+      const sw = document.createElement('i');
+      if (x.c) sw.style.background = x.c; else sw.className = 'none';
+      const tl = document.createElement('span'); tl.className = 'tn'; tl.textContent = inProf ? TN(tn) : 'T' + tn;
+      const txt = document.createElement('span');
+      const b = document.createElement('b'), sm = document.createElement('small');
+      if (x.m || x.c) {
+        const nm = [x.b, x.n].filter(Boolean).join(' ');
+        b.textContent = (x.no ? '#' + x.no + ' ' : '') + (nm || x.m || x.c);
+        sm.textContent = [nm && nm !== x.m ? x.m : '', x.g != null ? Math.round(x.g) + ' g' : '', x.loc, x.nfc ? 'NFC' : '', x.c ? x.c.toUpperCase() : ''].filter(Boolean).join(' · ');
+      } else {
+        li.className = 'empty';
+        b.textContent = t('detEmpty');
+      }
+      txt.append(b, sm);
+      const tags = document.createElement('span');
+      const tag = (text, cls) => { const e = document.createElement('span'); e.className = 'dtag ' + (cls || ''); e.textContent = text; tags.append(e); };
+      const plan = inProf && plannedSpool(i);
+      if (!inProf) tag(t('detUnused'));
+      else if (plan) tag(t('detPlanned', plan.no ? '#' + plan.no : plan.title), 'plan');
+      else if (x.c && toolColors[i] !== x.c) tag(t('detOwn'), 'own');
+      if (x.fill) tag(t(x.fill === 'crit' ? 'detCrit' : 'detLow'), x.fill);
+      if (x.m && !x.c) tag(t('detNoColor'));
+      li.append(sw, tl, txt, tags);
+      list.append(li);
+    }
+  }
+  try { if (store.get('cm-det-open', true) === false) $('liveDetails').open = false; } catch (e) { /* egal */ }
+  $('liveDetails').addEventListener('toggle', () => store.set('cm-det-open', $('liveDetails').open));
+
+  // Liste der geplanten Spulen unter den Tools: wo die Spule liegt, eintragen, verwerfen
+  function renderPlans(lp) {
+    const box = $('planList');
+    box.innerHTML = '';
+    const rows = [];
+    for (let i = 0; i < prof.n; i++) { const sp = plannedSpool(i); if (sp) rows.push([i, sp]); }
+    box.hidden = !rows.length;
+    if (!rows.length) return;
+    const head = document.createElement('p'); head.textContent = t('planHead', live.spoolyWrite && !!lp); box.append(head);
+    for (const [i, sp] of rows) {
+      const r = document.createElement('div'); r.className = 'planrow'; r.dataset.hl = 'tool:' + (i + 1);
+      const sw = document.createElement('i'); sw.style.background = sp.c;
+      const txt = document.createElement('span');
+      const b = document.createElement('b'); b.textContent = TN(i + 1) + ' · ' + spoolName(sp);
+      const sm = document.createElement('small'); sm.textContent = [sp.m, sp.hasG ? Math.round(sp.g) + ' g' : '', sp.loc].filter(Boolean).join(' · ');
+      txt.append(b, sm);
+      r.append(sw, txt);
+      if (live.spoolyWrite && lp) {
+        const lt = lp.tools.find((x) => x.t === i + 1);
+        const ask = live.confirm && live.confirm.i === i && live.confirm.id === sp.id;
+        const wb = document.createElement('button');
+        wb.type = 'button'; wb.className = 'wrbtn' + (ask ? ' ask' : ''); wb.id = 'write' + (i + 1);
+        wb.textContent = t(ask ? 'writeAsk' : 'writeBtn');
+        wb.title = t('writeTitle', TN(i + 1), spoolName(sp));
+        wb.disabled = live.writing === i;
+        // Spooly kennt nicht jeden Slot (z. B. nie eingerichtet): dann erklären statt still nichts tun
+        wb.addEventListener('click', () => (lt && lt.slot ? writeSlot(i, sp.id, ask) : showSpMsg(t('writeNoSlot', TN(i + 1), !!(lt && lt.listed)), true)));
+        r.append(wb);
+      } else r.append(document.createElement('span'));
+      const ub = document.createElement('button');
+      ub.type = 'button'; ub.className = 'link-btn'; ub.id = 'unplan' + (i + 1); ub.textContent = t('unplan');
+      ub.title = t('planUndoTitle', TN(i + 1));
+      ub.addEventListener('click', () => resyncTools([i]));
+      r.append(ub);
+      box.append(r);
+    }
+  }
+  let spMsgTimer = 0;
+  function showSpMsg(text, err) {
+    const m = $('spoolyMsg');
+    m.textContent = text || ''; m.className = 'sp-msg' + (err ? ' err' : ''); m.hidden = !text;
+    clearTimeout(spMsgTimer);
+    if (text && !err) spMsgTimer = setTimeout(() => { m.hidden = true; }, 12000);
+  }
+  function planSpool(i, sp) {
+    const lp = livePrinter(), lt = lp && lp.tools.find((x) => x.t === i + 1);
+    if (lt && lt.spid && lt.spid === sp.id) { resyncTools([i]); return; }  // liegt schon dort
+    setPlan(i, sp);
+    renderTools(); updateToolHint(); updateOwnRow(); showLiveHint();
+    if (state.used.length && !state.mapTouched) { autoMap({ plan: false }); renderMapping(); }
+    refreshChips(); applyPalette();
+  }
+  function setPlan(i, sp, auto) {
+    const old = toolOverride[i];
+    toolOverride[i] = {
+      cc: connectColor(i) || null, auto: !!auto,
+      sp: { id: sp.id, no: sp.no || 0, title: sp.title || '', brand: sp.brand || '', m: sp.m || '', c: sp.c, g: sp.g, hasG: !!sp.hasG, fill: sp.fill || '', loc: sp.loc || '' },
+      prev: old && old.prev ? old.prev : toolColors[i],
+    };
+    toolColors[i] = sp.c; toolsCustomized = true;
+    if (live.confirm && live.confirm.i === i) live.confirm = null;
+    store.set(K.ov, toolOverride); store.set(K.tools, toolColors);
+  }
+  // Tool aus der Live-Quelle (Spooly/Connect) – oder null, wenn nicht live
+  function liveTool(i) {
+    if (!live.bridge || !live.data) return null;
+    const p = livePrinter();
+    return p ? (p.tools.find((y) => y.t === i + 1) || { t: i + 1 }) : null;
+  }
+  // Leer: Farben kommen live, dort liegt nichts, und es gibt weder eigene Farbe noch Plan
+  function toolEmpty(i) {
+    if (!live.autoSync || toolOverride[i]) return false;
+    const x = liveTool(i);
+    return !!x && !x.c && !x.m;
+  }
+  // Was liegt in Tool tn? Für die Zeile in «Zuordnung»
+  function toolDesc(tn) {
+    const i = tn - 1, plan = plannedSpool(i);
+    const g = (v) => (v != null ? Math.round(v) + ' g' : '');
+    if (plan) return { c: plan.c, cls: 'plan', text: t('tgtPlanned', TN(tn), [spoolName(plan), plan.m, plan.hasG ? g(plan.g) : '', plan.loc].filter(Boolean).join(' · ')) };
+    if (toolEmpty(i)) return { c: null, cls: 'warn', text: t('tgtEmpty', TN(tn)) };
+    const x = liveTool(i), cc = connectColor(i);
+    if (x && (x.m || x.c) && !(cc && toolColors[i] !== cc)) {
+      const nm = [x.b, x.n].filter(Boolean).join(' ');
+      return { c: x.c || toolColors[i], cls: '', text: TN(tn) + ': ' + [(x.no ? '#' + x.no + ' ' : '') + (nm || x.m), nm && nm !== x.m ? x.m : '', g(x.g), x.loc].filter(Boolean).join(' · ') };
+    }
+    return { c: toolColors[i], cls: '', text: t('tgtOwn', TN(tn), toolColors[i].toUpperCase(), !!x) };
+  }
+  // Für welches Tool eine Spule aus dem Lager einplanen? Das bisherige Tool der Farbe, wenn nur sie es nutzt;
+  // sonst ein leerer Slot (zuerst einer, den Spooly kennt), dann ein ungenutzter.
+  function planTarget(idx) {
+    const tl = state.map[idx];
+    const users = (tn) => state.used.filter((u) => state.map[u.idx] === tn).length;
+    if (tl && users(tl) === 1 && !plannedSpool(tl - 1)) return tl;
+    const p = livePrinter();
+    const lt = (tn) => p && p.tools.find((y) => y.t === tn);
+    const empty = (tn) => !lt(tn) || !lt(tn).c;
+    const known = (tn) => !!(lt(tn) && lt(tn).slot);
+    for (let tn = 1; tn <= prof.n; tn++) if (users(tn) === 0 && !plannedSpool(tn - 1) && empty(tn) && known(tn)) return tn;
+    for (let tn = 1; tn <= prof.n; tn++) if (users(tn) === 0 && !plannedSpool(tn - 1) && empty(tn)) return tn;
+    for (let tn = 1; tn <= prof.n; tn++) if (users(tn) === 0 && !plannedSpool(tn - 1)) return tn;
+    return 0;
+  }
+  function syncRadios() { document.querySelectorAll('.pick input').forEach((r) => { r.checked = state.map[+r.name.slice(4)] === +r.value; }); }
+  $('maplist').addEventListener('click', (e) => {
+    const b = e.target.closest && e.target.closest('.sugg button'); if (!b) return;
+    const idx = +b.dataset.idx;
+    if (b.dataset.use) {
+      state.map[idx] = +b.dataset.use; state.mapTouched = true;
+    } else {
+      const sp = live.data && live.data.spools && live.data.spools.find((x) => x.id === b.dataset.plan); if (!sp) return;
+      const tn = +b.dataset.tool;
+      state.map[idx] = tn; state.mapTouched = true;
+      planSpool(tn - 1, sp);
+    }
+    syncRadios(); refreshChips(); applyPalette(); applyHover();
+  });
+
+  // Auswahl-Fenster
+  const picker = { i: -1, clearArm: false };
+  function openPicker(i) {
+    picker.i = i; picker.clearArm = false;
+    const q = $('spoolSearch'); q.value = ''; q.placeholder = t('pickSearch'); q.setAttribute('aria-label', t('pickSearch'));
+    renderPicker();
+    const d = $('spoolDlg'); if (!d.open) d.showModal();
+    q.focus();
+  }
+  function renderPicker() {
+    const i = picker.i, p = livePrinter();
+    if (i < 0 || !spoolyActive() || !p) { if ($('spoolDlg').open) $('spoolDlg').close(); return; }
+    $('spoolDlgTitle').textContent = t('pickTitle', TN(i + 1), p.name);
+    const mine = state.used.filter((u) => state.map[u.idx] === i + 1);
+    const tg = (mine.length ? mine : state.used).map((u) => ({ c: filColor(u.idx), lab: filLabel(u.idx).title }));
+    $('spoolDlgSub').textContent = t(tg.length ? 'pickSubFile' : 'pickSubNoFile');
+    // Wo liegt welche Spule schon (alle Drucker in Spooly), wofür ist sie geplant?
+    const where = new Map();
+    for (const pr of live.data.printers) for (const x of pr.tools || []) {
+      if (!x.spid) continue;
+      where.set(x.spid, pr.id === p.id ? (x.t === i + 1 ? t('pickHere') : t('pickIn', TN(x.t))) : t('pickIn', pr.name + ' ' + (pr.mmu ? 'S' : 'T') + x.t));
+    }
+    toolOverride.forEach((o, k) => { if (k < prof.n && k !== i && o && o.sp && !where.has(o.sp.id)) where.set(o.sp.id, t('pickPlannedFor', TN(k + 1))); });
+    const q = $('spoolSearch').value.trim().toLowerCase();
+    let list = live.data.spools.filter((sp) => sp.c).map((sp) => {
+      let d = Infinity, fit = '';
+      for (const x of tg) { const e = colorDist(x.c, sp.c); if (e < d) { d = e; fit = x.lab; } }
+      return { sp, d, fit: d < 10 ? fit : '' };
+    });
+    if (q) list = list.filter(({ sp }) => [sp.no ? '#' + sp.no : '', sp.title, sp.brand, sp.m, sp.loc].join(' ').toLowerCase().includes(q));
+    list.sort((a, b) => (tg.length ? a.d - b.d : 0) || (a.sp.no || 1e9) - (b.sp.no || 1e9));
+    const cur = plannedSpool(i), lt = p.tools.find((x) => x.t === i + 1);
+    const box = $('spoolList'); box.innerHTML = '';
+    if (!list.length) { const e = document.createElement('div'); e.className = 'spempty'; e.textContent = t('pickNone'); box.append(e); }
+    for (const { sp, fit } of list.slice(0, 300)) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.dataset.id = sp.id;
+      b.className = 'sprow' + ((cur ? cur.id === sp.id : lt && lt.spid === sp.id) ? ' cur' : '');
+      const sw = document.createElement('i'); sw.style.background = sp.c;
+      const txt = document.createElement('span');
+      const nb = document.createElement('b'); nb.textContent = spoolName(sp);
+      const sm = document.createElement('small');
+      const add = (text, cls) => { if (!text) return; if (sm.childNodes.length) sm.append(' · '); const e = document.createElement('span'); if (cls) e.className = cls; e.textContent = text; sm.append(e); };
+      add(fit && t('pickFits', fit), 'fit'); add(sp.m); add(sp.hasG ? Math.round(sp.g) + ' g' : '', sp.fill); add(sp.loc); add(where.get(sp.id));
+      txt.append(nb, sm); b.append(sw, txt);
+      box.append(b);
+    }
+    const cb = $('spoolClear');
+    cb.hidden = !(live.spoolyWrite && lt && lt.slot && lt.spid);
+    cb.textContent = t(picker.clearArm ? 'pickClearSure' : 'pickClear', TN(i + 1));
+  }
+  $('spoolSearch').addEventListener('input', () => { picker.clearArm = false; renderPicker(); });
+  $('spoolClose').addEventListener('click', () => $('spoolDlg').close());
+  $('spoolDlg').addEventListener('click', (e) => { if (e.target === $('spoolDlg')) $('spoolDlg').close(); });
+  $('spoolDlg').addEventListener('close', () => { const b = $('spool' + (picker.i + 1)); if (b) b.focus(); });
+  $('spoolList').addEventListener('click', (e) => {
+    const b = e.target.closest('.sprow'); if (!b) return;
+    const sp = live.data && live.data.spools && live.data.spools.find((x) => x.id === b.dataset.id); if (!sp) return;
+    const i = picker.i;
+    $('spoolDlg').close();
+    planSpool(i, sp);
+  });
+  $('spoolClear').addEventListener('click', () => {
+    if (!picker.clearArm) { picker.clearArm = true; renderPicker(); return; }
+    const i = picker.i; $('spoolDlg').close();
+    slotRequest(i, { clear: true });
+  });
+
+  // Eintragen in Spooly (nur mit Schalter «Spulen in Spooly eintragen erlauben»)
+  async function slotRequest(i, body) {
+    const p = livePrinter(); if (!p) return;
+    live.writing = i; renderTools();
+    let r;
+    try {
+      r = await api('/api/spooly/slot', { method: 'POST', headers: { 'X-INDX': '1', 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ printerId: p.id, tool: i + 1 }, body)) });
+    } catch (e) { r = { ok: false, error: t('bridgeRunning') }; }
+    live.writing = -1;
+    if (r.ok) { live.confirm = null; showSpMsg(r.message || ''); schedule(50); }
+    else if (r.needConfirm && body.spoolId) { live.confirm = { i, id: body.spoolId }; showSpMsg(r.error, true); }
+    else showSpMsg(r.error || t('pillError'), true);
+    renderTools();
+    const b = $((r.needConfirm ? 'write' : 'spool') + (i + 1)); if (b) b.focus();
+  }
+  function writeSlot(i, spoolId, confirm) { return slotRequest(i, { spoolId, confirmColor: !!confirm }); }
+
+
+  // Farbabstand: CIEDE2000 mit halb gewichteter Helligkeit (Farbton und Sättigung zählen mehr als hell/dunkel)
+  // plus Aufschlag, wenn die Farbfamilie nicht stimmt – damit Braun auf Braun geht und nicht auf Rot oder Altrosa.
+  // Skala etwa halb so gross wie ΔE76: unter ~5 kaum zu unterscheiden, über ~15 deutlich anders.
   function toLab(hex) {
     const lin = hexToRgb(hex).map((c) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)));
     const X = (lin[0] * 0.4124 + lin[1] * 0.3576 + lin[2] * 0.1805) / 0.95047;
@@ -1045,19 +1657,171 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     const f = (t) => (t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116);
     return [116 * f(Y) - 16, 500 * (f(X) - f(Y)), 200 * (f(Y) - f(Z))];
   }
-  function deltaE(a, b) { const A = toLab(a), B = toLab(b); return Math.hypot(A[0] - B[0], A[1] - B[1], A[2] - B[2]); }
-  function nearestTool(hex, prefer) {
-    let best = 1, bd = Infinity;
-    for (let t = 1; t <= prof.n; t++) { const d = deltaE(hex, toolColors[t - 1]); if (d < bd) { bd = d; best = t; } }
-    if (prefer >= 1 && prefer <= prof.n && deltaE(hex, toolColors[prefer - 1]) <= bd + 2) return prefer;
+  const colCache = new Map();
+  function colInfo(hex) {
+    hex = String(hex || '#999999').toLowerCase();
+    let c = colCache.get(hex);
+    if (c) return c;
+    const lab = toLab(hex), C = Math.hypot(lab[1], lab[2]);
+    const [r, g, b] = hexToRgb(hex), mx = Math.max(r, g, b), mn = Math.min(r, g, b), dd = mx - mn;
+    let h = 0;
+    if (dd) { h = mx === r ? ((g - b) / dd) % 6 : mx === g ? (b - r) / dd + 2 : (r - g) / dd + 4; h *= 60; if (h < 0) h += 360; }
+    const sat = mx ? dd / mx : 0, v = mx, L = lab[0];
+    let fam;
+    if (C < 7) fam = L > 88 ? 'white' : L < 22 ? 'black' : 'gray';
+    else if (h >= 345 || h < 10) fam = L > 65 && sat < 0.6 ? 'pink' : sat < 0.6 && v < 0.35 ? 'brown' : sat < 0.5 && v < 0.75 ? 'rose' : 'red';
+    else if (h < 40) fam = sat < 0.45 && v >= 0.7 ? 'beige' : v < 0.7 ? 'brown' : 'orange';
+    else if (h < 70) fam = sat < 0.45 && v >= 0.7 && h < 50 ? 'beige' : v < 0.6 ? 'olive' : 'yellow';
+    else fam = h < 170 ? 'green' : h < 245 ? 'blue' : h < 320 ? 'purple' : 'pink';
+    c = { lab, fam };
+    colCache.set(hex, c);
+    return c;
+  }
+  const FAM_NEAR = { brown: 'orange beige rose olive', orange: 'brown yellow red', red: 'rose pink orange', rose: 'red pink brown', pink: 'rose red purple', beige: 'brown white yellow',
+    yellow: 'orange olive beige', olive: 'yellow green brown', green: 'olive blue', blue: 'purple green', purple: 'blue pink', white: 'gray beige', gray: 'white black', black: 'gray' };
+  const NEUTRAL = { white: 1, gray: 1, black: 1 };
+  function famPenalty(a, b) {
+    if (a === b) return 0;
+    if ((' ' + FAM_NEAR[a] + ' ').includes(' ' + b + ' ')) return 5;   // Nachbarfamilie (Braun–Orange, Rot–Rosa …)
+    if (NEUTRAL[a] || NEUTRAL[b]) return 8;                            // lieber neutral als falscher Farbton
+    return 14;
+  }
+  function de2000(A, B, kL) {
+    const [L1, a1, b1] = A, [L2, a2, b2] = B, rad = Math.PI / 180;
+    const Cb = (Math.hypot(a1, b1) + Math.hypot(a2, b2)) / 2, C7 = Math.pow(Cb, 7);
+    const G = 0.5 * (1 - Math.sqrt(C7 / (C7 + 6103515625)));
+    const a1p = (1 + G) * a1, a2p = (1 + G) * a2, C1p = Math.hypot(a1p, b1), C2p = Math.hypot(a2p, b2);
+    const hp = (x, y) => { if (!x && !y) return 0; const h = Math.atan2(y, x) / rad; return h < 0 ? h + 360 : h; };
+    const h1p = hp(a1p, b1), h2p = hp(a2p, b2);
+    let dhp = 0;
+    if (C1p * C2p) { dhp = h2p - h1p; if (dhp > 180) dhp -= 360; else if (dhp < -180) dhp += 360; }
+    const dLp = L2 - L1, dCp = C2p - C1p, dHp = 2 * Math.sqrt(C1p * C2p) * Math.sin(dhp * rad / 2);
+    const Lbp = (L1 + L2) / 2, Cbp = (C1p + C2p) / 2;
+    let hbp = h1p + h2p;
+    if (C1p * C2p) hbp = Math.abs(h1p - h2p) > 180 ? (h1p + h2p < 360 ? (h1p + h2p + 360) / 2 : (h1p + h2p - 360) / 2) : (h1p + h2p) / 2;
+    const T = 1 - 0.17 * Math.cos((hbp - 30) * rad) + 0.24 * Math.cos(2 * hbp * rad) + 0.32 * Math.cos((3 * hbp + 6) * rad) - 0.2 * Math.cos((4 * hbp - 63) * rad);
+    const Cb7 = Math.pow(Cbp, 7), RC = 2 * Math.sqrt(Cb7 / (Cb7 + 6103515625));
+    const SL = 1 + 0.015 * (Lbp - 50) * (Lbp - 50) / Math.sqrt(20 + (Lbp - 50) * (Lbp - 50)), SC = 1 + 0.045 * Cbp, SH = 1 + 0.015 * Cbp * T;
+    const RT = -Math.sin(60 * Math.exp(-Math.pow((hbp - 275) / 25, 2)) * rad) * RC;
+    const l = dLp / (kL * SL), c = dCp / SC, h = dHp / SH;
+    return Math.sqrt(Math.max(0, l * l + c * c + h * h + RT * c * h));
+  }
+  function colorDist(a, b) {
+    const A = colInfo(a), B = colInfo(b);
+    return de2000(A.lab, B.lab, 2) + famPenalty(A.fam, B.fam);
+  }
+  function nearestTool(hex, prefer, fm) {
+    // Leere Slots (nichts geladen) sind kein Ziel – ausser alle sind leer
+    const ok = [];
+    for (let t = 1; t <= prof.n; t++) if (!toolEmpty(t - 1)) ok.push(t);
+    const cand = ok.length ? ok : Array.from({ length: prof.n }, (_, k) => k + 1);
+    let best = cand[0], bd = Infinity;
+    // gleiches Material wie in der Datei leicht bevorzugen
+    const dist = (t) => { const inf = toolInfo(t - 1); return colorDist(hex, toolColors[t - 1]) + (fm && inf && inf.m && baseMat(inf.m) !== fm ? 4 : 0); };
+    for (const t of cand) { const d = dist(t); if (d < bd) { bd = d; best = t; } }
+    if (cand.includes(prefer) && dist(prefer) <= bd + 1) return prefer;
     return best;
   }
-  function autoMap() {
-    for (const u of state.used) state.map[u.idx] = nearestTool(filColor(u.idx), u.idx);
+  function autoMap(opts) {
+    for (const u of state.used) state.map[u.idx] = nearestTool(filColor(u.idx), u.idx, matOf(u.idx));
+    // Einmal pro Datei (oder auf Klick): für jede Farbe die beste Spule aus dem ganzen Lager wählen und einplanen
+    const doPlan = opts && 'plan' in opts ? opts.plan : !state.autoPlanDone;
+    // nicht für das Beispielmodell beim Start – nur für eigene Dateien
+    if (doPlan && !state.demo && spoolyActive() && live.autoSync && livePrinter()) { state.autoPlanDone = true; autoPlan(); }
   }
+  // Pro Dateifarbe die wirklich beste Spule aus dem ganzen Spooly-Lager – geladen oder nicht. Nur ein Plan im Color Mapper.
+  // Regeln: gleiches Material (ausser keine passt), geladene Spule bei praktisch gleicher Farbe bevorzugen (kein unnötiger
+  // Wechsel), Lager-Spulen zuerst in leere Slots, sonst in ein nicht benötigtes Tool mit möglichst ähnlicher bisheriger Farbe.
+  const SAME_TOL = 3, FILL_PEN = { crit: 6, low: 3 };
+  function autoPlan() {
+    const p = livePrinter();
+    // Automatische Pläne einer früheren Datei zurücknehmen – sie werden unten neu berechnet
+    for (let i = 0; i < prof.n; i++) {
+      const ov = toolOverride[i];
+      if (ov && ov.sp && ov.auto) { toolOverride[i] = null; toolColors[i] = connectColor(i) || ov.prev || toolColors[i]; }
+    }
+    const elsewhere = new Set();
+    for (const pr of live.data.printers) if (pr.id !== p.id) for (const x of pr.tools || []) if (x.spid) elsewhere.add(x.spid);
+    // Was steckt jetzt in den Tools: geladene Spule, von Hand geplante Spule oder eigene Farbe
+    const loaded = [];
+    for (let tn = 1; tn <= prof.n; tn++) {
+      const i = tn - 1, ov = toolOverride[i], x = p.tools.find((y) => y.t === tn);
+      if (ov && ov.sp) loaded.push({ tn, id: ov.sp.id, c: ov.sp.c, m: ov.sp.m, fill: ov.sp.fill });
+      else if (ov) loaded.push({ tn, id: 'own' + tn, c: toolColors[i], m: x && x.m });
+      else if (x && x.c) loaded.push({ tn, id: x.spid || 'live' + tn, c: x.c, m: x.m, fill: x.fill });
+    }
+    const ids = new Set(loaded.map((l) => l.id));
+    const stock = live.data.spools.filter((sp) => sp.c && !ids.has(sp.id) && !elsewhere.has(sp.id));
+    const score = (fc, c) => colorDist(fc, c.c) + (FILL_PEN[c.fill] || 0);
+    const bestOf = (fc, fm, list) => {
+      let same = null, sd = Infinity, any = null, ad = Infinity;
+      for (const c of list) {
+        const d = score(fc, c);
+        if (d < ad) { ad = d; any = c; }
+        if ((!fm || !c.m || baseMat(c.m) === fm) && d < sd) { sd = d; same = c; }
+      }
+      return same && sd <= 15 ? { c: same, d: sd, same: true } : any ? { c: any, d: ad, same: !fm || !any.m || baseMat(any.m) === fm } : null;  // gleiches Material, ausser keines passt
+    };
+    // 1) Wahl pro Farbe
+    const choice = new Map();   // idx -> { kind: 'loaded'|'stock', c }
+    for (const u of state.used) {
+      const fc = filColor(u.idx), f = state.filaments.find((x) => x.idx === u.idx), fm = baseMat(f && f.type);
+      const bl = bestOf(fc, fm, loaded), bs = bestOf(fc, fm, stock);
+      // geladen gewinnt bei praktisch gleicher Farbe – aber nicht mit falschem Material, wenn das Lager das richtige hat
+      if (bl && (!bs || (bl.same && !bs.same) || (bl.same === bs.same && bl.d <= bs.d + SAME_TOL))) choice.set(u.idx, { kind: 'loaded', c: bl.c });
+      else if (bs) choice.set(u.idx, { kind: 'stock', c: bs.c, fallback: bl && bl.c });
+    }
+    // 2) Lager-Spulen auf Tools verteilen – die mit dem grössten Flächenanteil zuerst
+    const needed = new Set([...choice.values()].filter((v) => v.kind === 'loaded').map((v) => v.c.tn));
+    const want = new Map();     // spool id -> { sp, share, idxs }
+    for (const u of state.used) {
+      const ch = choice.get(u.idx);
+      if (!ch || ch.kind !== 'stock') continue;
+      const w = want.get(ch.c.id) || { sp: ch.c, share: 0, idxs: [] };
+      w.share += u.share; w.idxs.push(u.idx); want.set(ch.c.id, w);
+    }
+    const known = (tn) => { const x = p.tools.find((y) => y.t === tn); return x && x.slot ? 1 : 0; };
+    const empties = [];
+    for (let tn = 1; tn <= prof.n; tn++) if (toolEmpty(tn - 1) && !needed.has(tn)) empties.push(tn);
+    empties.sort((a, b) => known(b) - known(a) || a - b);
+    let spare = loaded.filter((l) => !needed.has(l.tn));
+    const done = [], noRoom = [];
+    for (const w of [...want.values()].sort((a, b) => b.share - a.share)) {
+      let tn = 0, replaced = null;
+      // ähnliche Farbe durch ähnliche ersetzen: kein Schwarz in ein bisher weisses Tool
+      spare.sort((a, b) => colorDist(a.c, w.sp.c) - colorDist(b.c, w.sp.c));
+      if (spare.length && colorDist(spare[0].c, w.sp.c) < 8) { replaced = spare.shift(); tn = replaced.tn; }  // gleiche Farbe, anderes Material o. ä.
+      else if (empties.length) tn = empties.shift();
+      else if (spare.length) { replaced = spare.shift(); tn = replaced.tn; }
+      if (!tn) {
+        for (const idx of w.idxs) { const ch = choice.get(idx); if (ch.fallback) choice.set(idx, { kind: 'loaded', c: ch.fallback }); else choice.delete(idx); }
+        noRoom.push(spoolName(w.sp));
+        continue;
+      }
+      setPlan(tn - 1, w.sp, true);
+      for (const idx of w.idxs) choice.set(idx, { kind: 'loaded', c: { tn } });
+      const was = replaced ? (spoolLabelById(replaced.id) || t('wasOwn')) : '';
+      done.push(t('autoPlannedItem', TN(tn), spoolName(w.sp), w.idxs.map((i) => filLabel(i).title).join(', '), was));
+    }
+    // 3) Zuordnung übernehmen
+    for (const u of state.used) {
+      const ch = choice.get(u.idx);
+      state.map[u.idx] = ch ? ch.c.tn : nearestTool(filColor(u.idx), u.idx, matOf(u.idx));
+    }
+    renderTools(); updateToolHint(); updateOwnRow(); showLiveHint();
+    if (done.length || noRoom.length) showSpMsg([done.length ? t('autoPlanned', done.join('; ')) : '', noRoom.length ? t('autoNoRoom', noRoom.join(', ')) : ''].filter(Boolean).join(' '));
+    else if (state.autoPlanAsked) showSpMsg(t('autoAllLoaded'));
+  }
+  function spoolLabelById(id) {
+    const sp = live.data && live.data.spools && live.data.spools.find((x) => x.id === id);
+    return sp ? spoolName(sp) : '';
+  }
+  function matOf(idx) { const f = state.filaments.find((x) => x.idx === idx); return baseMat(f && f.type); }
   $('autoMap').addEventListener('click', () => {
     if (!state.used.length) return;
-    autoMap();
+    state.autoPlanAsked = true;
+    autoMap({ plan: true });
+    state.autoPlanAsked = false;
     state.mapTouched = false;
     document.querySelectorAll('.pick input').forEach((r) => { r.checked = state.map[+r.name.slice(4)] === +r.value; });
     refreshChips(); applyPalette();
@@ -1084,7 +1848,7 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       const what = document.createElement('div'); what.className = 'what';
       const legend = document.createElement('legend'); legend.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)';
       legend.textContent = t('legend', lab.title, prof);
-      what.innerHTML = '<b></b> <span class="arrow">→ ' + prof.word + '</span><span class="dev" hidden></span><small></small>';
+      what.innerHTML = '<b></b> <span class="arrow">→ ' + prof.word + '</span><span class="dev" hidden></span><small></small><span class="tgt"></span><span class="sugg" hidden></span>';
       what.querySelector('.dev').textContent = t('devBadge');
       what.querySelector('.dev').dataset.src = u.idx;
       what.querySelector('b').textContent = lab.title;
@@ -1113,13 +1877,81 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     refreshHover();
   }
   function refreshChips() {
-    document.querySelectorAll('.pick .chip').forEach((c) => { const t = +c.dataset.tool; c.style.background = toolColors[t - 1]; c.style.color = inkFor(toolColors[t - 1]); });
-    // Hinweis, wenn das gewählte Tool eine deutlich andere Farbe geladen hat
-    document.querySelectorAll('.dev').forEach((d) => {
-      const src = +d.dataset.src, tl = state.map[src];
-      d.hidden = !(tl && deltaE(filColor(src), toolColors[tl - 1]) > 30);
-      d.title = t('devTitle', TW(tl));
+    document.querySelectorAll('.pick .chip').forEach((c) => {
+      const tn = +c.dataset.tool, em = toolEmpty(tn - 1);
+      c.style.background = toolColors[tn - 1]; c.style.color = inkFor(toolColors[tn - 1]);
+      c.classList.toggle('empty', em);
+      c.parentElement.title = TW(tn) + (em ? ' – ' + t('detEmpty') : '');
     });
+    // Hinweis, wenn das gewählte Tool eine deutlich andere Farbe geladen hat – oder gar nichts
+    document.querySelectorAll('.dev').forEach((d) => {
+      const src = +d.dataset.src, tl = state.map[src], em = tl && toolEmpty(tl - 1);
+      d.hidden = !(tl && (em || colorDist(filColor(src), toolColors[tl - 1]) > 15));
+      d.textContent = t(em ? 'devEmpty' : 'devBadge');
+      d.title = em ? t('tgtEmpty', TN(tl)) : t('devTitle', TW(tl));
+    });
+    // Ziel-Tool mit dem, was dort liegt
+    document.querySelectorAll('.maprow').forEach((row) => {
+      const idx = +row.dataset.hl.slice(4), tl = state.map[idx];
+      const ar = row.querySelector('.arrow'); if (ar) ar.textContent = '→ ' + (tl ? TN(tl) : prof.word);
+      const g = row.querySelector('.tgt'); if (!g) return;
+      g.textContent = '';
+      if (!tl) return;
+      const d = toolDesc(tl);
+      g.className = 'tgt' + (d.cls ? ' ' + d.cls : '');
+      const sw = document.createElement('i');
+      if (d.c) sw.style.background = d.c; else sw.className = 'none';
+      g.append(sw, d.text);
+      g.title = d.text;
+    });
+    refreshExtras();
+  }
+  // Grundmaterial für den Vergleich: «PLA Matte» → PLA, «ASA+» → ASA
+  function baseMat(m) { return String(m || '').trim().split(/\s+/)[0].toUpperCase().replace(/[^A-Z0-9-]/g, ''); }
+  // Vorschlag aus dem Spooly-Lager pro Farbe und Hinweis bei gemischten Materialien
+  function refreshExtras() {
+    const esc = (x) => String(x).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+    const spools = live.bridge && live.source === 'spooly' && live.data && live.data.spools ? live.data.spools : [];
+    const p = live.bridge && live.data ? livePrinter() : null;
+    document.querySelectorAll('.maprow').forEach((row) => {
+      const s = row.querySelector('.sugg'); if (!s) return;
+      const idx = +row.dataset.hl.slice(4), tl = state.map[idx], fc = filColor(idx);
+      let html = '';
+      if (spools.length && tl) {
+        const cur = colorDist(fc, toolColors[tl - 1]);
+        let best = null, bd = Infinity;
+        if (cur > 15) for (const sp of spools) { if (!sp.c) continue; const d = colorDist(fc, sp.c); if (d < bd) { bd = d; best = sp; } }
+        if (best && bd < 12 && bd < cur - 5) {
+          const name = spoolName(best);
+          const loaded = p ? p.tools.find((x) => x.t <= prof.n && (best.id && x.spid ? x.spid === best.id : best.no && x.no === best.no)) : null;
+          const pi = toolOverride.findIndex((o, k) => k < prof.n && o && o.sp && o.sp.id === best.id);
+          if (loaded || pi >= 0) {
+            const tn = loaded ? loaded.t : pi + 1;
+            html = '<i style="background:' + esc(best.c) + '"></i>' + esc(loaded ? t('suggLoaded', name, TN(tn)) : t('suggPlannedIn', name, TN(tn))) +
+              (tl !== tn ? '<button type="button" class="link-btn" data-use="' + tn + '" data-idx="' + idx + '">' + esc(t('suggUse', TN(tn))) + '</button>' : '');
+          } else {
+            const target = planTarget(idx);
+            html = '<i style="background:' + esc(best.c) + '"></i>' + esc(t('suggStock', name, best.hasG ? Math.round(best.g) : null, best.loc)) +
+              (target ? '<button type="button" class="link-btn" data-plan="' + esc(best.id) + '" data-tool="' + target + '" data-idx="' + idx + '">' + esc(t('suggPlan', TN(target))) + '</button>' : '');
+          }
+        }
+      }
+      s.innerHTML = html; s.hidden = !html;
+    });
+    // Mehrere Materialien im selben Druck?
+    const groups = new Map();
+    for (const u of state.used) {
+      const tl = state.map[u.idx], info = tl && toolInfo(tl - 1);
+      const b = info && info.m ? baseMat(info.m) : '';
+      if (!b) continue;
+      if (!groups.has(b)) groups.set(b, new Set());
+      groups.get(b).add(tl);
+    }
+    const mm = $('mapMat');
+    if (groups.size > 1) {
+      mm.textContent = t('mixedMat', [...groups].map(([b, ts]) => b + ' (' + [...ts].sort((x, y) => x - y).map((x) => TN(x)).join(', ') + ')').join(', '));
+      mm.hidden = false;
+    } else { mm.hidden = true; mm.textContent = ''; }
   }
   function applyPalette() {
     const cols = new Array(64).fill('#888888');
@@ -1128,7 +1960,7 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     for (let s = 1; s < 64; s++) {
       const t = state.map[s];
       // In der Tool-Ansicht – und beim Zeigen auf ein Tool – in der Farbe des Tools
-      if (t && (state.view === 'result' || t === ht)) cols[s] = toolColors[t - 1];
+      if (t && (state.view === 'result' || t === ht)) cols[s] = toolEmpty(t - 1) ? '#8A8A8A' : toolColors[t - 1];
     }
     viewer.setPalette(cols);
   }
@@ -1176,7 +2008,7 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     if (state.summary && state.used.length) {
       // Zuordnungen auf Tools, die es nicht mehr gibt, neu wählen; unberührte ganz neu nach Farbe
       if (!state.mapTouched) autoMap();
-      else for (const u of state.used) if (state.map[u.idx] > prof.n) state.map[u.idx] = nearestTool(filColor(u.idx), u.idx);
+      else for (const u of state.used) if (state.map[u.idx] > prof.n) state.map[u.idx] = nearestTool(filColor(u.idx), u.idx, matOf(u.idx));
       if (state.summary.kind === 'bambu' && (oldBed.w !== p.bed.w || oldBed.d !== p.bed.d)) {
         state.keepMap = true;
         setBusy(true, t('buildingPreview'));
@@ -1335,7 +2167,7 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     state.map = [];
     for (let s = 1; s < 256; s++) state.map[s] = ((s - 1) % prof.n) + 1;
     if (state.keepMap && prev.length) { for (let s = 1; s < 256; s++) if (prev[s] && prev[s] <= prof.n) state.map[s] = prev[s]; }
-    else { autoMap(); state.mapTouched = false; }
+    else { state.autoPlanDone = false; autoMap(); state.mapTouched = false; }
     state.keepMap = false;
     viewer.setMesh(m.positions, m.fil, m.triangles);
     renderMapping();
