@@ -36,8 +36,9 @@ The following additional terms apply to the whole work and to every copy or modi
 ## Third-party names
 
 Prusa, Original Prusa, Prusa Connect, PrusaSlicer, CORE One, INDX and MMU3 are trademarks of Prusa Research a.s.
-Bambu Lab and Bambu Studio are trademarks of their respective owner. This project is independent and
-not affiliated with, endorsed by or supported by Prusa Research or Bambu Lab.
+Bambu Lab and Bambu Studio are trademarks of their respective owner. Spooly (spooly.eu) is an independent product
+of its developer. This project is independent and not affiliated with, endorsed by or supported by Prusa Research,
+Bambu Lab or Spooly.
 
 ## Sample model
 

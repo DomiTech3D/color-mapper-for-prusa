@@ -1,0 +1,8 @@
+# build output (created by app/build.py and go build)
+dist/
+desktop/web/*.html
+*.exe
+desktop/colormapperforprusa
+__pycache__/
+.DS_Store
+Thumbs.db
