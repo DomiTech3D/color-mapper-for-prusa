@@ -20,10 +20,14 @@ Du hast ein bemaltes Modell für Bambu Studio, OrcaSlicer oder PrusaSlicer gefun
 
 - Öffnet 3MF-Projekte aus **Bambu Studio, OrcaSlicer und PrusaSlicer** (bemalte Modelle und Farben pro Objekt)
 - 3D-Vorschau mit den Farben der Datei oder mit deinen geladenen Filamenten; mit der Maus über eine Farbe oder ein Tool fahren zeigt genau, welche Flächen es druckt
-- **Automatische Zuordnung nach Farbähnlichkeit und Farbfamilie** – Braun geht auf dein braunes Filament, nicht auf das rote –, pro Farbe mit einem Klick änderbar
+- **Eine Zeile pro Dateifarbe: Dateifarbe → Filament → Tool.** Automatische Zuordnung nach empfundenem Farbabstand (CIEDE2000) und Farbfamilie – Dunkelgrün geht auf ein Grün, nicht auf Schwarz; Braun auf Braun, nicht auf Rot
+- Jede Zeile zeigt, wie gut es passt (sehr ähnlich / ähnlich / weit entfernt), ob automatisch oder von Hand gesetzt, und 2–3 Alternativen
+- Eine Zeile von Hand ändern – Tool oder Filament – ändert **nur diese Zeile**; «Automatisch zuordnen» behält die von Hand gesetzten Zeilen, «Alle neu zuordnen» beginnt von vorn
+- Filament wählen aus dem Geladenen, aus dem Spooly-Lager, aus dem **OpenPrintTag**-Katalog oder als eigene Farbe (Farbwähler oder Hex-Code)
+- Mehr Farben als Tools: ähnliche Farben teilen sich ein Tool, und die Zeile sagt es
 - Deine Tool-Farben bleiben pro Drucker im Browser gespeichert
 - Englisch und Deutsch, oben rechts umschaltbar
-- Alles läuft lokal: deine 3MF-Dateien werden nirgends hochgeladen
+- Alles läuft lokal: deine 3MF-Dateien werden nirgends hochgeladen (heruntergeladen wird nur die öffentliche Farbliste von OpenPrintTag, höchstens einmal am Tag)
 
 **Windows-Programm (optional)**
 
@@ -33,8 +37,8 @@ Du hast ein bemaltes Modell für Bambu Studio, OrcaSlicer oder PrusaSlicer gefun
   - für jede Farbe deiner Datei **die passendste Spule aus deinem ganzen Lager** – geladen oder nicht –, auf ein Tool eingeplant
   - für jedes Tool selbst eine Spule aus dem Lager wählen, mit Lagerort
   - optional: geplante Spulen mit einem Klick in Spooly eintragen
-- Leere Tools werden als leer angezeigt und beim automatischen Zuordnen nicht verwendet
-- Unter **Zuordnung** zeigt jede Farbe der Datei, was genau im gewählten Tool liegt (oder geplant ist)
+- Prusa Connect sagt, was geladen ist; Spooly ergänzt Spulennummer, Restgewicht und Lagerort (und die Farbe, wenn Connect nur das Material kennt). Ohne Connect liefert Spooly die Belegung, ohne beide stellst du die Farben von Hand ein. Ist Spooly für ein Tool nicht aktuell, sagt das Programm es
+- Leere Tools werden als leer angezeigt; eine Liste unter **Zuordnung** sagt, welche Spule in welches Tool gehört
 - **Details** zeigt Drucker, Aktualisierungszeit und jedes Tool mit Spule, Material, Restgewicht und Lagerort
 - Ein Hinweis, wenn ein Druck Materialien mischen würde (zum Beispiel PLA und ASA)
 
@@ -221,3 +225,4 @@ In einfachen Worten (massgebend sind die Lizenztexte):
 - Prusa, Prusa Connect, PrusaSlicer, CORE One, INDX und MMU3 sind Marken von Prusa Research a.s.; Spooly ist ein Produkt seines Entwicklers; andere Produktnamen gehören ihren Inhabern.
 - Das Ergebnis vor dem Drucken immer in PrusaSlicer kontrollieren.
 - Das Beispielmodell ist der 3DBenchy, den NTI 2025 als gemeinfrei freigegeben hat.
+- Filamentfarben im Katalog: [OpenPrintTag Database](https://github.com/OpenPrintTag/openprinttag-database) (MIT-Lizenz), live von database.openprinttag.org geladen. Der Katalog wird nur als Alternative angeboten und nie automatisch gewählt.

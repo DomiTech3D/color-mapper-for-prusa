@@ -20,10 +20,14 @@ You found a painted model for Bambu Studio, OrcaSlicer or PrusaSlicer, but its c
 
 - Opens 3MF projects from **Bambu Studio, OrcaSlicer and PrusaSlicer** (painted models and per-object colors)
 - 3D preview with the file colors or with your loaded filaments; hover a color or a tool to see exactly which areas it prints
-- **Automatic mapping by color similarity and color family** – a brown goes to your brown filament, not to the red one – adjustable with one click per color
+- **One row per file color: file color → filament → tool.** Automatic mapping by perceived color difference (CIEDE2000) and color family – a dark green goes to a green, not to black; a brown to brown, not to red
+- Each row shows how close the match is (very similar / similar / far off), whether it was set automatically or by hand, and 2–3 alternatives
+- Change a row by hand – tool or filament – and **only that row changes**; “Map automatically” keeps your manual rows, “Remap all” starts over
+- Choose a filament from what is loaded, from your Spooly stock, from the **OpenPrintTag** catalog or as your own color (color picker or hex code)
+- More colors than tools: similar colors share a tool, and the row says so
 - Your tool colors are remembered per printer in your browser
 - English and German, switchable at the top right
-- Everything runs locally: your 3MF files are never uploaded anywhere
+- Everything runs locally: your 3MF files are never uploaded anywhere (only the public OpenPrintTag color list is downloaded, once a day at most)
 
 **Windows program (optional)**
 
@@ -33,8 +37,8 @@ You found a painted model for Bambu Studio, OrcaSlicer or PrusaSlicer, but its c
   - for every color of your file, **the best matching spool from your whole stock** – loaded or not – planned onto a tool
   - choose a spool for any tool yourself from your stock, with storage location
   - optional: enter the planned spools in Spooly with one click
-- Empty tools are shown as empty and are not used for automatic mapping
-- Under **Mapping**, every file color shows what exactly is loaded (or planned) in the chosen tool
+- Prusa Connect says what is loaded; Spooly fills in spool number, remaining weight and storage location (and the color when Connect knows only the material). Without Connect, Spooly provides the loaded spools; without both, you set the colors by hand. If Spooly is out of date for a tool, the program says so
+- Empty tools are shown as empty; a list under **Mapping** says which spool to load into which tool
 - **Details** lists printer, update time and every tool with spool, material, remaining weight and storage location
 - A note when a print would mix materials (for example PLA and ASA)
 
@@ -221,3 +225,4 @@ In plain words (the license texts are what counts):
 - Prusa, Prusa Connect, PrusaSlicer, CORE One, INDX and MMU3 are trademarks of Prusa Research a.s.; Spooly is a product of its developer; other product names belong to their owners.
 - Always check the result in PrusaSlicer before printing.
 - The sample model is the 3DBenchy, which NTI released into the public domain in 2025.
+- Filament colors in the catalog: [OpenPrintTag Database](https://github.com/OpenPrintTag/openprinttag-database) (MIT license), loaded live from database.openprinttag.org. The catalog is only offered as an alternative and never chosen automatically.

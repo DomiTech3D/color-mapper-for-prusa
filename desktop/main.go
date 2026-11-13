@@ -518,6 +518,7 @@ func startServer(ln net.Listener) {
 		writeJSON(w, map[string]any{"ok": true})
 	}))
 	registerSpooly(mux)
+	registerOpt(mux)
 	srv := &http.Server{Handler: mux, ReadHeaderTimeout: 10 * time.Second}
 	log.Fatal(srv.Serve(ln))
 }
