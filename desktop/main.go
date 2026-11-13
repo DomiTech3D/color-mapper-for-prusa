@@ -27,7 +27,7 @@ import (
 	"time"
 )
 
-var version = "1.3.0" // beim Release-Build per -ldflags "-X main.version=…" gesetzt
+var version = "1.4.0" // beim Release-Build per -ldflags "-X main.version=…" gesetzt
 
 //go:embed web/color-mapper.html
 var pageHTML []byte
