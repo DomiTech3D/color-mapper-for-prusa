@@ -84,6 +84,8 @@ Die Seite startet auf Englisch – oben rechts auf **DE** klicken, der Browser m
 
 ## Die Zuordnung
 
+![Zuordnung im Windows-Programm: jede Dateifarbe mit ihrer Spule aus dem Spooly-Lager, Qualität, Alternativen und Tool](docs/screenshot-mapping-de.png)
+
 Jede Farbe deiner Datei bekommt eine Zeile:
 
 - **Dateifarbe** links, mit ihrem Anteil an der Oberfläche.
@@ -125,6 +127,8 @@ Unter den Zeilen steht bei **Vor dem Druck einlegen** jedes Tool, das eine ander
 
 ### Woher die Belegung kommt
 
+![Prusa Connect und Spooly gleichzeitig verbunden: Tools mit Material und Restgewicht, die Zeile «Belegung» und der Hinweis, wenn Spooly nicht aktuell ist](docs/screenshot-sources-de.png)
+
 Die Zeile **Belegung** unter den Tools zeigt, welche Quelle gilt:
 
 | Verbunden | Was geladen ist, kommt aus |
@@ -147,7 +151,7 @@ Die Daten werden alle 30 Sekunden aktualisiert. Legst du eine neue Spule ein, ä
 
 [Spooly](https://spooly.eu) ist eine Filament-Verwaltung. Über die offizielle Schnittstelle liest der Farb-Mapper, welche Spule in welchem Slot steckt und was du an Lager hast.
 
-![Das Windows-Programm mit Spooly: jede Dateifarbe mit Spule, Qualität, Alternativen und Tool](docs/screenshot-spooly-de.png)
+![Die Ladeliste: welche Spule aus dem Spooly-Lager in welches Tool gehört, mit Lagerort und was sie ersetzt](docs/screenshot-spooly-de.png)
 
 **Du brauchst**
 

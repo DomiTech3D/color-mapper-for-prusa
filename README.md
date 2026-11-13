@@ -82,6 +82,8 @@ Both are the same Color Mapper. The Windows program adds the live data from Prus
 
 ## The mapping
 
+![Mapping in the Windows program: every file color with its spool from the Spooly stock, quality, alternatives and tool](docs/screenshot-mapping.png)
+
 Every color of your file gets one row:
 
 - **File color** on the left, with its share of the surface.
@@ -123,6 +125,8 @@ Below the rows, **Load before printing** lists every tool that needs a different
 
 ### Where “loaded” comes from
 
+![Prusa Connect and Spooly connected at the same time: tools with material and remaining weight, the source line and the note when Spooly is not up to date](docs/screenshot-sources.png)
+
 The line **Loaded spools** below the tools shows which source is used:
 
 | Connected | What is loaded comes from |
@@ -145,7 +149,7 @@ The data updates every 30 seconds. When you load a new spool, the tool changes b
 
 [Spooly](https://spooly.eu) is a filament manager. Through its official API the Color Mapper reads which spool is in which slot and what you have in stock.
 
-![The Windows program with Spooly: every file color with its spool, quality, alternatives and tool](docs/screenshot-spooly.png)
+![The load list: which spool from the Spooly stock goes into which tool, with storage location and what it replaces](docs/screenshot-spooly.png)
 
 **You need**
 
