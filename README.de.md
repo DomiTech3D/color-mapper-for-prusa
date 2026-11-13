@@ -111,6 +111,8 @@ Jede Farbe deiner Datei bekommt eine Zeile:
 - **Automatisch zuordnen** ordnet alle automatischen Zeilen neu zu und behält die von Hand gesetzten. **Alle neu zuordnen (auch von Hand)** beginnt von vorn.
 - Die Auswahl hat vier Reiter: **Geladen**, **Spooly-Lager** (Windows-Programm mit Spooly), **OpenPrintTag** und **Eigene Farbe** (Farbwähler oder Hex-Code `#RRGGBB`). Die Suche findet Wörter in beliebiger Reihenfolge, Gross-/Kleinschreibung, Akzente und Bindestriche sind egal – `creality blue` findet «Creality PLA Blue», `#82` die Spule Nummer 82. **nur PLA** zeigt nur das Material der Datei.
 
+![Die Auswahl für eine Dateifarbe: Reiter Geladen, Spooly-Lager, OpenPrintTag und Eigene Farbe, Suche, und jede Spule mit Qualität, Material, Restgewicht und Lagerort](docs/screenshot-picker-de.png)
+
 **Ladeliste**
 
 Unter den Zeilen steht bei **Vor dem Druck einlegen** jedes Tool, das eine andere Spule braucht, mit Lagerort und was jetzt drin ist. **Als Textdatei speichern** und **Kopieren** nehmen die ganze Liste mit; beim Speichern für PrusaSlicer wird sie ebenfalls gespeichert (`…_Ladeliste.txt`, unter **Speichern** abschaltbar). Die Textdatei nennt auch, was geladen bleibt, welche Tools nicht gebraucht werden, und Hinweise. Dein Browser fragt eventuell einmal, ob die Seite mehrere Dateien herunterladen darf – zulassen.
@@ -204,6 +206,8 @@ Das **Protokoll des Programms** unten im Kasten zeigt, welche Slots Spooly für 
 ### OpenPrintTag-Katalog
 
 [OpenPrintTag](https://openprinttag.org) ist eine offene Datenbank mit Filamenten und ihren Farben. Der Farb-Mapper zeigt daraus Spulen, die zu einer Dateifarbe passen und die du kaufen oder verwenden könntest – als Alternativen und im Reiter **OpenPrintTag** der Auswahl. Die Liste wird live geladen (das Windows-Programm holt sie selbst und behält eine Kopie 6 Stunden; die Web-Version lädt sie von database.openprinttag.org und behält eine Kopie einen Tag). Ohne Internet gilt die letzte Kopie. Die Daten stehen unter der MIT-Lizenz.
+
+![Der Reiter OpenPrintTag: Filamente aus dem offenen Katalog, die zur Dateifarbe passen, sortiert nach Farbähnlichkeit](docs/screenshot-openprinttag-de.png)
 
 ### Was das Windows-Programm tut und speichert
 

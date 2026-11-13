@@ -109,6 +109,8 @@ Every color of your file gets one row:
 - **Map automatically** maps all automatic rows again and keeps your manual rows. **Remap all (incl. manual)** starts over.
 - The picker has four tabs: **Loaded**, **Spooly stock** (Windows program with Spooly), **OpenPrintTag** and **Own color** (color picker or hex code `#RRGGBB`). The search matches words in any order and ignores case, accents and hyphens – `creality blue` finds “Creality PLA Blue”, `#82` finds spool number 82. **only PLA** limits the list to the file's material.
 
+![The picker for one file color: tabs Loaded, Spooly stock, OpenPrintTag and Own color, search, and every spool with quality, material, remaining weight and storage location](docs/screenshot-picker.png)
+
 **Load list**
 
 Below the rows, **Load before printing** lists every tool that needs a different spool, with storage location and what is in it now. **Save as text file** and **Copy** take the whole list with you; when you save for PrusaSlicer, the list is saved too (`…_load-list.txt`, can be switched off under **Save**). The text file also lists what stays loaded, unused tools and notes. Your browser may ask once whether the page may download several files – allow it.
@@ -202,6 +204,8 @@ The **Program log** at the bottom of the box shows which slots Spooly offers for
 ### OpenPrintTag catalog
 
 [OpenPrintTag](https://openprinttag.org) is an open database of filaments with their colors. The Color Mapper uses it to show spools you could buy or use that match a file color – as alternatives and in the **OpenPrintTag** tab of the picker. The list is loaded live (the Windows program fetches it itself and keeps a copy for 6 hours; the web version loads it from database.openprinttag.org and keeps a copy for a day). Without internet, the last copy is used. The data is published under the MIT license.
+
+![The OpenPrintTag tab: filaments from the open catalog that match the file color, sorted by color match](docs/screenshot-openprinttag.png)
 
 ### What the Windows program does and stores
 
