@@ -1,0 +1,40 @@
+# Temporary (test branch only): can the web version load OpenPrintTag data from the browser?
+# Checks the CORS headers the browser would get for a request from domitech3d.github.io.
+name: OpenPrintTag probe
+
+on:
+  push:
+    branches: [v1.4-test]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Headers for a cross-origin request
+        run: |
+          for u in https://database.openprinttag.org/api/search-index.json https://database.openprinttag.org/api/brands/basic.json; do
+            echo "== $u"
+            curl -sS -D - -o /dev/null -H "Origin: https://domitech3d.github.io" -H "Accept-Encoding: gzip, br" "$u" | grep -i -E "^HTTP|access-control|content-type|content-length|content-encoding|last-modified|etag|cache-control|server" || true
+          done
+      - name: Preflight (OPTIONS)
+        run: |
+          curl -sS -D - -o /dev/null -X OPTIONS -H "Origin: https://domitech3d.github.io" -H "Access-Control-Request-Method: GET" https://database.openprinttag.org/api/search-index.json | grep -i -E "^HTTP|access-control" || true
+      - name: Size and structure
+        run: |
+          curl -sS --compressed https://database.openprinttag.org/api/search-index.json -o idx.json
+          ls -l idx.json
+          gzip -c idx.json | wc -c
+          python3 - <<'EOF'
+          import json, collections
+          d = json.load(open('idx.json'))
+          c = collections.Counter(e.get('type') for e in d)
+          print('entries', len(d), dict(c))
+          mats = [e for e in d if e.get('type') == 'material']
+          print('with color', sum(1 for e in mats if e.get('color')))
+          print('keys', sorted({k for e in mats for k in e}))
+          print('sample', mats[:2])
+          EOF
