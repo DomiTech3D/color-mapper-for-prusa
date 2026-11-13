@@ -23,12 +23,12 @@ You found a painted model for Bambu Studio, OrcaSlicer or PrusaSlicer, but its c
 - **One row per file color: file color → filament → tool.** Each row shows the chosen filament (color, name, brand, source), how close it is (very similar / similar / far off) and whether it was set automatically or by hand
 - **Automatic mapping by perceived color difference** (CIEDE2000) and color family – a dark green goes to a green, not to black; a brown to brown, not to red
 - **Change one row, only that row changes.** “Map automatically” keeps the rows you set by hand, “Remap all” starts over
-- 2–3 **alternatives** per row, and a picker with everything you can choose from: loaded filaments, your Spooly stock, the **[OpenPrintTag](https://openprinttag.org)** catalog or your own color (color picker or hex code). Search by words in any order – `esun white` finds “eSun ePLA Cold White”
+- 2–3 **alternatives** per row, and a picker with everything you can choose from: loaded filaments, the **[OpenPrintTag](https://openprinttag.org)** catalog, your own color (color picker or hex code) and, in the Windows program, your Spooly stock. Search by words in any order – `esun white` finds “eSun ePLA Cold White”
 - More colors than tools: similar colors share a tool, and the row says so
 - **Load list:** which spool goes into which tool before printing – on the page, to copy, or saved as a text file next to the 3MF
 - Your tool colors are remembered per printer in your browser
 - English and German, switchable at the top right
-- Everything runs locally: your 3MF files are never uploaded anywhere (only the public OpenPrintTag color list is downloaded, at most once a day)
+- Everything runs locally: your 3MF files are never uploaded anywhere (only the public OpenPrintTag filament list is downloaded)
 
 **Windows program (optional)**
 
@@ -82,23 +82,25 @@ Both are the same Color Mapper. The Windows program adds the live data from Prus
 
 ## The mapping
 
-![Mapping in the Windows program: every file color with its spool from the Spooly stock, quality, alternatives and tool](docs/screenshot-mapping.png)
+![Mapping in the Windows program with Spooly: every file color with its spool, quality, alternatives and tool](docs/screenshot-mapping.png)
+
+The mapping works the same in the web version and in the Windows program. Only the Spooly stock (and the storage locations and remaining weights from it) needs the Windows program with Spooly – the screenshot shows it with Spooly.
 
 Every color of your file gets one row:
 
 - **File color** on the left, with its share of the surface.
-- **Filament** – the button shows color, name, brand, remaining weight and where it comes from (*loaded*, *Spooly stock*, *OpenPrintTag*, *own color*). Click it to choose another one.
+- **Filament** – the button shows color, name, brand, remaining weight and where it comes from (*loaded*, *OpenPrintTag*, *own color*, and in the Windows program *Spooly stock*). Click it to choose another one.
 - **Tool** – the round buttons below. Click one to print this color with another tool.
 - **Quality:** ●●● very similar, ●●○ similar, ●○○ far off – based on the perceived color difference.
 - **Auto** or **✎ manual**, and **back to auto** for a single row.
 - **Notes**, for example *load into T6*, *shares T4 with Tool 7*, *PETG instead of PLA*.
-- **Alternatives:** the next best filaments – loaded, from your stock, and one from the OpenPrintTag catalog.
+- **Alternatives:** the next best filaments – loaded (and from your Spooly stock in the Windows program), plus one from the OpenPrintTag catalog.
 
 **How the automatic mapping decides**
 
 - Color first: the perceived difference (CIEDE2000, lightness counts half) plus a penalty for a different color family, so brown stays brown and grey doesn't land on a colored tool.
 - Material: filaments in the file's material (PLA for PLA) are preferred, as long as one of them is at least *similar*.
-- A loaded spool wins over one from your stock if it matches practically as well – you don't swap spools for nothing. Almost empty spools come last.
+- With Spooly (Windows program), spools from your stock are considered too. A loaded spool wins over one from your stock if it matches practically as well – you don't swap spools for nothing. Almost empty spools come last.
 - Spools from your stock go first into a tool with practically the same color (for example black PLA into the tool with black ASA), then into empty slots, then into the tool the print doesn't need whose current color is most similar. Tools the print needs are never replaced.
 - More colors than tools: the color shares the most similar tool, and the row says so.
 - The OpenPrintTag catalog is only shown as an alternative – it is never chosen automatically, because those spools are not in your printer or stock.
@@ -109,11 +111,19 @@ Every color of your file gets one row:
 - **Map automatically** maps all automatic rows again and keeps your manual rows. **Remap all (incl. manual)** starts over.
 - The picker has four tabs: **Loaded**, **Spooly stock** (Windows program with Spooly), **OpenPrintTag** and **Own color** (color picker or hex code `#RRGGBB`). The search matches words in any order and ignores case, accents and hyphens – `creality blue` finds “Creality PLA Blue”, `#82` finds spool number 82. **only PLA** limits the list to the file's material.
 
-![The picker for one file color: tabs Loaded, Spooly stock, OpenPrintTag and Own color, search, and every spool with quality, material, remaining weight and storage location](docs/screenshot-picker.png)
-
 **Load list**
 
-Below the rows, **Load before printing** lists every tool that needs a different spool, with storage location and what is in it now. **Save as text file** and **Copy** take the whole list with you; when you save for PrusaSlicer, the list is saved too (`…_load-list.txt`, can be switched off under **Save**). The text file also lists what stays loaded, unused tools and notes. Your browser may ask once whether the page may download several files – allow it.
+Below the rows, **Load before printing** lists every tool that needs a different spool and what is in it now (with Spooly also the storage location). **Save as text file** and **Copy** take the whole list with you; when you save for PrusaSlicer, the list is saved too (`…_load-list.txt`, can be switched off under **Save**). The text file also lists what stays loaded, unused tools and notes. When you set the colors by hand (web version), **Loaded** takes the new color for the tool; in the Windows program with Spooly there is **Enter in Spooly** instead (see Spooly). Your browser may ask once whether the page may download several files – allow it.
+
+## OpenPrintTag catalog
+
+**In the web version and the Windows program.** [OpenPrintTag](https://openprinttag.org) is an open database of filaments with their colors. The Color Mapper uses it to show filaments you could buy or load that match a file color – one as an alternative under each row, and all of them in the **OpenPrintTag** tab of the picker. No account or setup is needed.
+
+- The list is loaded live: the web version loads it from database.openprinttag.org and keeps a copy in your browser for a day; the Windows program fetches it itself and keeps a copy for 6 hours. Without internet, the last copy is used.
+- Catalog filaments are never chosen automatically – they are not in your printer or stock. Choose one by hand, and the load list tells you to load it.
+- The data is published under the MIT license.
+
+![The OpenPrintTag tab: filaments from the open catalog that match the file color, sorted by color match](docs/screenshot-openprinttag.png)
 
 ## Windows program
 
@@ -169,7 +179,9 @@ The data updates every 30 seconds. When you load a new spool, the tool changes b
 **How it works**
 
 - **Loaded spools:** come from your Spooly slots (or from Prusa Connect, see above), updated about every minute. The printer profile is chosen from the printer model (for example `COREONE_INDX8T`). Under each tool you see material and remaining weight; spools that are running low are marked.
-- **Your stock:** with **Use Spooly stock for suggestions** ticked (default), the automatic mapping also picks spools that are not loaded, by the rules in [The mapping](#the-mapping). Without it, only loaded spools are used; the stock stays available in the picker.
+- **Your stock:** with **Use Spooly stock for suggestions** ticked (default), the automatic mapping also picks spools that are not loaded, by the rules in [The mapping](#the-mapping). Without it, only loaded spools are used; the stock stays available in the **Spooly stock** tab of the picker – searchable, with remaining weight and storage location.
+
+  ![The Spooly stock tab of the picker: matching spools with quality, material, remaining weight and storage location](docs/screenshot-picker.png)
 - **Nothing changes in Spooly by itself.** Spools from your stock appear in the load list with their storage location; once Spooly (or Prusa Connect) reports them in the tool, they count as loaded.
 
 **Optional: enter spools in Spooly**
@@ -200,12 +212,6 @@ Tick **Allow entering spools in Spooly** (off by default). Then each spool in th
 | Spooly is not up to date for T3 | Prusa Connect reports a different spool in that tool. Update the slot in Spooly – or ignore it, Prusa Connect counts. |
 
 The **Program log** at the bottom of the box shows which slots Spooly offers for each printer.
-
-### OpenPrintTag catalog
-
-[OpenPrintTag](https://openprinttag.org) is an open database of filaments with their colors. The Color Mapper uses it to show spools you could buy or use that match a file color – as alternatives and in the **OpenPrintTag** tab of the picker. The list is loaded live (the Windows program fetches it itself and keeps a copy for 6 hours; the web version loads it from database.openprinttag.org and keeps a copy for a day). Without internet, the last copy is used. The data is published under the MIT license.
-
-![The OpenPrintTag tab: filaments from the open catalog that match the file color, sorted by color match](docs/screenshot-openprinttag.png)
 
 ### What the Windows program does and stores
 

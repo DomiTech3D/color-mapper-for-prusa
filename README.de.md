@@ -23,12 +23,12 @@ Du hast ein bemaltes Modell für Bambu Studio, OrcaSlicer oder PrusaSlicer gefun
 - **Eine Zeile pro Dateifarbe: Dateifarbe → Filament → Tool.** Jede Zeile zeigt das gewählte Filament (Farbe, Name, Marke, Quelle), wie gut es passt (sehr ähnlich / ähnlich / weit entfernt) und ob es automatisch oder von Hand gesetzt ist
 - **Automatische Zuordnung nach empfundenem Farbabstand** (CIEDE2000) und Farbfamilie – Dunkelgrün geht auf ein Grün, nicht auf Schwarz; Braun auf Braun, nicht auf Rot
 - **Eine Zeile ändern, nur diese Zeile ändert sich.** «Automatisch zuordnen» behält die von Hand gesetzten Zeilen, «Alle neu zuordnen» beginnt von vorn
-- 2–3 **Alternativen** pro Zeile und eine Auswahl mit allem, was in Frage kommt: geladene Filamente, dein Spooly-Lager, der **[OpenPrintTag](https://openprinttag.org)**-Katalog oder eine eigene Farbe (Farbwähler oder Hex-Code). Suche nach Wörtern in beliebiger Reihenfolge – `esun white` findet «eSun ePLA Cold White»
+- 2–3 **Alternativen** pro Zeile und eine Auswahl mit allem, was in Frage kommt: geladene Filamente, der **[OpenPrintTag](https://openprinttag.org)**-Katalog, eine eigene Farbe (Farbwähler oder Hex-Code) und im Windows-Programm dein Spooly-Lager. Suche nach Wörtern in beliebiger Reihenfolge – `esun white` findet «eSun ePLA Cold White»
 - Mehr Farben als Tools: ähnliche Farben teilen sich ein Tool, und die Zeile sagt es
 - **Ladeliste:** welche Spule vor dem Druck in welches Tool gehört – auf der Seite, zum Kopieren oder als Textdatei neben der 3MF gespeichert
 - Deine Tool-Farben bleiben pro Drucker im Browser gespeichert
 - Englisch und Deutsch, oben rechts umschaltbar
-- Alles läuft lokal: deine 3MF-Dateien werden nirgends hochgeladen (heruntergeladen wird nur die öffentliche Farbliste von OpenPrintTag, höchstens einmal am Tag)
+- Alles läuft lokal: deine 3MF-Dateien werden nirgends hochgeladen (heruntergeladen wird nur die öffentliche Filamentliste von OpenPrintTag)
 
 **Windows-Programm (optional)**
 
@@ -84,23 +84,25 @@ Die Seite startet auf Englisch – oben rechts auf **DE** klicken, der Browser m
 
 ## Die Zuordnung
 
-![Zuordnung im Windows-Programm: jede Dateifarbe mit ihrer Spule aus dem Spooly-Lager, Qualität, Alternativen und Tool](docs/screenshot-mapping-de.png)
+![Zuordnung im Windows-Programm mit Spooly: jede Dateifarbe mit ihrer Spule, Qualität, Alternativen und Tool](docs/screenshot-mapping-de.png)
+
+Die Zuordnung funktioniert in der Web-Version und im Windows-Programm gleich. Nur das Spooly-Lager (und die Lagerorte und Restgewichte daraus) braucht das Windows-Programm mit Spooly – der Screenshot zeigt es mit Spooly.
 
 Jede Farbe deiner Datei bekommt eine Zeile:
 
 - **Dateifarbe** links, mit ihrem Anteil an der Oberfläche.
-- **Filament** – der Knopf zeigt Farbe, Name, Marke, Restgewicht und woher es kommt (*geladen*, *Spooly-Lager*, *OpenPrintTag*, *eigene Farbe*). Ein Klick darauf öffnet die Auswahl.
+- **Filament** – der Knopf zeigt Farbe, Name, Marke, Restgewicht und woher es kommt (*geladen*, *OpenPrintTag*, *eigene Farbe* und im Windows-Programm *Spooly-Lager*). Ein Klick darauf öffnet die Auswahl.
 - **Tool** – die runden Knöpfe darunter. Ein Klick druckt diese Farbe mit einem anderen Tool.
 - **Qualität:** ●●● sehr ähnlich, ●●○ ähnlich, ●○○ weit entfernt – nach dem empfundenen Farbabstand.
 - **Auto** oder **✎ von Hand**, und **wieder automatisch** für eine einzelne Zeile.
 - **Hinweise**, zum Beispiel *in T6 einlegen*, *teilt T4 mit Tool 7*, *PETG statt PLA*.
-- **Alternativen:** die nächstbesten Filamente – geladen, aus dem Lager und eines aus dem OpenPrintTag-Katalog.
+- **Alternativen:** die nächstbesten Filamente – geladen (im Windows-Programm auch aus dem Spooly-Lager) und eines aus dem OpenPrintTag-Katalog.
 
 **So entscheidet die Automatik**
 
 - Zuerst die Farbe: der empfundene Abstand (CIEDE2000, Helligkeit halb gewichtet) plus ein Aufschlag für eine andere Farbfamilie – so bleibt Braun braun, und Grau landet nicht auf einem farbigen Tool.
 - Material: Filamente im Material der Datei (PLA für PLA) werden bevorzugt, solange eines davon mindestens *ähnlich* ist.
-- Eine geladene Spule gewinnt gegen eine aus dem Lager, wenn sie praktisch gleich gut passt – damit du nicht unnötig wechselst. Fast leere Spulen kommen zuletzt.
+- Mit Spooly (Windows-Programm) zählen auch die Spulen aus deinem Lager. Eine geladene Spule gewinnt gegen eine aus dem Lager, wenn sie praktisch gleich gut passt – damit du nicht unnötig wechselst. Fast leere Spulen kommen zuletzt.
 - Lager-Spulen kommen zuerst in ein Tool mit praktisch gleicher Farbe (zum Beispiel schwarzes PLA in das Tool mit schwarzem ASA), dann in leere Slots, dann in das Tool, das der Druck nicht braucht und dessen bisherige Farbe am ähnlichsten ist. Tools, die der Druck braucht, werden nie ersetzt.
 - Mehr Farben als Tools: Die Farbe teilt sich das ähnlichste Tool, und die Zeile sagt es.
 - Der OpenPrintTag-Katalog erscheint nur als Alternative – er wird nie automatisch gewählt, weil diese Spulen weder im Drucker noch im Lager sind.
@@ -111,11 +113,19 @@ Jede Farbe deiner Datei bekommt eine Zeile:
 - **Automatisch zuordnen** ordnet alle automatischen Zeilen neu zu und behält die von Hand gesetzten. **Alle neu zuordnen (auch von Hand)** beginnt von vorn.
 - Die Auswahl hat vier Reiter: **Geladen**, **Spooly-Lager** (Windows-Programm mit Spooly), **OpenPrintTag** und **Eigene Farbe** (Farbwähler oder Hex-Code `#RRGGBB`). Die Suche findet Wörter in beliebiger Reihenfolge, Gross-/Kleinschreibung, Akzente und Bindestriche sind egal – `creality blue` findet «Creality PLA Blue», `#82` die Spule Nummer 82. **nur PLA** zeigt nur das Material der Datei.
 
-![Die Auswahl für eine Dateifarbe: Reiter Geladen, Spooly-Lager, OpenPrintTag und Eigene Farbe, Suche, und jede Spule mit Qualität, Material, Restgewicht und Lagerort](docs/screenshot-picker-de.png)
-
 **Ladeliste**
 
-Unter den Zeilen steht bei **Vor dem Druck einlegen** jedes Tool, das eine andere Spule braucht, mit Lagerort und was jetzt drin ist. **Als Textdatei speichern** und **Kopieren** nehmen die ganze Liste mit; beim Speichern für PrusaSlicer wird sie ebenfalls gespeichert (`…_Ladeliste.txt`, unter **Speichern** abschaltbar). Die Textdatei nennt auch, was geladen bleibt, welche Tools nicht gebraucht werden, und Hinweise. Dein Browser fragt eventuell einmal, ob die Seite mehrere Dateien herunterladen darf – zulassen.
+Unter den Zeilen steht bei **Vor dem Druck einlegen** jedes Tool, das eine andere Spule braucht, und was jetzt drin ist (mit Spooly auch der Lagerort). **Als Textdatei speichern** und **Kopieren** nehmen die ganze Liste mit; beim Speichern für PrusaSlicer wird sie ebenfalls gespeichert (`…_Ladeliste.txt`, unter **Speichern** abschaltbar). Die Textdatei nennt auch, was geladen bleibt, welche Tools nicht gebraucht werden, und Hinweise. Stellst du die Farben von Hand ein (Web-Version), übernimmt **Eingelegt** die neue Farbe für das Tool; im Windows-Programm mit Spooly gibt es stattdessen **In Spooly eintragen** (siehe Spooly). Dein Browser fragt eventuell einmal, ob die Seite mehrere Dateien herunterladen darf – zulassen.
+
+## OpenPrintTag-Katalog
+
+**In der Web-Version und im Windows-Programm.** [OpenPrintTag](https://openprinttag.org) ist eine offene Datenbank mit Filamenten und ihren Farben. Der Farb-Mapper zeigt daraus Filamente, die zu einer Dateifarbe passen und die du kaufen oder einlegen könntest – eines als Alternative unter jeder Zeile, alle im Reiter **OpenPrintTag** der Auswahl. Ein Konto oder eine Einrichtung braucht es nicht.
+
+- Die Liste wird live geladen: Die Web-Version lädt sie von database.openprinttag.org und behält eine Kopie einen Tag im Browser; das Windows-Programm holt sie selbst und behält eine Kopie 6 Stunden. Ohne Internet gilt die letzte Kopie.
+- Filamente aus dem Katalog werden nie automatisch gewählt – sie sind weder im Drucker noch im Lager. Wähle eines von Hand, dann sagt dir die Ladeliste, dass du es einlegen musst.
+- Die Daten stehen unter der MIT-Lizenz.
+
+![Der Reiter OpenPrintTag: Filamente aus dem offenen Katalog, die zur Dateifarbe passen, sortiert nach Farbähnlichkeit](docs/screenshot-openprinttag-de.png)
 
 ## Windows-Programm
 
@@ -171,7 +181,9 @@ Die Daten werden alle 30 Sekunden aktualisiert. Legst du eine neue Spule ein, ä
 **So funktioniert es**
 
 - **Geladene Spulen:** kommen aus deinen Spooly-Slots (oder aus Prusa Connect, siehe oben) und werden etwa jede Minute aktualisiert. Das Drucker-Profil wird anhand des Druckermodells gewählt (zum Beispiel `COREONE_INDX8T`). Unter jedem Tool stehen Material und Restgewicht; knappe Spulen werden markiert.
-- **Dein Lager:** Mit **Spooly-Lager für Vorschläge nutzen** (Standard) wählt die Automatik auch Spulen, die nicht geladen sind – nach den Regeln in [Die Zuordnung](#die-zuordnung). Ohne Haken nimmt sie nur geladene Spulen; das Lager bleibt in der Auswahl verfügbar.
+- **Dein Lager:** Mit **Spooly-Lager für Vorschläge nutzen** (Standard) wählt die Automatik auch Spulen, die nicht geladen sind – nach den Regeln in [Die Zuordnung](#die-zuordnung). Ohne Haken nimmt sie nur geladene Spulen; das Lager bleibt im Reiter **Spooly-Lager** der Auswahl verfügbar – durchsuchbar, mit Restgewicht und Lagerort.
+
+  ![Der Reiter Spooly-Lager der Auswahl: passende Spulen mit Qualität, Material, Restgewicht und Lagerort](docs/screenshot-picker-de.png)
 - **In Spooly ändert sich nichts von selbst.** Spulen aus dem Lager stehen mit Lagerort in der Ladeliste; sobald Spooly (oder Prusa Connect) sie im Tool meldet, gelten sie als geladen.
 
 **Optional: Spulen in Spooly eintragen**
@@ -202,12 +214,6 @@ Die Daten werden alle 30 Sekunden aktualisiert. Legst du eine neue Spule ein, ä
 | Spooly ist nicht aktuell für T3 | Prusa Connect meldet in diesem Tool eine andere Spule. Den Slot in Spooly nachführen – oder ignorieren, es gilt Prusa Connect. |
 
 Das **Protokoll des Programms** unten im Kasten zeigt, welche Slots Spooly für jeden Drucker anbietet.
-
-### OpenPrintTag-Katalog
-
-[OpenPrintTag](https://openprinttag.org) ist eine offene Datenbank mit Filamenten und ihren Farben. Der Farb-Mapper zeigt daraus Spulen, die zu einer Dateifarbe passen und die du kaufen oder verwenden könntest – als Alternativen und im Reiter **OpenPrintTag** der Auswahl. Die Liste wird live geladen (das Windows-Programm holt sie selbst und behält eine Kopie 6 Stunden; die Web-Version lädt sie von database.openprinttag.org und behält eine Kopie einen Tag). Ohne Internet gilt die letzte Kopie. Die Daten stehen unter der MIT-Lizenz.
-
-![Der Reiter OpenPrintTag: Filamente aus dem offenen Katalog, die zur Dateifarbe passen, sortiert nach Farbähnlichkeit](docs/screenshot-openprinttag-de.png)
 
 ### Was das Windows-Programm tut und speichert
 
