@@ -103,12 +103,10 @@ header.top p { margin: 0; color: var(--muted); font-size: 14px; }
 .loadhead p { margin: 0 auto 0 0; font-size: 12.5px; color: var(--muted); }
 .loadhead .link-btn { font-size: 12.5px; }
 .savelist { margin-top: 10px; }
-.planlist > p { margin: 0; font-size: 12.5px; color: var(--muted); }
 .planrow { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 6px 8px; border: 1px dashed var(--accent); border-radius: 8px; }
 .planrow > i { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); }
 .planrow b { display: block; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .planrow small { display: block; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.planrow .link-btn { font-size: 12.5px; }
 .wrbtn { font-weight: 600; font-size: 12.5px; line-height: 1.5; color: var(--accent-ink); background: var(--accent); border: 1px solid var(--accent); border-radius: 99px; padding: 2px 10px; cursor: pointer; white-space: nowrap; }
 .wrbtn.ask { background: var(--warn); border-color: var(--warn); color: #1A1200; }
 .wrbtn:disabled { opacity: .6; cursor: progress; }
@@ -128,12 +126,10 @@ dialog.spdlg::backdrop { background: rgba(0,0,0,.45); }
 .sprow i { width: 26px; height: 26px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); }
 .sprow b { display: block; font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sprow small { display: block; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sprow small .fit { color: var(--ok); }
 .sprow small .low { color: var(--warn); } .sprow small .crit { color: var(--err); }
 .spempty { color: var(--muted); font-size: 13px; padding: 12px 8px; }
 .spdlg footer { display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-wrap: wrap; padding: 10px 16px 14px; border-top: 1px solid var(--line); }
 .spdlg footer .vbtn { margin-left: auto; }
-.spdlg .danger { color: var(--err); }
 #mapMat { color: var(--warn); }
 .link-btn { background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
 
@@ -193,7 +189,6 @@ dialog.spdlg::backdrop { background: rgba(0,0,0,.45); }
 .livelog pre { margin: 6px 0; max-height: 220px; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px; font: 11px/1.45 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
 .live-printer select { margin-left: 6px; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
 .tool.live .lbl::after { content: ""; display: inline-block; width: 5px; height: 5px; margin-left: 3px; border-radius: 50%; background: var(--ok); vertical-align: 2px; }
-.status.warn { color: var(--warn); }
 .map-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 8px; }
 .hint { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
 
@@ -353,7 +348,7 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       <div class="printer-row"><label for="printerProfile" data-i18n="printer">Printer</label><select id="printerProfile"></select></div>
       <div class="tools" id="tools"></div>
       <p class="hint" id="toolHint"></p>
-      <div class="livebox" id="liveBox">
+      <div class="livebox">
         <p class="occline" id="occLine"></p>
         <div id="srcBlocks" hidden>
           <div class="srcblock">
@@ -442,7 +437,6 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       viewerAria: '3D preview', viewSegAria: 'Color view',
       vOrig: 'File colors', vResultTool: 'With your tools', vResultSlot: 'With your slots', vReset: 'Reset view',
       demoNote: 'Sample model: 3DBenchy in 8 colors. Drag your own 3MF file here or choose it on the left.',
-      loadingFile0: 'Loading file …',
       step1: 'File', step3: 'Mapping', step4: 'Save',
       dropStrong: 'Drag a 3MF file here', dropSmall: 'or click to choose · Bambu Studio, OrcaSlicer, PrusaSlicer',
       plate: 'Plate', printer: 'Printer',
@@ -583,7 +577,6 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       viewerAria: '3D-Vorschau', viewSegAria: 'Farbansicht',
       vOrig: 'Datei-Farben', vResultTool: 'Mit deinen Tools', vResultSlot: 'Mit deinen Slots', vReset: 'Ansicht zurücksetzen',
       demoNote: 'Beispielmodell: 3DBenchy in 8 Farben. Zieh deine eigene 3MF-Datei hierher oder wähle sie links aus.',
-      loadingFile0: 'Lade Datei …',
       step1: 'Datei', step3: 'Zuordnung', step4: 'Speichern',
       dropStrong: '3MF-Datei hierher ziehen', dropSmall: 'oder klicken zum Auswählen · Bambu Studio, OrcaSlicer, PrusaSlicer',
       plate: 'Platte', printer: 'Drucker',
@@ -1038,7 +1031,7 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
   const live = {
     bridge: false, connect: null, spooly: null, connectOn: false, spoolyOn: false,
     printerId: store.get('indx-live-printer', null), spPrinterId: store.get('cm-spooly-printer', null),
-    timer: 0, spoolyErr: '', shownErr: false, rendered: false, occSig: '',
+    timer: 0, spoolyErr: '', shownErr: false, occSig: '',
     spoolyWrite: store.get('cm-spooly-write', false) === true,
     useStock: store.get('cm-use-stock', true) !== false,
     confirm: null, writing: 0,

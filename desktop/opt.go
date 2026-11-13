@@ -1,3 +1,6 @@
+// Color Mapper for Prusa – Copyright (C) 2026 DomiTech3D
+// SPDX-License-Identifier: GPL-3.0-only – additional terms (attribution) in NOTICE.md
+
 package main
 
 // OpenPrintTag: offener Filament-Katalog (https://database.openprinttag.org, Daten unter MIT-Lizenz).

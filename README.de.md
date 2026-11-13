@@ -250,9 +250,6 @@ Absichtlich: Nur die Flächen der Farbe oder des Tools unter dem Mauszeiger blei
 **Warum steht in einer Zeile «teilt T4 mit …»?**
 Die Datei hat mehr Farben als du Tools hast (oder als Tools frei sind). Die Farbe druckt dann mit dem ähnlichsten Tool. Wähle für diese Zeile ein anderes Tool oder Filament, wenn dir das lieber ist.
 
-**Warum wird ein Filament aus dem Katalog nie automatisch gewählt?**
-Spulen aus dem OpenPrintTag-Katalog sind weder in deinem Drucker noch in deinem Lager. Sie sind Vorschläge; wähle eine von Hand, wenn du sie kaufen oder einlegen willst, und lege sie ein, wie es die Ladeliste sagt.
-
 **Lässt sich die Ladeliste in die 3MF schreiben?**
 PrusaSlicer würde sie nicht anzeigen: Mit *nur Geometrie* übernimmt er nur Geometrie und Bemalung. Deshalb ist sie eine eigene Textdatei.
 
@@ -262,7 +259,7 @@ Das ist ein Hobbyprojekt und mein erstes auf GitHub – Rückmeldungen sind sehr
 
 ## Selbst bauen
 
-Benötigt: Python 3, Go 1.22 oder neuer, Node.js (nur für den Test).
+Benötigt: Python 3, Go 1.22 oder neuer, Node.js (nur für die Tests).
 
 ```sh
 python3 app/build.py                      # → dist/color-mapper.html und desktop/web/color-mapper.html

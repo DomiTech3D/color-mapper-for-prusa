@@ -1,5 +1,6 @@
-/* Color Mapper for Prusa – Farbabgleich (ohne Seitenbezug, mit Unit-Tests in test/match.test.js)
- * Copyright (C) 2026 DomiTech3D – GPL-3.0, siehe LICENSE und NOTICE.md
+// Color Mapper for Prusa – Copyright (C) 2026 DomiTech3D
+// SPDX-License-Identifier: GPL-3.0-only – additional terms (attribution) in NOTICE.md
+/* Farbabgleich (ohne Seitenbezug, mit Unit-Tests in test/match.test.js)
  *
  * Begriffe
  *   Filament (Kandidat): { key, hex, material, kind: 'loaded'|'stock'|'catalog'|'own', tool?, fill? }

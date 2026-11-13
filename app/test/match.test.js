@@ -1,3 +1,5 @@
+// Color Mapper for Prusa – Copyright (C) 2026 DomiTech3D
+// SPDX-License-Identifier: GPL-3.0-only – additional terms (attribution) in NOTICE.md
 // Unit-Tests für den Farbabgleich (node app/test/match.test.js) – ohne Abhängigkeiten
 const assert = require('assert');
 const M = require('../match.js');

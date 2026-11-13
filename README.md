@@ -248,9 +248,6 @@ On purpose: only the areas printed by the color or tool under the mouse pointer 
 **Why does a row say “shares T4 with …”?**
 The file has more colors than you have tools (or than tools that are free). The color then prints with the most similar tool. Choose another tool or filament for that row if you prefer.
 
-**Why is a catalog filament never chosen automatically?**
-Spools from the OpenPrintTag catalog are not in your printer or your stock. They are suggestions; choose one by hand if you want to buy or load it, and load it as the load list says.
-
 **Can the load list be put into the 3MF?**
 PrusaSlicer would not show it: with *Import geometry only* it drops everything except the geometry and the painting. That's why it is a separate text file.
 
@@ -260,7 +257,7 @@ This is a hobby project and my first one on GitHub – feedback is very welcome.
 
 ## Build from source
 
-Requirements: Python 3, Go 1.22 or newer, Node.js (only for the test).
+Requirements: Python 3, Go 1.22 or newer, Node.js (only for the tests).
 
 ```sh
 python3 app/build.py                      # → dist/color-mapper.html and desktop/web/color-mapper.html
