@@ -18,6 +18,8 @@ jobs:
           cache: false
       - name: Core round trip (sample model)
         run: node app/test/roundtrip.js demo/benchy_8t.3mf
+      - name: Color matching (unit tests)
+        run: node app/test/match.test.js
       - name: Build page
         run: python3 app/build.py
       - name: Vet, test and build the Windows program

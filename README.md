@@ -11,7 +11,7 @@ You found a painted model for Bambu Studio, OrcaSlicer or PrusaSlicer, but its c
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png">
-  <img alt="Color Mapper for Prusa with the 8-color 3DBenchy sample – hovering tool T5 shows only the areas it prints" src="docs/screenshot.png">
+  <img alt="Color Mapper for Prusa with the 8-color 3DBenchy sample – one row per file color with its filament and tool; hovering tool T5 shows only the areas it prints" src="docs/screenshot.png">
 </picture>
 
 ## Features
@@ -19,24 +19,25 @@ You found a painted model for Bambu Studio, OrcaSlicer or PrusaSlicer, but its c
 **Everywhere (web version and Windows program)**
 
 - Opens 3MF projects from **Bambu Studio, OrcaSlicer and PrusaSlicer** (painted models and per-object colors)
-- 3D preview with the file colors or with your loaded filaments; hover a color or a tool to see exactly which areas it prints
-- **Automatic mapping by color similarity and color family** – a brown goes to your brown filament, not to the red one – adjustable with one click per color
+- 3D preview with the file colors or with your filaments; hover a color or a tool to see exactly which areas it prints
+- **One row per file color: file color → filament → tool.** Each row shows the chosen filament (color, name, brand, source), how close it is (very similar / similar / far off) and whether it was set automatically or by hand
+- **Automatic mapping by perceived color difference** (CIEDE2000) and color family – a dark green goes to a green, not to black; a brown to brown, not to red
+- **Change one row, only that row changes.** “Map automatically” keeps the rows you set by hand, “Remap all” starts over
+- 2–3 **alternatives** per row, and a picker with everything you can choose from: loaded filaments, the **[OpenPrintTag](https://openprinttag.org)** catalog, your own color (color picker or hex code) and, in the Windows program, your Spooly stock. Search by words in any order – `esun white` finds “eSun ePLA Cold White”
+- More colors than tools: similar colors share a tool, and the row says so
+- **Load list:** which spool goes into which tool before printing – on the page, to copy, or saved as a text file next to the 3MF
 - Your tool colors are remembered per printer in your browser
 - English and German, switchable at the top right
-- Everything runs locally: your 3MF files are never uploaded anywhere
+- Everything runs locally: your 3MF files are never uploaded anywhere (only the public OpenPrintTag filament list is downloaded)
 
 **Windows program (optional)**
 
-- **Live tool colors from Prusa Connect** (unofficial) – the filament loaded in each tool or MMU slot, updated every 30 seconds
-- **Or live from [Spooly](https://spooly.eu)** (official API), with even more:
-  - remaining weight per tool and a warning when a spool is running low
-  - for every color of your file, **the best matching spool from your whole stock** – loaded or not – planned onto a tool
-  - choose a spool for any tool yourself from your stock, with storage location
-  - optional: enter the planned spools in Spooly with one click
-- Empty tools are shown as empty and are not used for automatic mapping
-- Under **Mapping**, every file color shows what exactly is loaded (or planned) in the chosen tool
+- **Live from Prusa Connect** (unofficial): what is loaded in each tool or MMU slot
+- **Live from [Spooly](https://spooly.eu)** (official API): spool number, remaining weight, storage location – and your whole stock for suggestions
+- Use **both at once**: Prusa Connect says what is loaded, Spooly adds the details. Without Connect, Spooly provides the loaded spools. If Spooly is out of date for a tool, the program says so
+- Optional: enter the spools to load in Spooly with one click
 - **Details** lists printer, update time and every tool with spool, material, remaining weight and storage location
-- A note when a print would mix materials (for example PLA and ASA)
+- Warnings for spools that are running low and for prints that mix materials (for example PLA and ASA)
 
 ## Supported printers
 
@@ -50,14 +51,15 @@ Tested on a real CORE One INDX. The other printers use the same file format and 
 
 ## Web version or Windows program?
 
-Both are the same Color Mapper. The Windows program adds the live tool colors from Prusa Connect or Spooly.
+Both are the same Color Mapper. The Windows program adds the live data from Prusa Connect and Spooly.
 
 | | Web version | Windows program |
 |---|---|---|
 | Installation | none | download `ColorMapperForPrusa.exe` and start it |
 | Works on | any computer or tablet with a current browser (Windows, macOS, Linux) | Windows |
-| Open, map and save 3MF | yes | yes |
-| Tool colors | set by hand once per printer, remembered by your browser | automatically from Prusa Connect or Spooly |
+| Open, map and save 3MF, load list | yes | yes |
+| OpenPrintTag catalog, own colors | yes | yes |
+| What is loaded in your printer | set by hand once per printer, remembered by your browser | automatically from Prusa Connect and/or Spooly |
 | Spools from your Spooly stock | – | yes |
 
 ## Web version
@@ -67,9 +69,9 @@ Both are the same Color Mapper. The Windows program adds the live tool colors fr
 
 1. Choose your printer under **Printer**.
 2. Set the color of each tool or slot: tap it and pick the color of the filament that is loaded. You do this once; the browser remembers it.
-3. Drag your 3MF file onto the page.
-4. Check the mapping – every file color gets a tool. **Map automatically by color** does it for you; hover a row to see where the color is used.
-5. Click **Save for PrusaSlicer**.
+3. Drag your 3MF file onto the page. Every file color gets a filament and a tool automatically.
+4. Check the rows under **Mapping** (see [The mapping](#the-mapping)) and change what you want.
+5. Click **Save for PrusaSlicer**. With **Also save the load list as a text file** ticked (default), you also get `…_load-list.txt`.
 
 ### Opening the result in PrusaSlicer
 
@@ -78,29 +80,88 @@ Both are the same Color Mapper. The Windows program adds the live tool colors fr
 3. If PrusaSlicer asks whether to open the file as a project or import the geometry only, choose **Import geometry only** so your printer profile stays.
 4. Check the painting with the **Multimaterial painting** tool (key N) before printing.
 
+## The mapping
+
+![Mapping in the Windows program with Spooly: every file color with its spool, quality, alternatives and tool](docs/screenshot-mapping.png)
+
+The mapping works the same in the web version and in the Windows program. Only the Spooly stock (and the storage locations and remaining weights from it) needs the Windows program with Spooly – the screenshot shows it with Spooly.
+
+Every color of your file gets one row:
+
+- **File color** on the left, with its share of the surface.
+- **Filament** – the button shows color, name, brand, remaining weight and where it comes from (*loaded*, *OpenPrintTag*, *own color*, and in the Windows program *Spooly stock*). Click it to choose another one.
+- **Tool** – the round buttons below. Click one to print this color with another tool.
+- **Quality:** ●●● very similar, ●●○ similar, ●○○ far off – based on the perceived color difference.
+- **Auto** or **✎ manual**, and **back to auto** for a single row.
+- **Notes**, for example *load into T6*, *shares T4 with Tool 7*, *PETG instead of PLA*.
+- **Alternatives:** the next best filaments – loaded (and from your Spooly stock in the Windows program), plus one from the OpenPrintTag catalog.
+
+**How the automatic mapping decides**
+
+- Color first: the perceived difference (CIEDE2000, lightness counts half) plus a penalty for a different color family, so brown stays brown and grey doesn't land on a colored tool.
+- Material: filaments in the file's material (PLA for PLA) are preferred, as long as one of them is at least *similar*.
+- With Spooly (Windows program), spools from your stock are considered too. A loaded spool wins over one from your stock if it matches practically as well – you don't swap spools for nothing. Almost empty spools come last.
+- Spools from your stock go first into a tool with practically the same color (for example black PLA into the tool with black ASA), then into empty slots, then into the tool the print doesn't need whose current color is most similar. Tools the print needs are never replaced.
+- More colors than tools: the color shares the most similar tool, and the row says so.
+- The OpenPrintTag catalog is only shown as an alternative – it is never chosen automatically, because those spools are not in your printer or stock.
+
+**Changing things by hand**
+
+- Click a tool or choose a filament: **only this row changes**. If the filament is not in the printer yet, it goes to a free tool (same color, then empty, then most similar).
+- **Map automatically** maps all automatic rows again and keeps your manual rows. **Remap all (incl. manual)** starts over.
+- The picker has four tabs: **Loaded**, **Spooly stock** (Windows program with Spooly), **OpenPrintTag** and **Own color** (color picker or hex code `#RRGGBB`). The search matches words in any order and ignores case, accents and hyphens – `creality blue` finds “Creality PLA Blue”, `#82` finds spool number 82. **only PLA** limits the list to the file's material.
+
+**Load list**
+
+Below the rows, **Load before printing** lists every tool that needs a different spool and what is in it now (with Spooly also the storage location). **Save as text file** and **Copy** take the whole list with you; when you save for PrusaSlicer, the list is saved too (`…_load-list.txt`, can be switched off under **Save**). The text file also lists what stays loaded, unused tools and notes. When you set the colors by hand (web version), **Loaded** takes the new color for the tool; in the Windows program with Spooly there is **Enter in Spooly** instead (see Spooly). Your browser may ask once whether the page may download several files – allow it.
+
+## OpenPrintTag catalog
+
+**In the web version and the Windows program.** [OpenPrintTag](https://openprinttag.org) is an open database of filaments with their colors. The Color Mapper uses it to show filaments you could buy or load that match a file color – one as an alternative under each row, and all of them in the **OpenPrintTag** tab of the picker. No account or setup is needed.
+
+- The list is loaded live: the web version loads it from database.openprinttag.org and keeps a copy in your browser for a day; the Windows program fetches it itself and keeps a copy for 6 hours. Without internet, the last copy is used.
+- Catalog filaments are never chosen automatically – they are not in your printer or stock. Choose one by hand, and the load list tells you to load it.
+- The data is published under the MIT license.
+
+![The OpenPrintTag tab: filaments from the open catalog that match the file color, sorted by color match](docs/screenshot-openprinttag.png)
+
 ## Windows program
 
 1. Download `ColorMapperForPrusa.exe` from the [latest release](../../releases/latest) and start it. A black window opens and the Color Mapper opens in your browser.
-2. Choose the source of the tool colors at the top of the live box: **Prusa Connect** or **Spooly** (see below).
+2. Connect **Prusa Connect**, **Spooly** or both in the box below the tools (see below).
 3. Keep the black window open while you use the Color Mapper. Closing it stops the program.
 
 **“Windows protected your PC”:** the program is not code-signed, so Windows SmartScreen warns about it on first start. Click **More info → Run anyway**. If your browser or company blocks downloading `.exe` files, you can't use the Windows program on that computer – the web version works without it.
 
 *Optional – check the download:* the files in the releases are built by GitHub directly from this source code. Compare the SHA-256 (`Get-FileHash ColorMapperForPrusa.exe` in PowerShell) with `SHA256SUMS.txt` from the release, or, with the [GitHub CLI](https://cli.github.com/), run `gh attestation verify ColorMapperForPrusa.exe --repo DomiTech3D/color-mapper-for-prusa`.
 
+### Where “loaded” comes from
+
+![Prusa Connect and Spooly connected at the same time: tools with material and remaining weight, the source line and the note when Spooly is not up to date](docs/screenshot-sources.png)
+
+The line **Loaded spools** below the tools shows which source is used:
+
+| Connected | What is loaded comes from |
+|---|---|
+| Prusa Connect and Spooly | Prusa Connect. Spooly adds spool number, remaining weight and storage location when its spool in that slot has the same color. If Prusa Connect knows only the material, the color comes from Spooly. If the two disagree, a note says *Spooly is not up to date for T3* – Prusa Connect counts. |
+| only Spooly (or Prusa Connect fails) | Spooly |
+| neither | the colors you set by hand |
+
+The tools show what is loaded. While a live source is used, you change the filament on the printer or in Spooly, not on the page; a ↻ marks tools whose spool should be swapped for this file.
+
 ### Live colors from Prusa Connect
 
-1. In the live box, choose **Prusa Connect** and click **Connect to Prusa Connect**.
+1. Click **Connect to Prusa Connect**.
 2. Sign in on the Prusa page that opens. The program never sees your password.
 3. If you have several printers, choose yours under **Printer**. The matching printer profile is chosen automatically.
 
-The colors update every 30 seconds. When you load a new spool, the color changes by itself. A tool without filament in Prusa Connect is shown as empty. You can still give a tool your own color by tapping it; **↺ Connect** takes the color from Prusa Connect again.
+The data updates every 30 seconds. When you load a new spool, the tool changes by itself. A tool without filament in Prusa Connect is shown as empty.
 
 ### Live colors and stock from Spooly
 
 [Spooly](https://spooly.eu) is a filament manager. Through its official API the Color Mapper reads which spool is in which slot and what you have in stock.
 
-![The Windows program with Spooly: live tool colors, a spool from stock planned for T2, and the Details panel](docs/screenshot-spooly.png)
+![The load list: which spool from the Spooly stock goes into which tool, with storage location and what it replaces](docs/screenshot-spooly.png)
 
 **You need**
 
@@ -110,26 +171,22 @@ The colors update every 30 seconds. When you load a new spool, the color changes
 
 **Set up**
 
-1. In Spooly, create a **personal API key** (it starts with `spk_`). For live colors, reading is enough. Only the optional *entering of spools in Spooly* (see below) needs a key that may write.
-2. Start `ColorMapperForPrusa.exe` and switch the live box from **Prusa Connect** to **Spooly**.
-3. Paste the key and click **Connect to Spooly**. The key is checked right away.
+1. In Spooly, create a **personal API key** (it starts with `spk_`). Reading is enough. Only the optional *entering of spools in Spooly* (see below) needs a key that may write.
+2. Start `ColorMapperForPrusa.exe`, paste the key under **Spooly** and click **Connect to Spooly**. The key is checked right away.
+3. If Spooly has several printers, choose yours under **Printer** in the Spooly box. With Prusa Connect connected, the printer with the same name is chosen automatically.
 4. Check under **Details** that every tool shows the right spool.
 
 **How it works**
 
-- **Tool colors:** come from the spools in your Spooly slots, updated about every minute. The printer profile is chosen from the printer model (for example `COREONE_INDX8T`). Under each tool you see material and remaining weight; spools that are running low are marked.
-- **Best spool for your file:** when you open a file, every file color gets the spool from Spooly that matches it best – loaded or in stock:
-  - A loaded spool wins if it matches practically as well, so you don't swap spools for nothing.
-  - Only spools of the file's material are used (PLA for PLA), unless none of them fits.
-  - Spools from your stock go first into a tool that has practically the same color (for example black PLA into the tool with black ASA), then into empty slots, then into a tool the print doesn't need whose current color is most similar – no black into a tool that printed white. Tools the print needs are never replaced.
-  - Spools that are almost empty come last.
-  - A message says what was planned and which spool it would replace. **Discard** undoes a plan, **Map automatically by color** plans again. Nothing happens for the sample model shown at start.
-- **Choose a spool yourself:** the spool button (◎) under each tool opens your stock – searchable, with remaining weight, storage location and where a spool is loaded right now. Spools that match your file are on top.
-- **Plans are only plans:** Spooly is not changed. Planned spools are listed below the tools with their storage location, so you know what to load where. As soon as Spooly reports the planned spool in that slot, the plan is done.
+- **Loaded spools:** come from your Spooly slots (or from Prusa Connect, see above), updated about every minute. The printer profile is chosen from the printer model (for example `COREONE_INDX8T`). Under each tool you see material and remaining weight; spools that are running low are marked.
+- **Your stock:** with **Use Spooly stock for suggestions** ticked (default), the automatic mapping also picks spools that are not loaded, by the rules in [The mapping](#the-mapping). Without it, only loaded spools are used; the stock stays available in the **Spooly stock** tab of the picker – searchable, with remaining weight and storage location.
+
+  ![The Spooly stock tab of the picker: matching spools with quality, material, remaining weight and storage location](docs/screenshot-picker.png)
+- **Nothing changes in Spooly by itself.** Spools from your stock appear in the load list with their storage location; once Spooly (or Prusa Connect) reports them in the tool, they count as loaded.
 
 **Optional: enter spools in Spooly**
 
-Tick **Allow entering spools in Spooly** (off by default). Then each planned spool gets an **Enter in Spooly** button, and the spool window can empty a slot in Spooly. Nothing is changed in Spooly without one of these clicks.
+Tick **Allow entering spools in Spooly** (off by default). Then each spool in the load list gets an **Enter in Spooly** button. Nothing is changed in Spooly without this click.
 
 - This needs the **slot autopilot** in Spooly and a key that may write.
 - If the printer reports a different color for the slot, the Color Mapper asks first (**Assign anyway**).
@@ -152,14 +209,16 @@ Tick **Allow entering spools in Spooly** (off by default). Then each planned spo
 | Spooly's daily limit is used up | Colors update again the next day. |
 | Spooly lists T2 but without a slot ID | Turn on the slot autopilot for this printer in Spooly. |
 | Spooly does not allow this key to change slots | Create a key with write access, or leave entering off. |
+| Spooly is not up to date for T3 | Prusa Connect reports a different spool in that tool. Update the slot in Spooly – or ignore it, Prusa Connect counts. |
 
-The **Program log** at the bottom of the live box shows which slots Spooly offers for each printer.
+The **Program log** at the bottom of the box shows which slots Spooly offers for each printer.
 
 ### What the Windows program does and stores
 
 - It listens only on `127.0.0.1:8765` (your own computer) and refuses requests from other sites.
 - Prusa Connect: you sign in on Prusa's own page; the sign-in is stored encrypted (Windows DPAPI) in `%APPDATA%\ColorMapperForPrusa`. It only reads your printers and the filament in each tool.
-- Spooly: the API key is stored the same way. The program reads printers, slots and spools; it only writes to Spooly when you click **Enter in Spooly** or empty a slot.
+- Spooly: the API key is stored the same way. The program reads printers, slots and spools; it only writes to Spooly when you click **Enter in Spooly**.
+- OpenPrintTag: the public filament list is downloaded and cached in the same folder (`openprinttag.json`).
 - **Disconnect** deletes the stored sign-in or key. Tokens and keys are never written to the log.
 
 ## About the Prusa Connect connection (unofficial)
@@ -186,24 +245,31 @@ No. A 3MF file contains no filament usage; only the slicer calculates it (it dep
 **Why do some areas turn grey while hovering?**
 On purpose: only the areas printed by the color or tool under the mouse pointer stay in color.
 
+**Why does a row say “shares T4 with …”?**
+The file has more colors than you have tools (or than tools that are free). The color then prints with the most similar tool. Choose another tool or filament for that row if you prefer.
+
+**Can the load list be put into the 3MF?**
+PrusaSlicer would not show it: with *Import geometry only* it drops everything except the geometry and the painting. That's why it is a separate text file.
+
 ## Feedback
 
 This is a hobby project and my first one on GitHub – feedback is very welcome. Found a bug, a 3MF that doesn't work, or have an idea? Please [open an issue](../../issues). For problems with a specific file, a short description of the printer, the slicer it came from and what went wrong helps a lot.
 
 ## Build from source
 
-Requirements: Python 3, Go 1.22 or newer, Node.js (only for the test).
+Requirements: Python 3, Go 1.22 or newer, Node.js (only for the tests).
 
 ```sh
 python3 app/build.py                      # → dist/color-mapper.html and desktop/web/color-mapper.html
 node app/test/roundtrip.js demo/benchy_8t.3mf
+node app/test/match.test.js               # color matching and tool allocation
 
 cd desktop
 go test ./...
 GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o ColorMapperForPrusa.exe .
 ```
 
-The page source is `app/index.src.html`, the 3MF engine is `app/core.js` (no dependencies). The Windows program (`desktop/`) only uses the Go standard library.
+The page source is `app/index.src.html`, the 3MF engine is `app/core.js` and the color matching is `app/match.js` (no dependencies). The Windows program (`desktop/`) only uses the Go standard library.
 
 ## License
 
@@ -221,3 +287,4 @@ In plain words (the license texts are what counts):
 - Prusa, Prusa Connect, PrusaSlicer, CORE One, INDX and MMU3 are trademarks of Prusa Research a.s.; Spooly is a product of its developer; other product names belong to their owners.
 - Always check the result in PrusaSlicer before printing.
 - The sample model is the 3DBenchy, which NTI released into the public domain in 2025.
+- Filament colors in the catalog: [OpenPrintTag Database](https://github.com/OpenPrintTag/openprinttag-database) (MIT license), loaded live from database.openprinttag.org. The catalog is only offered as an alternative and never chosen automatically.

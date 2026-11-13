@@ -40,6 +40,12 @@ Bambu Lab and Bambu Studio are trademarks of their respective owner. Spooly (spo
 of its developer. This project is independent and not affiliated with, endorsed by or supported by Prusa Research,
 Bambu Lab or Spooly.
 
+## Third-party data
+
+Filament names and colors in the catalog come from the OpenPrintTag Database
+(https://github.com/OpenPrintTag/openprinttag-database), published under the MIT license. They are loaded at run time
+from database.openprinttag.org and are not part of this repository.
+
 ## Sample model
 
 The sample model is the 3DBenchy, which NTI released into the public domain in 2025.

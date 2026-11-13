@@ -27,7 +27,7 @@ import (
 	"time"
 )
 
-var version = "1.3.0" // beim Release-Build per -ldflags "-X main.version=…" gesetzt
+var version = "1.4.0" // beim Release-Build per -ldflags "-X main.version=…" gesetzt
 
 //go:embed web/color-mapper.html
 var pageHTML []byte
@@ -518,6 +518,7 @@ func startServer(ln net.Listener) {
 		writeJSON(w, map[string]any{"ok": true})
 	}))
 	registerSpooly(mux)
+	registerOpt(mux)
 	srv := &http.Server{Handler: mux, ReadHeaderTimeout: 10 * time.Second}
 	log.Fatal(srv.Serve(ln))
 }

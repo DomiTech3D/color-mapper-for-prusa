@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-only – additional terms (attribution) in NOTICE.md
 """Build the Color Mapper for Prusa page.
 
-Inserts core.js and the sample model into app/index.src.html and writes:
+Inserts core.js, match.js and the sample model into app/index.src.html and writes:
   dist/color-mapper.html        standalone page – open it in any current browser
   desktop/web/color-mapper.html the same page, built into the Windows program
 
@@ -29,9 +29,12 @@ def main():
     src = open(path('app', 'index.src.html'), encoding='utf-8').read()
     core = open(path('app', 'core.js'), encoding='utf-8').read()
     core = core.replace("if (typeof module !== 'undefined' && module.exports) module.exports = coreFactory;", '')
+    match = open(path('app', 'match.js'), encoding='utf-8').read()
+    match = match.replace("if (typeof module !== 'undefined' && module.exports) module.exports = Match;", '')
     demo = base64.b64encode(open(a.demo, 'rb').read()).decode()
-    assert '/*__CORE__*/' in src and "/*__DEMO__*/''" in src and '/*__REPO__*/' in src
+    assert '/*__MATCH__*/' in src and '/*__CORE__*/' in src and "/*__DEMO__*/''" in src and '/*__REPO__*/' in src
     page = (src.replace('/*__CORE__*/', core)
+               .replace('/*__MATCH__*/', match)
                .replace("/*__DEMO__*/''", json.dumps(demo))
                .replace('/*__REPO__*/', os.environ.get('REPO_URL', 'https://github.com/DomiTech3D/color-mapper-for-prusa')))
     full = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
