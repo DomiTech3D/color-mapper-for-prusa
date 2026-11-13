@@ -99,6 +99,10 @@ header.top p { margin: 0; color: var(--muted); font-size: 14px; }
 .tool .mat .sep { display: none; }
 .tool { align-self: stretch; }
 .planlist { display: grid; gap: 6px; margin-top: 10px; }
+.loadhead { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+.loadhead p { margin: 0 auto 0 0; font-size: 12.5px; color: var(--muted); }
+.loadhead .link-btn { font-size: 12.5px; }
+.savelist { margin-top: 10px; }
 .planlist > p { margin: 0; font-size: 12.5px; color: var(--muted); }
 .planrow { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 6px 8px; border: 1px dashed var(--accent); border-radius: 8px; }
 .planrow > i { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); }
@@ -403,6 +407,7 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       <h2><span class="step">04</span> <span data-i18n="step4">Save</span></h2>
       <button class="primary" id="exportBtn" disabled data-i18n="exportBtn">Save for PrusaSlicer</button>
       <div class="progress" id="exBarWrap" hidden><i id="exBar"></i></div>
+      <label class="live-auto savelist"><input type="checkbox" id="saveList"> <span data-i18n="saveListLbl">Also save the load list as a text file</span></label>
       <div class="status" id="exStatus" role="status"></div>
       <details class="howto">
         <summary data-i18n="howtoSum">How to open the file in PrusaSlicer</summary>
@@ -518,13 +523,21 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       hlTiny: 'Very small area – rotate or zoom in to find it.',
       hlToolPrints: (s) => ' prints ' + s + ' of the surface', hlToolUnused: ' is not used for this model',
       // v1.4: eine Zuordnung pro Dateifarbe, Quellen, Auswahl
+      saveListLbl: 'Also save the load list as a text file', llSave: 'Save as text file', llCopy: 'Copy', llCopyFail: 'Copying not possible',
+      llSaved: (n) => 'Load list: ' + n + '.', llSuffix: '_load-list',
+      llTitle: 'Load list – Color Mapper for Prusa', llFile: 'File', llFrom: 'from', llPrinter: 'Printer', llSource: 'Loaded spools from', llCreated: 'Created',
+      llLoadHead: 'Load before printing', llNothing: 'Nothing to load – everything needed is already in the printer.',
+      llInsert: 'load', llSwap: 'swap', llLoc: 'Storage', llInstead: 'Currently', llPrints: 'Prints',
+      llKeepHead: 'Already loaded (leave as is)', llUnused: 'Not used by this file', llNotes: 'Notes',
+      llCatalog: 'catalog (OpenPrintTag) – not in your stock', llOwn: 'own color – choose a matching filament yourself',
+      llFooter: 'Check the result in PrusaSlicer before printing.',
       autoMap: 'Map automatically', mapAll: 'Remap all (incl. manual)',
       autoDone: (n) => 'Mapped automatically.' + (n ? ' ' + n + (n === 1 ? ' row set by hand stays' : ' rows set by hand stay') + ' as it was.' : ''),
       allDone: 'All rows mapped again automatically.',
       change: 'Change', noFilament: 'No filament',
       pickTitleRow: (f) => 'Filament for ' + f,
       pickSub: (m) => 'Material in the file: ' + m + ' · sorted by color match',
-      pickSearch: 'Search name, brand, material, number', pickHere: (tn) => 'loaded in ' + tn, pickNone: 'Nothing found.',
+      pickSearch: 'Search, e.g. esun white or #82', pickHere: (tn) => 'loaded in ' + tn, pickNone: 'Nothing found.',
       pickTabsAria: 'Source', tabLoaded: 'Loaded', tabStock: 'Spooly stock', tabOwn: 'Own color',
       onlyMat: (m) => 'only ' + m,
       ownColor: 'Own color', ownColorAria: 'Color', ownHexAria: 'Hex color', ownApply: 'Use this color',
@@ -651,13 +664,21 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       hlTiny: 'Sehr kleine Fläche – zum Finden die Ansicht drehen oder heranzoomen.',
       hlToolPrints: (s) => ' druckt ' + s + ' der Oberfläche', hlToolUnused: ' wird für dieses Modell nicht verwendet',
       // v1.4: eine Zuordnung pro Dateifarbe, Quellen, Auswahl
+      saveListLbl: 'Ladeliste als Textdatei mitspeichern', llSave: 'Als Textdatei speichern', llCopy: 'Kopieren', llCopyFail: 'Kopieren nicht möglich',
+      llSaved: (n) => 'Ladeliste: ' + n + '.', llSuffix: '_Ladeliste',
+      llTitle: 'Ladeliste – Farb-Mapper für Prusa', llFile: 'Datei', llFrom: 'aus', llPrinter: 'Drucker', llSource: 'Belegung aus', llCreated: 'Erstellt',
+      llLoadHead: 'Vor dem Druck einlegen', llNothing: 'Nichts einzulegen – alles Nötige ist schon im Drucker.',
+      llInsert: 'einlegen', llSwap: 'wechseln', llLoc: 'Lagerort', llInstead: 'Jetzt drin', llPrints: 'Druckt',
+      llKeepHead: 'Bereits geladen (so lassen)', llUnused: 'Für diese Datei nicht verwendet', llNotes: 'Hinweise',
+      llCatalog: 'Katalog (OpenPrintTag) – nicht in deinem Lager', llOwn: 'eigene Farbe – passendes Filament selbst wählen',
+      llFooter: 'Das Ergebnis vor dem Drucken in PrusaSlicer kontrollieren.',
       autoMap: 'Automatisch zuordnen', mapAll: 'Alle neu zuordnen (auch von Hand)',
       autoDone: (n) => 'Automatisch zugeordnet.' + (n ? ' ' + n + (n === 1 ? ' von Hand gesetzte Zeile bleibt' : ' von Hand gesetzte Zeilen bleiben') + ' unverändert.' : ''),
       allDone: 'Alle Zeilen neu automatisch zugeordnet.',
       change: 'Ändern', noFilament: 'Kein Filament',
       pickTitleRow: (f) => 'Filament für ' + f,
       pickSub: (m) => 'Material in der Datei: ' + m + ' · sortiert nach Farbähnlichkeit',
-      pickSearch: 'Suche Name, Marke, Material, Nummer', pickHere: (tn) => 'geladen in ' + tn, pickNone: 'Nichts gefunden.',
+      pickSearch: 'Suchen, z. B. esun white oder #82', pickHere: (tn) => 'geladen in ' + tn, pickNone: 'Nichts gefunden.',
       pickTabsAria: 'Quelle', tabLoaded: 'Geladen', tabStock: 'Spooly-Lager', tabOwn: 'Eigene Farbe',
       onlyMat: (m) => 'nur ' + m,
       ownColor: 'Eigene Farbe', ownColorAria: 'Farbe', ownHexAria: 'Hex-Farbe', ownApply: 'Diese Farbe verwenden',
@@ -1508,7 +1529,16 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     }
     box.hidden = !items.length;
     if (!items.length) return;
-    box.append(el('p', '', t('loadHead')));
+    const head = el('div', 'loadhead');
+    const bSave = el('button', 'link-btn', t('llSave')); bSave.type = 'button'; bSave.id = 'llSave';
+    bSave.addEventListener('click', () => saveLoadList(exportName().replace(/\.3mf$/i, '')));
+    const bCopy = el('button', 'link-btn', t('llCopy')); bCopy.type = 'button'; bCopy.id = 'llCopy';
+    bCopy.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(loadListText()); bCopy.textContent = t('copied'); } catch (e) { bCopy.textContent = t('llCopyFail'); }
+      setTimeout(() => { bCopy.textContent = t('llCopy'); }, 2500);
+    });
+    head.append(el('p', '', t('loadHead')), bSave, bCopy);
+    box.append(head);
     const sp = o.spPrinter || (o.src === 'spooly' ? o.printer : null);
     for (const [tn, c, x] of items) {
       const r = el('div', 'planrow'); r.dataset.hl = 'tool:' + tn;
@@ -1892,6 +1922,15 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     if (picker.tab === 'own') $('ownHex').focus(); else q.focus();
     if (picker.tab === 'catalog') loadOpt().then(renderPicker);
   }
+  // Suche nach Wörtern in beliebiger Reihenfolge: «esun white» findet «eSun ePLA Cold White»,
+  // «creality blue» findet «Creality PLA Blue»; Gross/klein, Akzente und Bindestriche egal
+  function searchNorm(x) { return String(x || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ß/g, 'ss'); }
+  function searchWords(q) { return searchNorm(q).split(/[\s,;/·]+/).map((w) => w.replace(/^[-_.]+|[-_.]+$/g, '')).filter(Boolean); }
+  function matchWords(words, fields) {
+    const hay = searchNorm(fields.filter(Boolean).join(' '));
+    const flat = hay.replace(/[^a-z0-9#]+/g, '');   // «e-sun» = «esun», «pla+» = «pla»
+    return words.every((w) => hay.includes(w) || flat.includes(w.replace(/[^a-z0-9#]+/g, '')));
+  }
   function pickList() {
     const C = candidates();
     if (picker.tab === 'stock') return C.stock;
@@ -1918,10 +1957,10 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
       if (opt.err) { const b = el('button', 'link-btn', t('retry')); b.type = 'button'; b.addEventListener('click', () => { opt.err = ''; loadOpt(true).then(renderPicker); renderPicker(); }); box.append(b); }
       return;
     }
-    const q = $('spoolSearch').value.trim().toLowerCase();
+    const words = searchWords($('spoolSearch').value);
     let list = pickList();
     if (fm && picker.onlyMat && picker.tab !== 'loaded') list = list.filter((c) => !c.material || Match.baseMat(c.material) === fm);
-    if (q) list = list.filter((c) => [c.no ? '#' + c.no : '', c.brand, c.name, c.material, c.loc, c.hex].join(' ').toLowerCase().includes(q));
+    if (words.length) list = list.filter((c) => matchWords(words, [c.no ? '#' + c.no : '', c.brand, c.name, c.material, c.loc, c.hex]));
     // Vorauswahl nach Farbe (der Katalog ist gross), dann sortiert nach Abstand
     let ranked = list.map((c) => ({ cand: c, d: Match.dist(fc, c.hex) })).sort((a, b) => a.d - b.d).slice(0, 150);
     const cur = state.rows[idx] && state.rows[idx].res && state.rows[idx].res.cand;
@@ -2197,6 +2236,77 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     loadFile(f);
   });
 
+  // ---------------------------------------------------------------- Ladeliste (was gehört in welches Tool) als Text
+  function loadListText() {
+    const o = occupancy(), L = [], pad = (x, n) => (x + ' '.repeat(n)).slice(0, Math.max(n, x.length));
+    const ind = '       ';
+    const fname = exportName();
+    L.push(t('llTitle'), '='.repeat(t('llTitle').length), '');
+    L.push(t('llFile') + ': ' + fname + (state.summary ? '  (' + t('llFrom') + ' ' + state.summary.fileName + ')' : ''));
+    L.push(t('llPrinter') + ': ' + prof.labelL);
+    L.push(t('llSource') + ': ' + (o.src === 'manual' ? t('occManual') : SRC_NAME[o.src] + ' · ' + o.printer.name));
+    L.push(t('llCreated') + ': ' + new Date().toLocaleString(LOC(), { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }), '');
+    const desc = (c) => {
+      const parts = [c.material, c.hex ? c.hex.toUpperCase() : '', c.g != null ? Math.round(c.g) + ' g' : ''];
+      if (c.kind === 'catalog') parts.push(t('llCatalog'));
+      else if (c.kind === 'own') parts.push(t('llOwn'));
+      else parts.push(candSrc(c));
+      return parts.filter(Boolean).join(' · ');
+    };
+    const prints = (tn) => state.used.filter((u) => state.rows[u.idx] && state.rows[u.idx].res && state.rows[u.idx].res.tool === tn)
+      .map((u) => filLabel(u.idx).title + ' ' + filColor(u.idx).toUpperCase() + ' (' + shareText(u.share) + ')').join(', ');
+    const was = (x) => (x && x.c ? [x.no ? '#' + x.no : '', x.b, x.n].filter(Boolean).join(' ') || x.m || x.c.toUpperCase() : t('detEmpty'));
+    const load = [], keep = [], unused = [];
+    for (let tn = 1; tn <= prof.n; tn++) {
+      const c = state.planned && state.planned[tn], x = o.tools[tn - 1];
+      if (!c || !prints(tn)) { unused.push(TN(tn)); continue; }
+      (toolHas(x, c) ? keep : load).push([tn, c, x]);
+    }
+    L.push(t('llLoadHead'), '-'.repeat(t('llLoadHead').length));
+    if (!load.length) L.push(t('llNothing'));
+    for (const [tn, c, x] of load) {
+      L.push(pad(TN(tn), 4) + ' ' + (x && x.c ? t('llSwap') : t('llInsert')) + ': ' + candName(c));
+      L.push(ind + desc(c));
+      if (c.loc) L.push(ind + t('llLoc') + ': ' + c.loc);
+      L.push(ind + t('llInstead') + ': ' + was(x));
+      L.push(ind + t('llPrints') + ': ' + prints(tn), '');
+    }
+    if (keep.length) {
+      L.push('', t('llKeepHead'), '-'.repeat(t('llKeepHead').length));
+      for (const [tn, c] of keep) {
+        L.push(pad(TN(tn), 4) + ' ' + candName(c) + ' · ' + desc(c));
+        L.push(ind + t('llPrints') + ': ' + prints(tn));
+      }
+    }
+    if (unused.length) L.push('', t('llUnused') + ': ' + unused.join(', '));
+    const notes = [];
+    for (const tn of state.conflicts || []) notes.push(t('conflict', TN(tn)));
+    for (const u of state.used) { const r = state.rows[u.idx]; if (r && r.res && r.res.noRoom) notes.push(filLabel(u.idx).title + ': ' + t('noRoom', TN(r.res.tool))); }
+    if (!$('mapMat').hidden && $('mapMat').textContent) notes.push($('mapMat').textContent);
+    if (notes.length) { L.push('', t('llNotes'), '-'.repeat(t('llNotes').length)); for (const n of notes) L.push('- ' + n); }
+    L.push('', t('llFooter'));
+    return L.filter((x, i) => x !== '' || L[i - 1] !== '').join('\r\n') + '\r\n';
+  }
+  function loadListName(base) { return base + t('llSuffix') + '.txt'; }
+  async function saveLoadList(base) {
+    const name = loadListName(base);
+    const blob = new Blob(['\ufeff' + loadListText()], { type: 'text/plain;charset=utf-8' });
+    const dl = await downloadsP;
+    if (dl) { await dl.save({ filename: name, data: blob }); return name; }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+    return name;
+  }
+  function exportName() {
+    if (!state.summary) return '';
+    const base = state.summary.fileName.replace(/\.3mf$/i, '');
+    const suffix = state.summary.kind === 'bambu' ? '_' + prof.tag + (state.summary.plates.length > 1 ? t('sufPlate') + state.summary.plates[state.plate].id : '') : t('sufRemapped');
+    return base + suffix + '.3mf';
+  }
+  try { $('saveList').checked = store.get('cm-save-list', true) !== false; } catch (e) { /* egal */ }
+  $('saveList').addEventListener('change', () => store.set('cm-save-list', $('saveList').checked));
+
   // ---------------------------------------------------------------- Speichern
   const downloadsP = (window.claude && typeof window.claude.use === 'function') ? window.claude.use('downloads').catch(() => null) : Promise.resolve(null);
   let pendingSave = null;
@@ -2206,15 +2316,13 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
     $('exportBtn').disabled = true;
     $('exBarWrap').hidden = false; $('exBar').style.width = '2%';
     setStatus('', t('preparing'));
-    const base = state.summary.fileName.replace(/\.3mf$/i, '');
     if (state.used.some((u) => !(state.map[u.idx] >= 1 && state.map[u.idx] <= prof.n))) {
       setStatus('err', () => t('badTool', prof));
       $('exBarWrap').hidden = true; $('exportBtn').disabled = false; state.busy = false;
       loadQueued();
       return;
     }
-    const suffix = state.summary.kind === 'bambu' ? '_' + prof.tag + (state.summary.plates.length > 1 ? t('sufPlate') + state.summary.plates[state.plate].id : '') : t('sufRemapped');
-    const name = base + suffix + '.3mf';
+    const name = exportName();
     const dl = await downloadsP;
     pendingSave = { name, dl };
     backend.post({ cmd: 'export', plate: state.plate, map: state.map.slice(0, 256), bed: prof.bed, wrapName: dl ? name : null, wrapText: t('wrapZip') });
@@ -2239,6 +2347,13 @@ details.howto ol { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 4px;
         const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
         setTimeout(() => URL.revokeObjectURL(url), 60000);
         setStatus('ok', () => t('doneSaved', name, size) + exportTip());
+      }
+      // Ladeliste als zweite Datei (gleicher Name + «_Ladeliste.txt»)
+      if ($('saveList').checked && state.used.length) {
+        if (!dl) await new Promise((r) => setTimeout(r, 400));
+        const ln = await saveLoadList(name.replace(/\.3mf$/i, ''));
+        const prev = statusFn;
+        setStatus('ok', () => prev() + ' ' + t('llSaved', ln));
       }
     } catch (err) {
       const code = err && err.code;
